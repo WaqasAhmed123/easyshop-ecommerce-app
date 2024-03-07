@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 
-fun SubmitButton(onClick: () -> Unit){
+fun SubmitButton(onClick: () -> Unit,buttonTitle:String){
     Button(
         onClick = onClick,
         modifier = Modifier
@@ -29,7 +29,7 @@ fun SubmitButton(onClick: () -> Unit){
         contentPadding = PaddingValues(16.dp) // Padding
     ) {
         Text(
-            text = "Submit",
+            text = buttonTitle,
              style = MaterialTheme.typography.bodyMedium
              // Text color
         )

@@ -25,6 +25,7 @@ import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.auth.composables.InputField
 import com.example.auth.composables.SubmitButton
 
@@ -32,7 +33,7 @@ import com.example.auth.composables.SubmitButton
 //}
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginView() {
+fun LoginView(navController: NavController) {
 
     Scaffold(modifier = Modifier.padding(16.dp)) {
         Box {
@@ -48,16 +49,17 @@ fun LoginView() {
                 Text(text = "Enter Password:", style = MaterialTheme.typography.bodyLarge)
                 InputField(
                     inputText = LoginViewModel.password,
+                    showTrailingIcon = true
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
 
                 Row(horizontalArrangement = Arrangement.Center,modifier = Modifier.fillMaxWidth()){
-                    SubmitButton(onClick = { /*TODO*/ })
+                    SubmitButton(onClick = { /*TODO*/ },"Login")
                 }
                 TextButton(
                     onClick = {
-//                        navController.navigate("detail_forecast_view")
+                        navController.navigate("signup_view")
                         /* Do something when button is clicked */
                     },
                     modifier = Modifier.align(alignment =  Alignment.CenterHorizontally)
