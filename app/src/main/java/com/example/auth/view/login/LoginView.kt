@@ -1,6 +1,7 @@
 package com.example.auth.view.login
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,18 +29,23 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.auth.composables.InputField
 import com.example.auth.composables.SubmitButton
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 
 //class LoginView {
 //}
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginView(navController: NavController) {
+    val mContext = LocalContext.current
+
 
     Scaffold(modifier = Modifier.padding(16.dp)) {
         Box {
             Column(
 //                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()) {
+                verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()
+            ) {
 //                Text(text = "Enter Email:", style = TextStyle(fontSize = 18.sp))
                 Text(text = "Enter Email:", style = MaterialTheme.typography.bodyLarge)
                 InputField(
@@ -54,15 +60,37 @@ fun LoginView(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
 
 
-                Row(horizontalArrangement = Arrangement.Center,modifier = Modifier.fillMaxWidth()){
-                    SubmitButton(onClick = { /*TODO*/ },"Login")
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    SubmitButton(onClick = {
+                        if (LoginViewModel.email.value.isEmpty() and LoginViewModel.password.value.isNotEmpty()) {
+                            Toast.makeText(mContext, "Username is Empty", Toast.LENGTH_SHORT).show()
+                        }
+                        if (LoginViewModel.password.value.isEmpty() and LoginViewModel.email.value.isNotEmpty()) {
+                            Toast.makeText(mContext, "Password is Empty", Toast.LENGTH_SHORT).show()
+                        }
+                        if (LoginViewModel.email.value.isEmpty() and LoginViewModel.password.value.isEmpty()) {
+                            Toast.makeText(
+                                mContext,
+                                "Username and Password are Empty",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+//                        if (mUsername.value.isNotEmpty() and mPassword.value.isNotEmpty()) {
+//                            Toast.makeText(mContext, "Successfully Validated", Toast.LENGTH_SHORT)
+//                                .show()
+//                        }
+                    }, "Login")
                 }
                 TextButton(
                     onClick = {
+
                         navController.navigate("signup_view")
                         /* Do something when button is clicked */
                     },
-                    modifier = Modifier.align(alignment =  Alignment.CenterHorizontally)
+                    modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                 ) {
                     Text(
                         "Don't have an Account? SignUp",

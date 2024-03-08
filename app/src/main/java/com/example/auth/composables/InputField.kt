@@ -43,7 +43,7 @@ fun InputField(inputText: MutableState<String>, showTrailingIcon: Boolean = fals
 
     )
     TextField(
-
+//        isError = true,
         trailingIcon = {
             if (showTrailingIcon) {
                 val image =
@@ -61,12 +61,20 @@ fun InputField(inputText: MutableState<String>, showTrailingIcon: Boolean = fals
 
 
         },
-        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+        visualTransformation =
+        if (showTrailingIcon) {
+
+            if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
+        } else {
+            VisualTransformation.None
+        },
+//        visualTransformation =  PasswordVisualTransformation(),
+//        visualTransformation =  VisualTransformation.None,
 
 
         placeholder = {
 
-            Text( if (!showTrailingIcon)"abc@gmail.com" else "********")
+            Text(if (!showTrailingIcon) "abc@gmail.com" else "********")
         },
 
         value = inputText.value,
