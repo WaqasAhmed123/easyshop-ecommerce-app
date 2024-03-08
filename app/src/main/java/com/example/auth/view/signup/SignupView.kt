@@ -16,6 +16,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,11 +27,14 @@ import com.example.auth.composables.InputField
 import com.example.auth.composables.SubmitButton
 import com.example.auth.service.FirebaseService
 import com.example.auth.view.login.LoginViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SignupView(navController: NavController) {
     val mContext = LocalContext.current
+    var scope = rememberCoroutineScope()
 
     Scaffold(modifier = Modifier.padding(16.dp)) {
         Box {
@@ -72,13 +77,19 @@ fun SignupView(navController: NavController) {
                                 mContext, "Password doesn't match", Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            FirebaseService.addUser(
-                                email = SignupViewModel.email.value,
-                                password = SignupViewModel.password.value,
-                                context = mContext
-                            )
+                            scope.launch {
+                                val userCreated = FirebaseService.addUser(
+                                    email = SignupViewModel.email.value,
+                                    password = SignupViewModel.password.value,
+                                    context = mContext
+                                )
+                                if (userCreated) {
+                                    navController.popBackStack()
+                                }
+
+                            }
                         }
-                    }, buttonTitle = "Signup")
+                    }, buttonTitle = "Signup", isLoading = SignupViewModel.isCreating)
                 }
                 TextButton(
                     onClick = {

@@ -82,7 +82,7 @@ fun LoginView(navController: NavController) {
 //                            Toast.makeText(mContext, "Successfully Validated", Toast.LENGTH_SHORT)
 //                                .show()
 //                        }
-                    }, "Login")
+                    }, "Login", isLoading = LoginViewModel.isLoggingIn)
                 }
                 TextButton(
                     onClick = {
