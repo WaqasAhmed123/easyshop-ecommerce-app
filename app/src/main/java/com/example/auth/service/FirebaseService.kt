@@ -17,9 +17,10 @@ object FirebaseService {
     // Initialize Firebase Auth
 //    lateinit var auth: FirebaseAuth
     val auth = Firebase.auth
-    var isSignupSeccessful=false
+//    var isSignupSeccessful=false
 
-    fun addUser(email: String, password: String, context: Context): Boolean {
+//    fun addUser(email: String, password: String, context: Context): Boolean {
+    fun addUser(email: String, password: String, context: Context){
         val completableFuture = CompletableFuture<Boolean>()
         SignupViewModel.isCreating.value = true
 //        CoroutineScope(Dispatchers.IO).launch{
@@ -35,7 +36,7 @@ object FirebaseService {
 
                     )
                     val user = auth.currentUser
-                    isSignupSeccessful= true
+//                    isSignupSeccessful= true
 //                    updateUI(user)
                 } else {
                     val exception = task.exception
@@ -50,7 +51,7 @@ object FirebaseService {
                 }
                 SignupViewModel.isCreating.value = false
             }
-        return  isSignupSeccessful
+//        return  isSignupSeccessful
 
     }
 }
