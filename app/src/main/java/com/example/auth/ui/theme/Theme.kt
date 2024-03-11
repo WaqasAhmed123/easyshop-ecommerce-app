@@ -28,6 +28,8 @@ import androidx.core.view.WindowInsetsCompat
 private val MyColorScheme = lightColorScheme(
 
     primary = figmaPrimaryColor,
+//    secondary = Color(0xFFF8F7F7)
+    secondary = Color(0xFFF8F7F7)
 //    primary = Color.Green,
 //    primary = Purple40,
 //    secondary = PurpleGrey40,
