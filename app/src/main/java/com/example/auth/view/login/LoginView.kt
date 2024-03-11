@@ -32,6 +32,7 @@ import com.example.auth.composables.SubmitButton
 import android.widget.Toast
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import com.example.auth.service.FirebaseService
 import com.example.auth.view.signup.SignupViewModel
 import kotlinx.coroutines.launch
@@ -42,7 +43,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginView(navController: NavController) {
     val mContext = LocalContext.current
-    var scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
 
 
 
@@ -71,6 +73,7 @@ fun LoginView(navController: NavController) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     SubmitButton(onClick = {
+                        focusManager.clearFocus()
                         if (LoginViewModel.email.value.isEmpty() and LoginViewModel.password.value.isNotEmpty()) {
                             Toast.makeText(mContext, "Username is Empty", Toast.LENGTH_SHORT).show()
                         } else if (LoginViewModel.password.value.isEmpty() and LoginViewModel.email.value.isNotEmpty()) {
@@ -87,12 +90,13 @@ fun LoginView(navController: NavController) {
                                 FirebaseService.login(
                                     email = LoginViewModel.email.value,
                                     password = LoginViewModel.password.value,
-                                    context = mContext
+                                    context = mContext,
+                                    navController = navController
                                 )
 //                                Toast.makeText(
 //                                    mContext, "User Successfully registered", Toast.LENGTH_SHORT
 //                                ).show()
-                                navController.navigate("home_view")
+//                                navController.navigate("home_view")
 //                                if (userCreated) {
 //                                }
 
@@ -106,6 +110,8 @@ fun LoginView(navController: NavController) {
                 }
                 TextButton(
                     onClick = {
+                        focusManager.clearFocus()
+
 
                         navController.navigate("signup_view")
                         /* Do something when button is clicked */

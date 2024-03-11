@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.navigation.NavController
+import com.example.auth.view.home.HomeViewModel
+import com.example.auth.view.login.LoginViewModel
 import com.example.auth.view.signup.SignupViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -17,11 +20,12 @@ import java.util.concurrent.CompletableFuture
 object FirebaseService {
     // Initialize Firebase Auth
     lateinit var auth: FirebaseAuth
+    lateinit var currentUser: FirebaseAuth
 //    val auth = Firebase.auth
 //    var isSignupSeccessful=false
 
     //    fun addUser(email: String, password: String, context: Context): Boolean {
-    fun addUser(email: String, password: String, context: Context) {
+    fun addUser(email: String, password: String, context: Context, navController: NavController) {
         val completableFuture = CompletableFuture<Boolean>()
         SignupViewModel.isCreating.value = true
 //        CoroutineScope(Dispatchers.IO).launch{
@@ -30,6 +34,10 @@ object FirebaseService {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(context as Activity) { task ->
                 if (task.isSuccessful) {
+                    Toast.makeText(
+                        context, "User Successfully registered", Toast.LENGTH_SHORT
+                    ).show()
+                    navController.popBackStack()
                     // Sign in success, update UI with the signed-in user's information
 //                    Log.d(TAG, "createUserWithEmail:success")`
                     println(
@@ -56,12 +64,15 @@ object FirebaseService {
 
     }
 
-    fun login(email: String, password: String, context: Context) {
+    fun login(email: String, password: String, context: Context, navController: NavController) {
+        LoginViewModel.isLoggingIn.value = true
+
 
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(context as Activity) { task ->
                 if (task.isSuccessful) {
+                    navController.navigate("home_view")
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("login", "signInWithEmail:success")
                     val user = auth.currentUser
@@ -76,6 +87,19 @@ object FirebaseService {
                     ).show()
 //                    updateUI(null)
                 }
+                LoginViewModel.isLoggingIn.value = false
+
             }
+    }
+
+    fun signOut(navController: NavController) {
+        HomeViewModel.isSigningOut.value = true
+        auth.signOut()
+        navController.navigate("login_view") {
+            popUpTo(navController.graph.startDestinationId) {
+                inclusive = true
+            }
+        }
+        HomeViewModel.isSigningOut.value = false
     }
 }

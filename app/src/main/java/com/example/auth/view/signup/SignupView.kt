@@ -21,6 +21,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.auth.composables.InputField
@@ -35,6 +36,8 @@ import kotlinx.coroutines.launch
 fun SignupView(navController: NavController) {
     val mContext = LocalContext.current
     var scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+
 
     Scaffold(modifier = Modifier.padding(16.dp)) {
         Box {
@@ -64,6 +67,7 @@ fun SignupView(navController: NavController) {
                     horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()
                 ) {
                     SubmitButton(onClick = {
+                        focusManager.clearFocus()
                         if (SignupViewModel.email.value.isEmpty() and SignupViewModel.password.value.isNotEmpty()) {
                             Toast.makeText(mContext, "Username is Empty", Toast.LENGTH_SHORT).show()
                         } else if (SignupViewModel.password.value.isEmpty() and SignupViewModel.email.value.isNotEmpty()) {
@@ -82,12 +86,10 @@ fun SignupView(navController: NavController) {
                                 FirebaseService.addUser(
                                     email = SignupViewModel.email.value,
                                     password = SignupViewModel.password.value,
-                                    context = mContext
+                                    context = mContext,
+                                    navController=navController
                                 )
-                                Toast.makeText(
-                                    mContext, "User Successfully registered", Toast.LENGTH_SHORT
-                                ).show()
-                                navController.popBackStack()
+
 //                                if (userCreated) {
 //                                }
 
@@ -97,6 +99,7 @@ fun SignupView(navController: NavController) {
                 }
                 TextButton(
                     onClick = {
+                        focusManager.clearFocus()
                         navController.popBackStack()
 //                        navController.navigate("login_view") {
 //                            popUpTo(navController.graph.startDestinationId) {
