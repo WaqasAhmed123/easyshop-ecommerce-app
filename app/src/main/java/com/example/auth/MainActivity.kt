@@ -38,14 +38,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             AuthTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
-                ) {
-                    App()
-//                    LoginView()
-//                    SignupView()
-//                    Greeting("Android")
-                }
+                        App()
+    //                Surface(
+//                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+//                )
+//                {
+////                    LoginView()
+////                    SignupView()
+////                    Greeting("Android")
+//                }
             }
         }
     }

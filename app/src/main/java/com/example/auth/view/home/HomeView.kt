@@ -42,10 +42,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.auth.R
 import com.example.auth.composables.SubmitButton
@@ -79,8 +82,7 @@ fun HomeView(navController: NavController) {
                     )
                     Column(modifier = Modifier.padding(horizontal = 10.dp)) {
                         Text(
-                            text = "Hello",
-                            style = textStyle(textColor = Color.Gray)["bodySmall"]!!
+                            text = "Hello", style = textStyle(textColor = Color.Gray)["bodySmall"]!!
                         )
                         Text(
                             text = "${HomeViewModel.userName.value}",
@@ -96,8 +98,7 @@ fun HomeView(navController: NavController) {
                             .size(48.dp)
                             .clickable(onClick = {})
                             .clip(CircleShape)
-                            .background(Color(0xFFF8F7F7)),
-                        contentAlignment = Alignment.Center
+                            .background(Color(0xFFF8F7F7)), contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = Icons.Filled.NotificationsNone,
@@ -108,7 +109,6 @@ fun HomeView(navController: NavController) {
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedTextField(
-
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Filled.Search,
@@ -118,7 +118,6 @@ fun HomeView(navController: NavController) {
 
                     },
                     placeholder = {
-
                         Text(
                             text = "Search here",
                             style = textStyle(textColor = Color.Gray)["bodySmall"]!!
@@ -126,7 +125,8 @@ fun HomeView(navController: NavController) {
                     },
 
 
-                    value = HomeViewModel.search.value, textStyle = textStyle(textColor = Color.Gray)["bodySmall"]!!,
+                    value = HomeViewModel.search.value,
+                    textStyle = textStyle(textColor = Color.Gray)["bodySmall"]!!,
                     onValueChange = {
 
                         HomeViewModel.search.value = it
@@ -145,8 +145,37 @@ fun HomeView(navController: NavController) {
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
                     ),
-//                    colors = textFieldColors
                 )
+                Spacer(modifier = Modifier. height(20.dp) )
+
+                Box(
+                    modifier = Modifier
+                        .height(135.dp)
+                        .width(343.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = RoundedCornerShape(10.dp) // Adjust the corner radius as needed
+                        )
+
+                ) {
+                    Row (verticalAlignment = Alignment.CenterVertically){
+                        Column (modifier = Modifier.padding(horizontal = 16.dp)){
+                            Text(text = "Get Winter Discount", style = textStyle(textColor = Color.White)["titleMedium"]!!)
+                            Text(text = "20% Off", style = TextStyle(fontSize = 20.sp, color = Color.White, fontWeight = FontWeight.W500))
+                            Text(text = "For Children ", style = textStyle(textColor = Color.White)["titleMedium"]!!)
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                        Image(painter = painterResource(id = R.drawable.child_home), contentDescription =null,
+                            modifier = Modifier
+                                .height(140.dp)
+                                .width(89.dp)
+
+                        )
+
+                    }
+                }
+
+
 //                Text(
 //                    text = "Welcome to my app",
 //                    style = MaterialTheme.typography.titleLarge,
