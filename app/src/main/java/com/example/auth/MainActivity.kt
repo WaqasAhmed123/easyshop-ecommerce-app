@@ -57,13 +57,13 @@ class MainActivity : ComponentActivity() {
 fun App() {
     val navController = rememberNavController()
     val initialScreenRoute = remember { mutableStateOf("login_view") }
-    if (FirebaseService.auth.currentUser != null) {
+//    if (FirebaseService.auth.currentUser != null) {
         initialScreenRoute.value = "home_view"
 
-    }
-    else{
-        initialScreenRoute.value="login_view"
-    }
+//    }
+//    else{
+//        initialScreenRoute.value="login_view"
+//    }
 
     NavHost(
 //        navController = navController, startDestination = "login_view"

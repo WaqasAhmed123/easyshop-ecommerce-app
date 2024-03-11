@@ -20,9 +20,11 @@ import androidx.compose.ui.unit.dp
 
 fun SubmitButton(onClick: () -> Unit, buttonTitle: String, isLoading: MutableState<Boolean>) {
     Button(
+//        colors = MaterialTheme.colorScheme.primary,
         onClick = onClick,
         modifier = Modifier
-            .fillMaxWidth(0.5f) // Set width to half of the screen width
+            .fillMaxWidth(0.5f)
+        // Set width to half of the screen width
 //            .width(200.dp)
 //            .widthIn(max = 200.dp)
         , // Limit maximum width
@@ -36,7 +38,7 @@ fun SubmitButton(onClick: () -> Unit, buttonTitle: String, isLoading: MutableSta
         } else {
             Text(
                 text = buttonTitle,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
                 // Text color
             )
 
