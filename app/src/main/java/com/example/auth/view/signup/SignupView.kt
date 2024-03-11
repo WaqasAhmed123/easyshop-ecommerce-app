@@ -78,14 +78,18 @@ fun SignupView(navController: NavController) {
                             ).show()
                         } else {
                             scope.launch {
-                                val userCreated = FirebaseService.addUser(
+//                                val userCreated = FirebaseService.addUser(
+                                FirebaseService.addUser(
                                     email = SignupViewModel.email.value,
                                     password = SignupViewModel.password.value,
                                     context = mContext
                                 )
-                                if (userCreated) {
-                                    navController.popBackStack()
-                                }
+                                Toast.makeText(
+                                    mContext, "User Successfully registered", Toast.LENGTH_SHORT
+                                ).show()
+                                navController.popBackStack()
+//                                if (userCreated) {
+//                                }
 
                             }
                         }

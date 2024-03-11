@@ -30,7 +30,11 @@ import androidx.navigation.NavController
 import com.example.auth.composables.InputField
 import com.example.auth.composables.SubmitButton
 import android.widget.Toast
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import com.example.auth.service.FirebaseService
+import com.example.auth.view.signup.SignupViewModel
+import kotlinx.coroutines.launch
 
 //class LoginView {
 //}
@@ -38,6 +42,8 @@ import androidx.compose.ui.platform.LocalContext
 @Composable
 fun LoginView(navController: NavController) {
     val mContext = LocalContext.current
+    var scope = rememberCoroutineScope()
+
 
 
     Scaffold(modifier = Modifier.padding(16.dp)) {
@@ -67,16 +73,30 @@ fun LoginView(navController: NavController) {
                     SubmitButton(onClick = {
                         if (LoginViewModel.email.value.isEmpty() and LoginViewModel.password.value.isNotEmpty()) {
                             Toast.makeText(mContext, "Username is Empty", Toast.LENGTH_SHORT).show()
-                        }
-                        if (LoginViewModel.password.value.isEmpty() and LoginViewModel.email.value.isNotEmpty()) {
+                        } else if (LoginViewModel.password.value.isEmpty() and LoginViewModel.email.value.isNotEmpty()) {
                             Toast.makeText(mContext, "Password is Empty", Toast.LENGTH_SHORT).show()
-                        }
-                        if (LoginViewModel.email.value.isEmpty() and LoginViewModel.password.value.isEmpty()) {
+                        } else if (LoginViewModel.email.value.isEmpty() and LoginViewModel.password.value.isEmpty()) {
                             Toast.makeText(
                                 mContext,
                                 "Username and Password are Empty",
                                 Toast.LENGTH_SHORT
                             ).show()
+                        } else {
+                            scope.launch {
+//                                val userCreated = FirebaseService.addUser(
+                                FirebaseService.login(
+                                    email = LoginViewModel.email.value,
+                                    password = LoginViewModel.password.value,
+                                    context = mContext
+                                )
+//                                Toast.makeText(
+//                                    mContext, "User Successfully registered", Toast.LENGTH_SHORT
+//                                ).show()
+                                navController.navigate("home_view")
+//                                if (userCreated) {
+//                                }
+
+                            }
                         }
 //                        if (mUsername.value.isNotEmpty() and mPassword.value.isNotEmpty()) {
 //                            Toast.makeText(mContext, "Successfully Validated", Toast.LENGTH_SHORT)

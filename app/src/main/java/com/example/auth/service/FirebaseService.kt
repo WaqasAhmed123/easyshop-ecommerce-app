@@ -11,16 +11,17 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.AttributedCharacterIterator
 import java.util.concurrent.CompletableFuture
 
 object FirebaseService {
     // Initialize Firebase Auth
-//    lateinit var auth: FirebaseAuth
-    val auth = Firebase.auth
+    lateinit var auth: FirebaseAuth
+//    val auth = Firebase.auth
 //    var isSignupSeccessful=false
 
-//    fun addUser(email: String, password: String, context: Context): Boolean {
-    fun addUser(email: String, password: String, context: Context){
+    //    fun addUser(email: String, password: String, context: Context): Boolean {
+    fun addUser(email: String, password: String, context: Context) {
         val completableFuture = CompletableFuture<Boolean>()
         SignupViewModel.isCreating.value = true
 //        CoroutineScope(Dispatchers.IO).launch{
@@ -53,5 +54,28 @@ object FirebaseService {
             }
 //        return  isSignupSeccessful
 
+    }
+
+    fun login(email: String, password: String, context: Context) {
+
+
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(context as Activity) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("login", "signInWithEmail:success")
+                    val user = auth.currentUser
+//                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("login failure", "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        context,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+//                    updateUI(null)
+                }
+            }
     }
 }
