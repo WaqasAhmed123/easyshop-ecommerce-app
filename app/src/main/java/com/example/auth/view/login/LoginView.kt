@@ -30,9 +30,14 @@ import androidx.navigation.NavController
 import com.example.auth.composables.InputField
 import com.example.auth.composables.SubmitButton
 import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
+import com.example.auth.R
 import com.example.auth.service.FirebaseService
 import com.example.auth.view.signup.SignupViewModel
 import kotlinx.coroutines.launch
@@ -54,6 +59,14 @@ fun LoginView(navController: NavController) {
 //                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()
             ) {
+                Image(painter = painterResource(id = R.drawable.login), contentDescription =null,
+                    modifier = Modifier
+//                        .height(198.dp) // Set height
+                        .fillMaxHeight(0.4f) // Set height
+                        .width(336.dp)
+
+                )
+
 //                Text(text = "Enter Email:", style = TextStyle(fontSize = 18.sp))
                 Text(text = "Enter Email:", style = MaterialTheme.typography.bodyLarge)
                 InputField(
