@@ -20,6 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -56,6 +58,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.auth.R
+import com.example.auth.composables.CategoriesSeeAll
+import com.example.auth.composables.ItemTitleWithImage
 import com.example.auth.composables.SubmitButton
 import com.example.auth.service.FirebaseService
 import kotlinx.coroutines.launch
@@ -154,7 +158,6 @@ fun HomeView(navController: NavController) {
                 Spacer(modifier = Modifier.height(20.dp))
 
 
-                // Display 10 items
                 val pagerState = rememberPagerState(pageCount = {
                     4
                 })
@@ -179,8 +182,7 @@ fun HomeView(navController: NavController) {
                                     style = textStyle(textColor = Color.White)["titleMedium"]!!
                                 )
                                 Text(
-                                    text = "20% Off",
-                                    style = TextStyle(
+                                    text = "20% Off", style = TextStyle(
                                         fontSize = 20.sp,
                                         color = Color.White,
                                         fontWeight = FontWeight.W500
@@ -203,12 +205,6 @@ fun HomeView(navController: NavController) {
 
                         }
                     }
-
-
-                    // Our page content
-//                    Text(
-//                        text = "Page: $page",
-//                    )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
@@ -216,8 +212,7 @@ fun HomeView(navController: NavController) {
                         .wrapContentHeight()
                         .fillMaxWidth()
 //                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 8.dp),
-                    horizontalArrangement = Arrangement.Center
+                        .padding(bottom = 8.dp), horizontalArrangement = Arrangement.Center
                 ) {
                     repeat(pagerState.pageCount) { iteration ->
                         val color =
@@ -231,6 +226,34 @@ fun HomeView(navController: NavController) {
                         )
                     }
                 }
+
+                CategoriesSeeAll(category = "Featured", onClick = {})
+                LazyRow {
+                    itemsIndexed(HomeViewModel.itemsName) { index, dayData ->
+                        val itemName=HomeViewModel.itemsName[index]
+                        val itemPrice=HomeViewModel.itemsPrice[index]
+//                        ItemTitleWithImage(onItemClick = {}, itemName = "Watch", itemPrice = "$40")
+                        ItemTitleWithImage(onItemClick = {}, itemName = itemName, itemPrice = itemPrice)
+                        Spacer(modifier = Modifier.width(10.dp))
+                        // You can access both index and data here
+                        // For example:
+                        // WeatherItem(index = index, iconUrl = dayData[0] as String, temp = dayData[1] as String, day = dayData[2] as String)
+                    }
+                }
+                CategoriesSeeAll(category = "Most Popular", onClick = {})
+                LazyRow {
+                    itemsIndexed(HomeViewModel.itemsName) { index, dayData ->
+                        val itemName=HomeViewModel.itemsName[index]
+                        val itemPrice=HomeViewModel.itemsPrice[index]
+//                        ItemTitleWithImage(onItemClick = {}, itemName = "Watch", itemPrice = "$40")
+                        ItemTitleWithImage(onItemClick = {}, itemName = itemName, itemPrice = itemPrice,isAddButton = true)
+                        Spacer(modifier = Modifier.width(10.dp))
+                        // You can access both index and data here
+                        // For example:
+                        // WeatherItem(index = index, iconUrl = dayData[0] as String, temp = dayData[1] as String, day = dayData[2] as String)
+                    }
+                }
+
 
 
 //                Text(
