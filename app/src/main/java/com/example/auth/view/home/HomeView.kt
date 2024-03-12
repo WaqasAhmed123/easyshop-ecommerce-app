@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,26 +23,26 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,9 +50,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -65,16 +61,24 @@ import com.example.auth.service.FirebaseService
 import kotlinx.coroutines.launch
 import textStyle
 
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeView(navController: NavController) {
+    var selectedItemIndex by rememberSaveable {
+        mutableStateOf(0)
+    }
     val scope = rememberCoroutineScope()
-
-
-    Scaffold(modifier = Modifier.padding(16.dp)) {
+//    Scaffold(modifier = Modifier.padding(16.dp)) {
+    Scaffold(
+    ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+
 //            contentAlignment = Alignment.Center
         ) {
             Column {
@@ -226,56 +230,66 @@ fun HomeView(navController: NavController) {
                         )
                     }
                 }
+                Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    Column {
 
-                CategoriesSeeAll(category = "Featured", onClick = {})
-                LazyRow {
-                    itemsIndexed(HomeViewModel.itemsName) { index, dayData ->
-                        val itemName=HomeViewModel.itemsName[index]
-                        val itemPrice=HomeViewModel.itemsPrice[index]
+                        CategoriesSeeAll(category = "Featured", onClick = {})
+                        LazyRow {
+                            itemsIndexed(HomeViewModel.itemsName) { index, dayData ->
+                                val itemName = HomeViewModel.itemsName[index]
+                                val itemPrice = HomeViewModel.itemsPrice[index]
 //                        ItemTitleWithImage(onItemClick = {}, itemName = "Watch", itemPrice = "$40")
-                        ItemTitleWithImage(onItemClick = {}, itemName = itemName, itemPrice = itemPrice)
-                        Spacer(modifier = Modifier.width(10.dp))
-                        // You can access both index and data here
-                        // For example:
-                        // WeatherItem(index = index, iconUrl = dayData[0] as String, temp = dayData[1] as String, day = dayData[2] as String)
-                    }
-                }
-                CategoriesSeeAll(category = "Most Popular", onClick = {})
-                LazyRow {
-                    itemsIndexed(HomeViewModel.itemsName) { index, dayData ->
-                        val itemName=HomeViewModel.itemsName[index]
-                        val itemPrice=HomeViewModel.itemsPrice[index]
+                                ItemTitleWithImage(
+                                    onItemClick = {},
+                                    onAddItemClick = {},
+                                    itemName = itemName,
+                                    itemPrice = itemPrice
+                                )
+                                Spacer(modifier = Modifier.width(10.dp))
+                                // You can access both index and data here
+                                // For example:
+                                // WeatherItem(index = index, iconUrl = dayData[0] as String, temp = dayData[1] as String, day = dayData[2] as String)
+                            }
+                        }
+                        CategoriesSeeAll(category = "Most Popular", onClick = {})
+                        LazyRow {
+                            itemsIndexed(HomeViewModel.itemsName) { index, dayData ->
+                                val itemName = HomeViewModel.itemsName[index]
+                                val itemPrice = HomeViewModel.itemsPrice[index]
 //                        ItemTitleWithImage(onItemClick = {}, itemName = "Watch", itemPrice = "$40")
-                        ItemTitleWithImage(onItemClick = {}, itemName = itemName, itemPrice = itemPrice,isAddButton = true)
-                        Spacer(modifier = Modifier.width(10.dp))
-                        // You can access both index and data here
-                        // For example:
-                        // WeatherItem(index = index, iconUrl = dayData[0] as String, temp = dayData[1] as String, day = dayData[2] as String)
+                                ItemTitleWithImage(
+                                    onItemClick = {},
+                                    onAddItemClick = {},
+                                    itemName = itemName,
+                                    itemPrice = itemPrice,
+//                            isAddButton = true
+                                )
+                                Spacer(modifier = Modifier.width(10.dp))
+                                // You can access both index and data here
+                                // For example:
+                                // WeatherItem(index = index, iconUrl = dayData[0] as String, temp = dayData[1] as String, day = dayData[2] as String)
+                            }
+                        }
+                        SubmitButton(
+                            onClick = {
+                                scope.launch {
+                                    FirebaseService.signOut(navController = navController)
+
+
+                                }
+
+                            },
+                            buttonTitle = "Logout",
+                            isLoading = HomeViewModel.isSigningOut
+                        )
                     }
+
+
                 }
 
-
-
-//                Text(
-//                    text = "Welcome to my app",
-//                    style = MaterialTheme.typography.titleLarge,
-//                    textAlign = TextAlign.Center
-//                )
-//                Spacer(modifier = Modifier.run { height(20.dp) })
-//                SubmitButton(
-//                    onClick = {
-//                        scope.launch {
-//                            FirebaseService.signOut(navController = navController)
-//
-//
-//                        }
-//
-//                    },
-//                    buttonTitle = "Logout",
-//                    isLoading = HomeViewModel.isSigningOut
-//                )
 
             }
         }
     }
 }
+//}

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,6 +37,7 @@ import textStyle
 @Composable
 fun ItemTitleWithImage(
     onItemClick: () -> Unit,
+    onAddItemClick: () -> Unit,
     itemName: String,
     itemPrice: String,
     isAddButton: Boolean = false
@@ -79,9 +81,10 @@ fun ItemTitleWithImage(
                     )
                 }
             }
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(start = 8.dp, top = 8.dp,end=8.dp)){
+                modifier = Modifier.padding(start = 8.dp, top = 8.dp, end = 8.dp)
+            ) {
 //            Row ( modifier = Modifier.padding(horizontal = 8.dp)){
                 Column {
                     Text(
@@ -100,12 +103,21 @@ fun ItemTitleWithImage(
                 if (isAddButton) {
                     Spacer(modifier = Modifier.weight(1f))
                     Box(
+                        contentAlignment = Alignment.Center,
                         modifier = Modifier
 //                            .padding(2.dp)
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.primary)
-                            .size(24.dp)
-                    )
+                            .size(20.dp)
+                            .clickable(onClick = onAddItemClick)
+
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
                 }
             }
             // Placeholder for image
