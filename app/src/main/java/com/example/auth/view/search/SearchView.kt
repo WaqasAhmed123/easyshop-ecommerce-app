@@ -43,7 +43,7 @@ fun SearchViewScreen(navController: NavController) {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
 //                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    containerColor = Color.Transparent,`
+                    containerColor = Color.Transparent,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 navigationIcon = {
