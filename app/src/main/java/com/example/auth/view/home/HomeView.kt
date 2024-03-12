@@ -2,6 +2,7 @@ package com.example.auth.view.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +19,9 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -25,6 +29,7 @@ import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -56,7 +61,7 @@ import com.example.auth.service.FirebaseService
 import kotlinx.coroutines.launch
 import textStyle
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeView(navController: NavController) {
@@ -146,32 +151,84 @@ fun HomeView(navController: NavController) {
                         unfocusedIndicatorColor = Color.Transparent,
                     ),
                 )
-                Spacer(modifier = Modifier. height(20.dp) )
+                Spacer(modifier = Modifier.height(20.dp))
 
-                Box(
-                    modifier = Modifier
-                        .height(135.dp)
-                        .width(343.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primary,
-                            shape = RoundedCornerShape(10.dp) // Adjust the corner radius as needed
-                        )
 
-                ) {
-                    Row (verticalAlignment = Alignment.CenterVertically){
-                        Column (modifier = Modifier.padding(horizontal = 16.dp)){
-                            Text(text = "Get Winter Discount", style = textStyle(textColor = Color.White)["titleMedium"]!!)
-                            Text(text = "20% Off", style = TextStyle(fontSize = 20.sp, color = Color.White, fontWeight = FontWeight.W500))
-                            Text(text = "For Children ", style = textStyle(textColor = Color.White)["titleMedium"]!!)
+                // Display 10 items
+                val pagerState = rememberPagerState(pageCount = {
+                    4
+                })
+                HorizontalPager(
+                    state = pagerState,
+//                    modifier = Modifier.fillMaxSize()
+                ) { page ->
+                    Box(
+                        modifier = Modifier
+                            .height(135.dp)
+                            .width(343.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = RoundedCornerShape(10.dp) // Adjust the corner radius as needed
+                            )
+
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                                Text(
+                                    text = "Get Winter Discount",
+                                    style = textStyle(textColor = Color.White)["titleMedium"]!!
+                                )
+                                Text(
+                                    text = "20% Off",
+                                    style = TextStyle(
+                                        fontSize = 20.sp,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.W500
+                                    )
+                                )
+                                Text(
+                                    text = "For Children ",
+                                    style = textStyle(textColor = Color.White)["titleMedium"]!!
+                                )
+                            }
+                            Spacer(modifier = Modifier.weight(1f))
+                            Image(
+                                painter = painterResource(id = R.drawable.child_home),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .height(140.dp)
+                                    .width(89.dp)
+
+                            )
+
                         }
-                        Spacer(modifier = Modifier.weight(1f))
-                        Image(painter = painterResource(id = R.drawable.child_home), contentDescription =null,
+                    }
+
+
+                    // Our page content
+//                    Text(
+//                        text = "Page: $page",
+//                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+//                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    repeat(pagerState.pageCount) { iteration ->
+                        val color =
+                            if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.primary else Color.LightGray
+                        Box(
                             modifier = Modifier
-                                .height(140.dp)
-                                .width(89.dp)
-
+                                .padding(2.dp)
+                                .clip(CircleShape)
+                                .background(color)
+                                .size(10.dp)
                         )
-
                     }
                 }
 
