@@ -232,7 +232,6 @@ fun HomeView(navController: NavController) {
                 }
                 Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     Column {
-
                         CategoriesSeeAll(category = "Featured", onClick = {})
                         LazyRow {
                             itemsIndexed(HomeViewModel.itemsName) { index, dayData ->

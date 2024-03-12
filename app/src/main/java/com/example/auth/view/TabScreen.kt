@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.example.auth.view.home.HomeView
 import com.example.auth.view.home.HomeViewModel
-import com.example.auth.view.search.SearchViewClass
+import com.example.auth.view.search.SearchViewScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -77,7 +77,7 @@ fun TabScreen(navController: NavController) {
             }
 
             1 -> Box(modifier = Modifier.padding(innerPadding)) {
-                SearchViewClass(navController = navController)
+                SearchViewScreen(navController = navController)
             }
 //            2 -> NavigationScreen3(navController)
 //            3 -> NavigationScreen4(navController)

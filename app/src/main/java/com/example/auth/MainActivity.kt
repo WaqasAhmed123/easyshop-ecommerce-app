@@ -17,7 +17,7 @@ import com.example.auth.ui.theme.AuthTheme
 import com.example.auth.view.TabScreen
 import com.example.auth.view.home.HomeView
 import com.example.auth.view.login.LoginView
-import com.example.auth.view.search.SearchViewClass
+import com.example.auth.view.search.SearchViewScreen
 import com.example.auth.view.signup.SignupView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -81,7 +81,7 @@ fun App() {
         }
         composable(route = "search_view") {
 
-            SearchViewClass(navController)
+            SearchViewScreen(navController)
         }
         composable(route = "profile_view") {
 
