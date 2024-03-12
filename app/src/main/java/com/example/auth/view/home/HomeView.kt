@@ -270,18 +270,6 @@ fun HomeView(navController: NavController) {
                                 // WeatherItem(index = index, iconUrl = dayData[0] as String, temp = dayData[1] as String, day = dayData[2] as String)
                             }
                         }
-                        SubmitButton(
-                            onClick = {
-                                scope.launch {
-                                    FirebaseService.signOut(navController = navController)
-
-
-                                }
-
-                            },
-                            buttonTitle = "Logout",
-                            isLoading = HomeViewModel.isSigningOut
-                        )
                     }
 
 
