@@ -47,7 +47,8 @@ import textStyle
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchViewScreen(navController: NavController) {
-    Scaffold(modifier = Modifier.padding(16.dp), topBar = {
+    Scaffold(modifier = Modifier.padding(16.dp),
+        topBar = {
         Row {
 //            IconButton(onClick = { /* do something */ }) {
 //                Icon(
@@ -85,8 +86,7 @@ fun SearchViewScreen(navController: NavController) {
                             .clickable {
                                 SearchViewModel.searchProduct.value = ""
                                 SearchViewModel.visibleSearchResult.value = false
-                            },
-                        contentAlignment = Alignment.Center
+                            }, contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Close,

@@ -55,8 +55,8 @@ fun App() {
     val navController = rememberNavController()
     val initialScreenRoute = remember { mutableStateOf("login_view") }
 //    if (FirebaseService.auth.currentUser != null) {
-//        initialScreenRoute.value = "tab_view"
-        initialScreenRoute.value = "all_products_view"
+        initialScreenRoute.value = "tab_view"
+//        initialScreenRoute.value = "all_products_view"
 
 //    }
 //    else{

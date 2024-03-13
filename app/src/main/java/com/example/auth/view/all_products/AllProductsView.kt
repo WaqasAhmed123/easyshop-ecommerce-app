@@ -3,12 +3,16 @@ package com.example.auth.view.all_products
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -26,6 +30,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.auth.composables.ItemTitleWithImage
+import com.example.auth.view.home.HomeViewModel
 import textStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +48,7 @@ fun AllProductsView(navController: NavController) {
                     Box(
                         modifier = Modifier
                             .size(48.dp)
-                            .clickable(onClick = {})
+                            .clickable(onClick = {navController.popBackStack()})
                             .clip(CircleShape)
                             .background(Color(0xFFF8F7F7)), contentAlignment = Alignment.Center
                     ) {
@@ -53,43 +59,31 @@ fun AllProductsView(navController: NavController) {
                             modifier = Modifier.size(24.dp)
                         )
                     }
-//                    IconButton(onClick = { /* do something */ }) {
-//                        Icon(
-//                            imageVector = Icons.Filled.ArrowBack,
-//                            contentDescription = "Localized description"
-//                        )
-//                    }
                 },
                 )
 
-//            Row(
-//                verticalAlignment = Alignment.CenterVertically,
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                Box(
-//                    modifier = Modifier
-//                        .size(48.dp)
-//                        .clickable(onClick = {})
-//                        .clip(CircleShape)
-//                        .background(Color(0xFFF8F7F7)), contentAlignment = Alignment.Center
-//                ) {
-//                    Icon(
-//                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-//
-//                        contentDescription = null,
-//                        modifier = Modifier.size(24.dp)
-//                    )
-//                }
-//                Text(
-//                    text = "Products", style = textStyle()["titleLarge"]!!
-//
-////                        .padding(start = 8.dp)
-////                        .weight(1f)
-//                )
-//            }
-
         }
     ) {
+        Box(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2), // Set the number of columns in the grid
+//                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(HomeViewModel.itemsName.size) { index ->
+                    // Each item in the grid
+                    ItemTitleWithImage(
+                        isAddButton = true,
+                        onItemClick = { /*TODO*/ },
+                        onAddItemClick = { /*TODO*/ },
+                        itemName = HomeViewModel.itemsName[index],
+                        itemPrice = HomeViewModel.itemsPrice[index]
+                    )
+//                    Text(text = items[index])
+                }
+            }
+        }
 
     }
 }

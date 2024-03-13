@@ -8,14 +8,16 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import textStyle
 
 @Composable
-fun CategoriesSeeAll(category: String,onClick: () -> Unit) {
+fun CategoriesSeeAll(category: String,onClick: () -> Unit,navController: NavController) {
     Row (verticalAlignment = Alignment.CenterVertically){
         Text(text = category, style = textStyle()["titleLarge"]!!)
         Spacer(modifier = Modifier.weight(1f))
-        TextButton(onClick = onClick) {
+//        TextButton(onClick = onClick) {
+        TextButton(onClick = {navController.navigate("all_products_view")}) {
             Text(
                 text = "See All",
                 style = textStyle(textColor = MaterialTheme.colorScheme.primary)["bodySmall"]!!

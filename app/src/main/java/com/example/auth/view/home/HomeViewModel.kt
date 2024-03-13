@@ -8,13 +8,15 @@ import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.auth.model.BottomNavigationItemsData
+import com.example.auth.model.UserModel
 
 object HomeViewModel {
     var isSigningOut = mutableStateOf(false)
-    var userName = mutableStateOf("Waqas")
+//    var userName = mutableStateOf("Waqas")
+    var userName =UserModel().userName
     var search = mutableStateOf("")
-    val itemsPrice: MutableList<String> = mutableListOf("$40", "\$40", "\$40")
-    val itemsName: MutableList<String> = mutableListOf("Watch", "Nike", "Bat")
+    val itemsPrice: MutableList<String> = mutableListOf("$40", "\$40", "\$40","$40", "\$40", "\$40","$40", "\$40", "\$40")
+    val itemsName: MutableList<String> = mutableListOf("Watch", "Nike", "Bat","Watch", "Nike", "Bat","Watch", "Nike", "Bat")
     val bottomNavItems= listOf<BottomNavigationItemsData>(
         BottomNavigationItemsData("home_view", icon =Icons.Default.Home),
         BottomNavigationItemsData("Search_view", icon =Icons.Default.Search),

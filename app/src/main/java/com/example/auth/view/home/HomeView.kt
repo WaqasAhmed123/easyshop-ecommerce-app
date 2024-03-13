@@ -98,7 +98,8 @@ fun HomeView(navController: NavController) {
                             text = "Hello", style = textStyle(textColor = Color.Gray)["bodySmall"]!!
                         )
                         Text(
-                            text = "${HomeViewModel.userName.value}",
+//                            text = "${HomeViewModel.userName.value}",
+                            text = "${HomeViewModel.userName}",
                             style = textStyle()["titleMedium"]!!
                         )
 
@@ -232,7 +233,7 @@ fun HomeView(navController: NavController) {
                 }
                 Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     Column {
-                        CategoriesSeeAll(category = "Featured", onClick = {})
+                        CategoriesSeeAll(category = "Featured", onClick = {},navController)
                         LazyRow {
                             itemsIndexed(HomeViewModel.itemsName) { index, dayData ->
                                 val itemName = HomeViewModel.itemsName[index]
@@ -250,7 +251,7 @@ fun HomeView(navController: NavController) {
                                 // WeatherItem(index = index, iconUrl = dayData[0] as String, temp = dayData[1] as String, day = dayData[2] as String)
                             }
                         }
-                        CategoriesSeeAll(category = "Most Popular", onClick = {})
+                        CategoriesSeeAll(category = "Most Popular", navController=navController,onClick = {})
                         LazyRow {
                             itemsIndexed(HomeViewModel.itemsName) { index, dayData ->
                                 val itemName = HomeViewModel.itemsName[index]

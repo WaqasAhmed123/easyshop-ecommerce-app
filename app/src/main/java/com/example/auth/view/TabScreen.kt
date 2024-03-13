@@ -20,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.example.auth.view.home.HomeView
 import com.example.auth.view.home.HomeViewModel
+import com.example.auth.view.profile.ProfieView
+import com.example.auth.view.profile.ProfileViewModel
 import com.example.auth.view.search.SearchViewScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -80,7 +82,7 @@ fun TabScreen(navController: NavController) {
                 SearchViewScreen(navController = navController)
             }
 //            2 -> NavigationScreen3(navController)
-//            3 -> NavigationScreen4(navController)
+            3 -> ProfieView(navController)
         }
     }
 

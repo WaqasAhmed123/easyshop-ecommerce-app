@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.auth.R
@@ -63,8 +64,11 @@ fun ItemTitleWithImage(
                 Image(
                     painter = painterResource(id = R.drawable.watch),
                     contentDescription = null,
+                    contentScale = ContentScale.FillWidth,
+
                     modifier = Modifier
                         .height(99.dp)
+//                        .fillMaxSize()
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(10.dp)) // Clip the image to a circular shape
                 )
