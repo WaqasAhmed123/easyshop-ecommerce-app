@@ -1,5 +1,6 @@
 package com.example.auth.composables
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +25,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +36,7 @@ import com.example.auth.R
 import textStyle
 
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun ItemTitleWithImage(
     onItemClick: () -> Unit,
@@ -42,13 +45,13 @@ fun ItemTitleWithImage(
     itemPrice: String,
     isAddButton: Boolean = false
 ) {
-    Box(
-        modifier = Modifier
-            .width(126.dp)
-            .height(143.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.secondary)
-            .clickable { onItemClick() }
+    var isFavourite = mutableStateOf(false)
+    Box(modifier = Modifier
+        .width(126.dp)
+        .height(143.dp)
+        .clip(RoundedCornerShape(10.dp))
+        .background(MaterialTheme.colorScheme.secondary)
+        .clickable { onItemClick() }
 //            .padding(8.dp) // Add padding to control space around the Column
     ) {
         Column(
@@ -66,8 +69,9 @@ fun ItemTitleWithImage(
                         .clip(RoundedCornerShape(10.dp)) // Clip the image to a circular shape
                 )
                 IconButton(
-                    onClick = { /* Your action here */ },
-                    modifier = Modifier
+                    onClick = {
+                        isFavourite.value = !isFavourite.value
+                    }, modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(top = 2.dp, end = 2.dp)
                 ) {
@@ -77,7 +81,12 @@ fun ItemTitleWithImage(
                             .background(Color.Transparent),
                         imageVector = Icons.Outlined.Favorite,
                         contentDescription = "Favorite",
-                        tint = Color.White
+                        tint = if (isFavourite.value) {
+//                            Color.Red
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            Color.White
+                        }
                     )
                 }
             }
@@ -103,8 +112,7 @@ fun ItemTitleWithImage(
                 if (isAddButton) {
                     Spacer(modifier = Modifier.weight(1f))
                     Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
+                        contentAlignment = Alignment.Center, modifier = Modifier
 //                            .padding(2.dp)
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.primary)

@@ -15,6 +15,7 @@ import com.example.auth.view.profile.ProfieView
 import com.example.auth.service.FirebaseService
 import com.example.auth.ui.theme.AuthTheme
 import com.example.auth.view.TabScreen
+import com.example.auth.view.all_products.AllProductsView
 import com.example.auth.view.home.HomeView
 import com.example.auth.view.login.LoginView
 import com.example.auth.view.search.SearchViewScreen
@@ -54,7 +55,8 @@ fun App() {
     val navController = rememberNavController()
     val initialScreenRoute = remember { mutableStateOf("login_view") }
 //    if (FirebaseService.auth.currentUser != null) {
-        initialScreenRoute.value = "tab_view"
+//        initialScreenRoute.value = "tab_view"
+        initialScreenRoute.value = "all_products_view"
 
 //    }
 //    else{
@@ -86,6 +88,10 @@ fun App() {
         composable(route = "profile_view") {
 
             ProfieView(navController)
+        }
+        composable(route = "all_products_view") {
+
+            AllProductsView(navController)
         }
     }
 }
