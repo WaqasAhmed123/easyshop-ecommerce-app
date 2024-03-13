@@ -18,6 +18,7 @@ import com.example.auth.service.FirebaseService
 import com.example.auth.ui.theme.AuthTheme
 import com.example.auth.view.TabScreen
 import com.example.auth.view.all_products.AllProductsView
+import com.example.auth.view.cart.CartView
 import com.example.auth.view.home.HomeView
 import com.example.auth.view.login.LoginView
 import com.example.auth.view.product_description.ProductDescriptionView
@@ -96,6 +97,10 @@ fun App() {
         composable(route = "all_products_view") {
 
             AllProductsView(navController)
+        }
+        composable(route = "cart_view") {
+
+            CartView(navController)
         }
 //        composable(route = "product_description_view") {
 //

@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import com.example.auth.view.cart.CartView
 import com.example.auth.view.home.HomeView
 import com.example.auth.view.home.HomeViewModel
 import com.example.auth.view.profile.ProfieView
@@ -45,23 +46,21 @@ fun TabScreen(navController: NavController) {
                 selectedTabIndex = selectedItemIndex
             ) {
                 HomeViewModel.bottomNavItems.forEachIndexed { index, tabItem ->
-                    Tab(selected = selectedItemIndex == index,
-                        onClick = {
-                            selectedItemIndex = index
+                    Tab(selected = selectedItemIndex == index, onClick = {
+                        selectedItemIndex = index
 //                                  navController.navigate(HomeViewModel.bottomNavItems[index].route)
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = HomeViewModel.bottomNavItems[index].icon,
-                                contentDescription = null,
-                                tint = if (selectedItemIndex == index) {
-                                    MaterialTheme.colorScheme.primary
-                                } else {
-                                    Color(0xFF9E9E9E)
+                    }, icon = {
+                        Icon(
+                            imageVector = HomeViewModel.bottomNavItems[index].icon,
+                            contentDescription = null,
+                            tint = if (selectedItemIndex == index) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                Color(0xFF9E9E9E)
 
-                                }
-                            )
-                        }
+                            }
+                        )
+                    }
 
 
                     )
@@ -81,8 +80,17 @@ fun TabScreen(navController: NavController) {
             1 -> Box(modifier = Modifier.padding(innerPadding)) {
                 SearchViewScreen(navController = navController)
             }
-//            2 -> NavigationScreen3(navController)
-            3 -> ProfieView(navController)
+
+            2 -> Box(modifier = Modifier.padding(innerPadding)) {
+                CartView(navController)
+            }
+
+            3
+
+            -> Box(modifier = Modifier.padding(innerPadding)) {
+                ProfieView(navController)
+
+            }
         }
     }
 
