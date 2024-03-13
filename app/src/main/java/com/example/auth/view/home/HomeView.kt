@@ -87,7 +87,7 @@ fun HomeView(navController: NavController) {
 
                         painter = painterResource(id = R.drawable.signup),
                         contentDescription = null,
-                        modifier = Modifier
+                        modifier = Modifier.clickable(onClick = {navController.navigate("profile_view")})
                             .height(48.dp)
                             .width(48.dp)
                             //                        .size(size)
@@ -240,7 +240,7 @@ fun HomeView(navController: NavController) {
                                 val itemPrice = HomeViewModel.itemsPrice[index]
 //                        ItemTitleWithImage(onItemClick = {}, itemName = "Watch", itemPrice = "$40")
                                 ItemTitleWithImage(
-                                    onItemClick = {},
+                                    onItemClick = {navController.navigate("product_description_view?productName=${itemName}&productPrice=${itemPrice}")},
                                     onAddItemClick = {},
                                     itemName = itemName,
                                     itemPrice = itemPrice

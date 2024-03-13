@@ -72,7 +72,12 @@ object FirebaseService {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(context as Activity) { task ->
                 if (task.isSuccessful) {
-                    navController.navigate("home_view")
+                    navController.navigate("tab_view") {
+                        popUpTo("login_view") {
+                            inclusive = true
+                        }
+                    }
+//                    navController.navigate("tab_view")
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("login", "signInWithEmail:success")
                     val user = auth.currentUser

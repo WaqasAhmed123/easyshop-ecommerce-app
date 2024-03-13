@@ -59,7 +59,9 @@ fun LoginView(navController: NavController) {
 //                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()
             ) {
-                Image(painter = painterResource(id = R.drawable.login), contentDescription =null,
+                Image(
+                    painter = painterResource(id = R.drawable.login),
+                    contentDescription = null,
                     modifier = Modifier
 //                        .height(198.dp) // Set height
                         .fillMaxHeight(0.4f) // Set height
@@ -75,15 +77,13 @@ fun LoginView(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = "Enter Password:", style = MaterialTheme.typography.bodyLarge)
                 InputField(
-                    inputText = LoginViewModel.password,
-                    showTrailingIcon = true
+                    inputText = LoginViewModel.password, showTrailingIcon = true
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
 
                 Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()
                 ) {
                     SubmitButton(onClick = {
                         focusManager.clearFocus()
@@ -93,9 +93,7 @@ fun LoginView(navController: NavController) {
                             Toast.makeText(mContext, "Password is Empty", Toast.LENGTH_SHORT).show()
                         } else if (LoginViewModel.email.value.isEmpty() and LoginViewModel.password.value.isEmpty()) {
                             Toast.makeText(
-                                mContext,
-                                "Username and Password are Empty",
-                                Toast.LENGTH_SHORT
+                                mContext, "Username and Password are Empty", Toast.LENGTH_SHORT
                             ).show()
                         } else {
                             scope.launch {
@@ -126,10 +124,8 @@ fun LoginView(navController: NavController) {
                         focusManager.clearFocus()
 
 
-                        navController.navigate("signup_view")
-                        /* Do something when button is clicked */
-                    },
-                    modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                        navController.navigate("signup_view")/* Do something when button is clicked */
+                    }, modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                 ) {
                     Text(
                         "Don't have an Account? SignUp",
