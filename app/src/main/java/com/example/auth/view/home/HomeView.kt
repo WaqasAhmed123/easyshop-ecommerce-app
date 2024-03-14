@@ -77,7 +77,7 @@ fun HomeView(navController: NavController) {
 
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(top =  16.dp, end = 16.dp, start = 16.dp)
 
 //            contentAlignment = Alignment.Center
         ) {
@@ -122,44 +122,44 @@ fun HomeView(navController: NavController) {
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                OutlinedTextField(
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp)
-                        )
-
-                    },
-                    placeholder = {
-                        Text(
-                            text = "Search here",
-                            style = textStyle(textColor = Color.Gray)["bodySmall"]!!
-                        )
-                    },
-
-
-                    value = HomeViewModel.search.value,
-                    textStyle = textStyle(textColor = Color.Gray)["bodySmall"]!!,
-                    onValueChange = {
-
-                        HomeViewModel.search.value = it
-//                        println(inputText.value)
-                    },
-                    modifier = Modifier
-                        .border(
-                            BorderStroke(width = 2.dp, color = Color.Gray),
-                            shape = RoundedCornerShape(50)
-                        )
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = (MaterialTheme.colorScheme.secondary),
-//                        containerColor = Color.Transparent,
-//                        backgroundColor = Purple200.copy(alpha = 0.5f),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                    ),
-                )
+//                OutlinedTextField(
+//                    leadingIcon = {
+//                        Icon(
+//                            imageVector = Icons.Filled.Search,
+//                            contentDescription = null,
+//                            modifier = Modifier.size(24.dp)
+//                        )
+//
+//                    },
+//                    placeholder = {
+//                        Text(
+//                            text = "Search here",
+//                            style = textStyle(textColor = Color.Gray)["bodySmall"]!!
+//                        )
+//                    },
+//
+//
+//                    value = HomeViewModel.search.value,
+//                    textStyle = textStyle(textColor = Color.Gray)["bodySmall"]!!,
+//                    onValueChange = {
+//
+//                        HomeViewModel.search.value = it
+////                        println(inputText.value)
+//                    },
+//                    modifier = Modifier
+//                        .border(
+//                            BorderStroke(width = 2.dp, color = Color.Gray),
+//                            shape = RoundedCornerShape(50)
+//                        )
+//                        .fillMaxWidth(),
+//                    colors = TextFieldDefaults.textFieldColors(
+//                        containerColor = (MaterialTheme.colorScheme.secondary),
+////                        containerColor = Color.Transparent,
+////                        backgroundColor = Purple200.copy(alpha = 0.5f),
+//                        focusedIndicatorColor = Color.Transparent,
+//                        unfocusedIndicatorColor = Color.Transparent,
+//                    ),
+//                )
                 Spacer(modifier = Modifier.height(20.dp))
 
 

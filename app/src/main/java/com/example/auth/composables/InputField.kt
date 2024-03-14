@@ -64,7 +64,7 @@ fun InputField(inputText: MutableState<String>, showTrailingIcon: Boolean = fals
         visualTransformation =
         if (showTrailingIcon) {
 
-            if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
+            if (passwordVisibility) VisualTransformation.None    else PasswordVisualTransformation()
         } else {
             VisualTransformation.None
         },
