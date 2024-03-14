@@ -84,5 +84,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth-ktx")
 
     implementation("androidx.compose.material:material:1.6.3")
+//    shared preference
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
 
 }

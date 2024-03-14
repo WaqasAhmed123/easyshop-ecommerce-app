@@ -16,10 +16,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +44,9 @@ import com.example.auth.R
 import com.example.auth.composables.ProductSizeBox
 import com.example.auth.composables.SubmitButton
 import com.example.auth.view.cart.CartViewModel
+import kotlinx.coroutines.launch
 import textStyle
+import java.time.Duration
 
 
 @SuppressLint("UnrememberedMutableState", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -49,9 +55,13 @@ fun ProductDescriptionView(
     navController: NavController, productName: String, productPrice: String
 ) {
     var isFavourite = mutableStateOf(false)
-    val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    Scaffold {
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+    ) {
+        val scope = rememberCoroutineScope()
         Column {
             Box() {
 
@@ -137,6 +147,22 @@ fun ProductDescriptionView(
                                         Pair("price", productPrice)
                                     )
                                 )
+
+                                scope.launch {
+                                    val result = snackbarHostState.showSnackbar(
+                                        message = "Product Added to Cart",
+                                        actionLabel = "View",
+                                        duration = SnackbarDuration.Short
+                                    )
+                                    when (result) {
+                                        SnackbarResult.ActionPerformed -> {/* Handle snackbar action performed */
+                                            navController.navigate("cart_view")
+                                        }
+
+                                        SnackbarResult.Dismissed -> {/* Handle snackbar dismissed */
+                                        }
+                                    }
+                                }
                             }, buttonTitle = "Add to Cart", buttonWidth = 0.35f
                         )
                         SubmitButton(

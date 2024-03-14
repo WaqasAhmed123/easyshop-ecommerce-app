@@ -55,7 +55,8 @@ fun ProfieView(navController: NavController) {
             )
 
             Text(
-                text = "Welcome ${UserModel().userName}",
+//                text = "Welcome ${UserModel().userName}",
+                text = "Welcome ${UserModel().email}",
 //                style = textStyle()["titleLarge"]!!,
                 style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.W500),
 //                textAlign = TextAlign.Center
