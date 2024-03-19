@@ -27,11 +27,8 @@ import textStyle
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CartView(navController: NavController) {
-//    var cartList by remember { mutableStateOf(CartViewModel.cartProducts.entries.toList()) }
 
     Scaffold(modifier = Modifier.padding(horizontal = 16.dp), topBar = {
-//        println("list of map is ${CartViewModel.cartProducts.entries.toList()}")
-//        println("Type of entry value: ${entry.value.javaClass}")
 
         CenterAlignedTopAppBar(
             title = {
@@ -53,39 +50,19 @@ fun CartView(navController: NavController) {
                 val image = product.image
                 val price = product.price
 
-                CartProductBox(
-                    image = image,
+                CartProductBox(image = image,
                     productName = productName,
                     quantity = quantity,
                     price = "$${price}",
                     onAddProductClick = { CartViewModel.incrementQuantity(index) },
                     onDeleteProductClick = { CartViewModel.decrementQuantity(index) },
-                    onProductDelete = { CartViewModel.deleteProduct(index) }
-                )
+                    onProductDelete = { CartViewModel.deleteProduct(index) })
 
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }
 
 
-//        LazyColumn(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-//            itemsIndexed(CartViewModel.cartProducts) {index, pairs ->
-//                CartProductBox(
-//                    productName = pairs.firstOrNull { it.first == "productName" }?.second as? String
-//                        ?: "",
-////                    brand = pairs.firstOrNull { it.first == "brand" }?.second as? String ?: "",
-//                    quantity = pairs.firstOrNull { it.first == "quantity" }?.second as? Int ?: 0,
-//                    price = pairs.firstOrNull { it.first == "price" }?.second as? String ?: "",
-//                    onAddProductClick ={CartViewModel.incrementQuantity(productIndex = index)
-//                                       },
-//                    onDeleteProductClick ={CartViewModel.decrementQuantity(productIndex = index)},
-//                    onProductDelete ={CartViewModel.deleteProduct(productIndex = index)
-//                                     println("deleted")
-//                                     },
-//                )
-//                Spacer(modifier = Modifier.height(10.dp))
-//            }
-//        }
     }
 }
 

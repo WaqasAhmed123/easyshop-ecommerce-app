@@ -10,8 +10,6 @@ object ProfileViewModel {
 
     fun signOut(navController: NavController) {
         isSigningOut.value = true
-//        FirebaseService.auth.signOut()
-//        SharedPreferenceService.deleteToken()
         navController.navigate("login_view") {
             popUpTo(navController.graph.startDestinationId) {
                 inclusive = true

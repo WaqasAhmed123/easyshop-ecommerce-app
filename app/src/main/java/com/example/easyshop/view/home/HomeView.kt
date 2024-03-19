@@ -24,9 +24,12 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationsNone
+import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key.Companion.I
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -259,7 +263,29 @@ fun HomeView(navController: NavController) {
 //                            CategoriesSeeAll(category = "Most Popular",
 //                                navController = navController,
 //                                onClick = {})
-                            Text(text = "All Products", style = textStyle()["titleLarge"]!!)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    modifier = Modifier.weight(1f),
+                                    text = "All Products",
+                                    style = textStyle()["titleLarge"]!!
+                                )
+
+                                IconButton(
+                                    onClick = { /* Handle sort button click */ },
+                                    modifier = Modifier.size(24.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Sort,
+                                        contentDescription = "Sort",
+                                        tint = Color.Black
+                                    )
+                                }
+                                Text(
+                                    text = "Sort", style = textStyle()["titleLarge"]!!
+//                                    style = MaterialTheme.typography.body1,
+//                                    modifier = Modifier.padding(start = 4.dp)
+                                )
+                            }
                             Spacer(modifier = Modifier.height(10.dp))
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(2), // Set the number of columns in the grid
@@ -271,14 +297,15 @@ fun HomeView(navController: NavController) {
                                     val price = "$${product.price}" ?: "" // Ensure null safety
                                     val title = product.title ?: "" // Ensure null safety
                                     val image = product.image ?: "" // Ensure null safety
-                                    ItemTitleWithImage(onItemClick = {
-                                        println("passed index $index")
+                                    ItemTitleWithImage(
+                                        onItemClick = {
+                                            println("passed index $index")
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
 //                                        navController.navigate("product_description_view/$index")
-                                        ProductDescriptionViewModel.product =
-                                            CommonFunctions.findProductById(product.id)
-                                        navController.navigate("product_description_view")
-                                    },
+                                            ProductDescriptionViewModel.product =
+                                                CommonFunctions.findProductById(product.id)
+                                            navController.navigate("product_description_view")
+                                        },
                                         onAddItemClick = { /* Handle add item click */ },
                                         itemName = title,
                                         itemPrice = price.toString(),
