@@ -21,8 +21,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.autofill.AutofillNode
+import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -31,14 +35,13 @@ import androidx.navigation.NavController
 import com.example.easyshop.R
 import com.example.easyshop.composables.InputField
 import com.example.easyshop.composables.SubmitButton
-import com.example.easyshop.service.FirebaseService
-import com.example.easyshop.util.EmailAndPasswordValidator
-import com.example.easyshop.view.signup.SignupViewModel
+import com.example.easyshop.model.LoginRequest
+import com.example.easyshop.repository.ProductsRepository
 import kotlinx.coroutines.launch
 
 //class LoginView {
 //}
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginView(navController: NavController) {
@@ -69,11 +72,14 @@ fun LoginView(navController: NavController) {
                 )
 
 //                Text(text = "Enter Email:", style = TextStyle(fontSize = 18.sp))
-                Text(text = "Enter Email:", style = MaterialTheme.typography.bodyLarge)
+                Text(text = "Enter UserName/Email:", style = MaterialTheme.typography.bodyLarge)
+
                 InputField(
-                    inputText = LoginViewModel.email,
+//                    inputText = LoginViewModel.userName,
+//                    inputText = LoginViewModel.userName, autofillNode = autofillNodeUserName
+                    inputText = LoginViewModel.userName, isUserName = true
                 )
-//                InputField(inputText = LoginViewModel.email, onNextFieldRequested = {
+//                InputField(inputText = LoginViewModel.userName, onNextFieldRequested = {
 //                    focusManager.moveFocus(FocusDirection.Next)
 //                })
                 Spacer(modifier = Modifier.height(16.dp))
@@ -89,29 +95,37 @@ fun LoginView(navController: NavController) {
                 ) {
                     SubmitButton(onClick = {
                         focusManager.clearFocus()
-                        if (LoginViewModel.email.value.isEmpty() and LoginViewModel.password.value.isNotEmpty()) {
+                        if (LoginViewModel.userName.value.isEmpty() and LoginViewModel.password.value.isNotEmpty()) {
                             Toast.makeText(mContext, "Username is Empty", Toast.LENGTH_SHORT).show()
-                        } else if (LoginViewModel.password.value.isEmpty() and LoginViewModel.email.value.isNotEmpty()) {
+                        } else if (LoginViewModel.password.value.isEmpty() and LoginViewModel.userName.value.isNotEmpty()) {
                             Toast.makeText(mContext, "Password is Empty", Toast.LENGTH_SHORT).show()
-                        } else if (LoginViewModel.email.value.isEmpty() and LoginViewModel.password.value.isEmpty()) {
+                        } else if (LoginViewModel.userName.value.isEmpty() and LoginViewModel.password.value.isEmpty()) {
                             Toast.makeText(
                                 mContext, "Username and Password are Empty", Toast.LENGTH_SHORT
                             ).show()
-                        } else if (!EmailAndPasswordValidator.isValidPassword(
-                                password = LoginViewModel.password.value, context = mContext
-                            )
-                        )
+                        }
+//                        else if (!EmailAndPasswordValidator.isValidPassword(
+//                                password = LoginViewModel.password.value, context = mContext
+//                            )
+//                        )
                         else {
                             scope.launch {
 //                                val userCreated = FirebaseService.addUser(
-                                FirebaseService.login(
-                                    email = LoginViewModel.email.value,
-                                    password = LoginViewModel.password.value,
-                                    context = mContext,
-                                    navController = navController
+                                ProductsRepository.login(
+                                    loginCredentials = LoginRequest(
+                                        username = LoginViewModel.userName.value,
+                                        password = LoginViewModel.password.value
+                                    ), context = mContext, navController = navController
+
                                 )
-                                LoginViewModel.email.value=""
-                                LoginViewModel.password.value=""
+//                                FirebaseService.login(
+//                                    userName = LoginViewModel.userName.value,
+//                                    password = LoginViewModel.password.value,
+//                                    context = mContext,
+//                                    navController = navController
+//                                )
+                                LoginViewModel.userName.value = ""
+                                LoginViewModel.password.value = ""
 //                                Toast.makeText(
 //                                    mContext, "User Successfully registered", Toast.LENGTH_SHORT
 //                                ).show()
@@ -133,8 +147,8 @@ fun LoginView(navController: NavController) {
 
 
                         navController.navigate("signup_view")/* Do something when button is clicked */
-                        LoginViewModel.email.value=""
-                        LoginViewModel.password.value=""
+                        LoginViewModel.userName.value = ""
+                        LoginViewModel.password.value = ""
                     }, modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                 ) {
                     Text(

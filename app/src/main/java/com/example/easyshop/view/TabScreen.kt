@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import com.example.easyshop.view.cart.CartView
 import com.example.easyshop.view.home.HomeView
 import com.example.easyshop.view.home.HomeViewModel
-import com.example.easyshop.view.profile.ProfieView
+import com.example.easyshop.view.profile.ProfileView
 import com.example.easyshop.view.search.SearchViewScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -86,7 +86,7 @@ fun TabScreen(navController: NavController) {
             3
 
             -> Box(modifier = Modifier.padding(innerPadding)) {
-                ProfieView(navController)
+                ProfileView(navController)
 
             }
         }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -26,10 +27,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.Autofill
+import androidx.compose.ui.autofill.AutofillNode
+import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -37,18 +47,34 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class,
+    ExperimentalComposeUiApi::class
+)
 @Composable
 //fun InputField(inputText: String, onValueChange: (String) -> Unit) {
 fun InputField(
-    inputText: MutableState<String>,
-    showTrailingIcon: Boolean = false,
+    inputText: MutableState<String>, showTrailingIcon: Boolean = false, isUserName: Boolean = false
+
+//    autofillNode: AutofillNode? =null,
+//    autofill: Autofill,
 //    onNextFieldRequested: (() -> Unit)? = null,
 ) {
     var passwordVisibility by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val bringIntoViewRequester = BringIntoViewRequester()
     val scope = rememberCoroutineScope()
+    val autofillNode = AutofillNode(autofillTypes = if (isUserName) {
+        listOf(AutofillType.Username)
+
+    } else {
+
+        listOf(AutofillType.Password)
+    }, onFill = { inputText.value = it })
+    val autofill = LocalAutofill.current
+
+    LocalAutofillTree.current += autofillNode
 
 
     val textFieldColors = TextFieldDefaults.textFieldColors(
@@ -95,7 +121,7 @@ fun InputField(
 
         placeholder = {
 
-            Text(if (!showTrailingIcon) "abc@gmail.com" else "********")
+            Text(if (!showTrailingIcon) "abc@gmail.com" else "******")
         },
 
         value = inputText.value,
@@ -105,19 +131,36 @@ fun InputField(
             println(inputText.value)
         },
         modifier = Modifier
-            .border(1.dp, Color.Black, shape = RoundedCornerShape(8.dp))
+            .border(
+                1.dp, Color.Black, shape = RoundedCornerShape(8.dp)
+            )
             .background(Color.Transparent, shape = RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(10.dp))
             .fillMaxWidth()
-            .onFocusEvent { event ->
-                if (event.isFocused) {
-                    scope.launch {
-                        bringIntoViewRequester.bringIntoView()
-
-                    }
-
-                }
+            .onGloballyPositioned {
+                autofillNode.boundingBox = it.boundsInWindow()
             }
-            .bringIntoViewRequester(bringIntoViewRequester),
-        colors = textFieldColors)
+            .onFocusChanged { focusState ->
+                autofill?.run {
+                    if (focusState.isFocused) {
+                        println("focues")
+                        requestAutofillForNode(autofillNode)
+                    } else {
+                        cancelAutofillForNode(autofillNode)
+                    }
+                }
+            },
+
+//            .onFocusEvent { event ->
+//                if (event.isFocused) {
+//                    scope.launch {
+//                        bringIntoViewRequester.bringIntoView()
+//
+//                    }
+//
+//                }
+//            }
+//            .bringIntoViewRequester(bringIntoViewRequester),
+        colors = textFieldColors
+    )
 }

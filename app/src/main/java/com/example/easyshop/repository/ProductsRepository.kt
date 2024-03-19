@@ -1,14 +1,21 @@
 package com.example.easyshop.repository
 
+import SharedPreferenceService
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.navigation.NavController
+import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.model.ProductModel
 import com.example.easyshop.service.ApiService
 import com.example.easyshop.view.home.HomeViewModel
+import com.example.easyshop.view.login.LoginViewModel
 import com.google.firebase.auth.UserInfo
 //import okhttp3.Callback
 import retrofit2.Call
@@ -66,7 +73,7 @@ object ProductsRepository {
 
     }
 
-//   suspend fun getProductsByCategoryFromApi(categoryName:String) {
+    //   suspend fun getProductsByCategoryFromApi(categoryName:String) {
 ////        println("location while calling func $lat, $lon")
 //        println("fetching")
 //        val retrofitData = retrofitBuilder.getProductsByCategory(categoryName)
@@ -97,25 +104,61 @@ object ProductsRepository {
 //
 //
 //    }
-suspend fun getProductsByCategoryFromApi(categoryName:String) {
-    println("fetching")
+    suspend fun getProductsByCategoryFromApi(categoryName: String) {
+        println("fetching")
 //    val retrofitData = retrofitBuilder.getProductsByCategory(categoryName)
-    try {
-        val response = retrofitBuilder.getProductsByCategory(categoryName)
-        if (response.isSuccessful) {
-            val categoriesData = response.body()
-            println("products by category ${categoriesData}")
-            categoriesData?.let {
-                selectedCategoryProducts.clear() // Clear existing data
-                selectedCategoryProducts.addAll(it) // Add new data
+        try {
+            val response = retrofitBuilder.getProductsByCategory(categoryName)
+            if (response.isSuccessful) {
+                val categoriesData = response.body()
+                println("products by category ${categoriesData}")
+                categoriesData?.let {
+                    selectedCategoryProducts.clear() // Clear existing data
+                    selectedCategoryProducts.addAll(it) // Add new data
+                }
+            } else {
+                println("Response not successful: ${response.code()}")
             }
-        } else {
-            println("Response not successful: ${response.code()}")
+        } catch (e: Exception) {
+            println("Exception: ${e.message}")
         }
-    } catch (e: Exception) {
-        println("Exception: ${e.message}")
     }
-}
+
+    suspend fun login(
+        loginCredentials: LoginRequest, navController: NavController, context: Context
+    ) {
+        LoginViewModel.isLoggingIn.value = true
+        println("loggingin")
+//    val retrofitData = retrofitBuilder.getProductsByCategory(categoryName)
+        try {
+            val response = retrofitBuilder.login(loginCredentials)
+            if (response.isSuccessful) {
+                val token = response.body()?.token
+                println("obtained token ${token}")
+                SharedPreferenceService.saveToken(token!!)
+                SharedPreferenceService.saveUsername(loginCredentials.username)
+                navController.navigate("tab_view") {
+                    popUpTo("login_view") {
+                        inclusive = true
+                    }
+                }
+//            categoriesData?.let {
+//                selectedCategoryProducts.clear() // Clear existing data
+//                selectedCategoryProducts.addAll(it) // Add new data
+//            }
+            } else {
+                Toast.makeText(
+                    context,
+                    "Authentication failed.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                println("Response not successful: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            println("Exception: ${e.message}")
+        }
+        LoginViewModel.isLoggingIn.value = false
+    }
 
 
     fun getAllCategoriesFromApi() {

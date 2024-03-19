@@ -91,17 +91,17 @@ object FirebaseService {
             }
     }
 
-    fun signOut(navController: NavController) {
-        HomeViewModel.isSigningOut.value = true
-        auth.signOut()
-        navController.navigate("login_view") {
-            popUpTo(navController.graph.startDestinationId) {
-                inclusive = true
-            }
-        }
-        HomeViewModel.isSigningOut.value = false
-    }
-
+//    fun signOut(navController: NavController) {
+//        HomeViewModel.isSigningOut.value = true
+//        auth.signOut()
+//        navController.navigate("login_view") {
+//            popUpTo(navController.graph.startDestinationId) {
+//                inclusive = true
+//            }
+//        }
+//        HomeViewModel.isSigningOut.value = false
+//    }
+//
 //    fun googleSignIn(credential: AuthCredential):Flow<Resource<AuthResult>>{
 //        return Flow{
 //            emit(Resource.Loading())

@@ -31,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,8 +43,10 @@ import androidx.navigation.NavController
 import com.example.easyshop.R
 import com.example.easyshop.composables.CategoriesBox
 import com.example.easyshop.composables.ItemTitleWithImage
+import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.repository.ProductsRepository
 import com.example.easyshop.repository.ProductsRepository.getProductsByCategoryFromApi
+import com.example.easyshop.repository.UserRepository
 import com.example.easyshop.util.CommonFunctions
 import com.example.easyshop.view.product_description.ProductDescriptionViewModel
 import kotlinx.coroutines.launch
@@ -59,8 +62,18 @@ fun HomeView(navController: NavController) {
 //        mutableStateOf(0)
 //    }
     val scope = rememberCoroutineScope()
+
 //    Scaffold(modifier = Modifier.padding(16.dp)) {
     Scaffold {
+//        LaunchedEffect(key1 = Unit, block = {
+//            ProductsRepository.login(
+//                loginCredentials = LoginRequest(
+//                    username = "mor_2314",
+//                    password = "83r5^_"
+//                )
+//            )
+//
+//        })
         if (!ProductsRepository.isDataLoaded.value) {
             Box(
                 modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
@@ -100,7 +113,7 @@ fun HomeView(navController: NavController) {
                             )
                             Text(
 //                            text = "${HomeViewModel.userName.value}",
-                                text = "${HomeViewModel.userName}",
+                                text = "${UserRepository().userName}",
                                 style = textStyle()["titleMedium"]!!
                             )
 
@@ -258,15 +271,14 @@ fun HomeView(navController: NavController) {
                                     val price = "$${product.price}" ?: "" // Ensure null safety
                                     val title = product.title ?: "" // Ensure null safety
                                     val image = product.image ?: "" // Ensure null safety
-                                    ItemTitleWithImage(
-                                        onItemClick = {
-                                            println("passed index $index")
+                                    ItemTitleWithImage(onItemClick = {
+                                        println("passed index $index")
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
 //                                        navController.navigate("product_description_view/$index")
-                                            ProductDescriptionViewModel.product =
-                                                CommonFunctions.findProductById(product.id)
-                                            navController.navigate("product_description_view")
-                                        },
+                                        ProductDescriptionViewModel.product =
+                                            CommonFunctions.findProductById(product.id)
+                                        navController.navigate("product_description_view")
+                                    },
                                         onAddItemClick = { /* Handle add item click */ },
                                         itemName = title,
                                         itemPrice = price.toString(),

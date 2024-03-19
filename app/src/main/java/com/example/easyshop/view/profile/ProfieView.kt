@@ -25,14 +25,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.easyshop.R
 import com.example.easyshop.composables.SubmitButton
-import com.example.easyshop.model.UserModel
-import com.example.easyshop.service.FirebaseService
-import com.example.easyshop.view.home.HomeViewModel
+import com.example.easyshop.repository.UserRepository
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ProfieView(navController: NavController) {
+fun ProfileView(navController: NavController) {
     val scope = rememberCoroutineScope()
     Scaffold() {
         Column(
@@ -52,8 +50,8 @@ fun ProfieView(navController: NavController) {
             )
 
             Text(
-//                text = "Welcome ${UserModel().userName}",
-                text = "Welcome ${UserModel().email}",
+                text = "Welcome ${UserRepository().userName}",
+//                text = "Welcome ${UserModel().email}",
 //                style = textStyle()["titleLarge"]!!,
                 style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.W500),
 //                textAlign = TextAlign.Center
@@ -62,14 +60,15 @@ fun ProfieView(navController: NavController) {
             SubmitButton(
                 onClick = {
                     scope.launch {
-                        FirebaseService.signOut(navController = navController)
+                        ProfileViewModel.signOut(navController)
+//                        FirebaseService.signOut(navController = navController)
 
 
                     }
 
                 },
                 buttonTitle = "Logout",
-                isLoading = HomeViewModel.isSigningOut
+                isLoading = ProfileViewModel.isSigningOut
             )
         }
 

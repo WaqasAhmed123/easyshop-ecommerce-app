@@ -33,7 +33,6 @@ import com.example.easyshop.composables.InputField
 import com.example.easyshop.composables.SubmitButton
 import com.example.easyshop.service.FirebaseService
 import com.example.easyshop.util.EmailAndPasswordValidator
-import com.example.easyshop.view.login.LoginViewModel
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

@@ -1,5 +1,6 @@
 package com.example.easyshop
 
+import SharedPreferenceService
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,11 +9,13 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.repository.ProductsRepository
-import com.example.easyshop.view.profile.ProfieView
+import com.example.easyshop.view.profile.ProfileView
 import com.example.easyshop.service.FirebaseService
 import com.example.easyshop.ui.theme.AuthTheme
 import com.example.easyshop.view.TabScreen
@@ -25,6 +28,7 @@ import com.example.easyshop.view.search.SearchViewScreen
 import com.example.easyshop.view.signup.SignupView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,6 +38,12 @@ class MainActivity : ComponentActivity() {
         FirebaseService.auth = Firebase.auth
         ProductsRepository.getAllProductsFromApi()
         ProductsRepository.getAllCategoriesFromApi()
+//        val scope = rememberCoroutineScope()
+//        scope.launch {
+//        ProductsRepository.login(loginCredentials = LoginRequest(username = "mor_2314", password = "83r5^_"))
+//
+//        }
+
 //        ProductsRepository.getProductsByCategoryFromApi("jewelery")
 //        val FirebaseService.currentUser = FirebaseService.auth.currentUser
 
@@ -53,7 +63,7 @@ fun App() {
     val initialScreenRoute = remember { mutableStateOf("login_view") }
 //        initialScreenRoute.value = "tab_view"
 //    initialScreenRoute.value = "product_description_view"
-    if (FirebaseService.auth.currentUser != null) {
+    if (SharedPreferenceService.hasToken()) {
         initialScreenRoute.value = "tab_view"
 
     } else {
@@ -84,7 +94,7 @@ fun App() {
         }
         composable(route = "profile_view") {
 
-            ProfieView(navController)
+            ProfileView(navController)
         }
         composable(route = "selected_products_view") {
 
