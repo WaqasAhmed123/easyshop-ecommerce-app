@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.auth"
+    namespace = "com.example.easyshop"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.auth"
+        applicationId = "com.example.easyshop"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -86,5 +86,13 @@ dependencies {
     implementation("androidx.compose.material:material:1.6.3")
 //    shared preference
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
+
+    // Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+//    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
+    //    load network image
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
 }

@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:78214735716:android:41f69aac276bba53bbbc71",
+        "mobilesdk_app_id": "1:78214735716:android:7fbb6e29109483a4bbbc71",
         "android_client_info": {
-          "package_name": "com.example.auth"
+          "package_name": "com.example.easyshop"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "78214735716-5dlsfaftd8bv0csh6dko8oiepp9ksop9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.auth",
-            "certificate_hash": "8297976d11e3393fef0f4c0c4b89a2fb5c0616c3"
-          }
-        },
         {
           "client_id": "78214735716-hopo8sgve72dtm2c9j4vcn3rk5q869lb.apps.googleusercontent.com",
           "client_type": 3
