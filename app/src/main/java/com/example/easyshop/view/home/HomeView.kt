@@ -45,14 +45,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.easyshop.R
+import com.example.easyshop.composables.CategoriesBox
 import com.example.easyshop.composables.CategoriesSeeAll
 import com.example.easyshop.composables.ItemTitleWithImage
 import com.example.easyshop.repository.ProductsRepository
+import com.example.easyshop.util.CommonFunctions
+import com.example.easyshop.view.product_description.ProductDescriptionViewModel
 import kotlinx.coroutines.delay
 import textStyle
 
@@ -152,46 +157,50 @@ fun HomeView(navController: NavController) {
                         state = pagerState,
 //                    modifier = Modifier.fillMaxSize()
                     ) { page ->
-                        Box(
-                            modifier = Modifier
-                                .height(135.dp)
-                                .width(343.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.primary,
-                                    shape = RoundedCornerShape(10.dp) // Adjust the corner radius as needed
-                                )
-
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                                    Text(
-                                        text = "Get Winter Discount",
-                                        style = textStyle(textColor = Color.White)["titleMedium"]!!
-                                    )
-                                    Text(
-                                        text = "20% Off", style = TextStyle(
-                                            fontSize = 20.sp,
-                                            color = Color.White,
-                                            fontWeight = FontWeight.W500
-                                        )
-                                    )
-                                    Text(
-                                        text = "For Children ",
-                                        style = textStyle(textColor = Color.White)["titleMedium"]!!
-                                    )
-                                }
-                                Spacer(modifier = Modifier.weight(1f))
-                                Image(
-                                    painter = painterResource(id = R.drawable.child_home),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .height(140.dp)
-                                        .width(89.dp)
-
-                                )
-
-                            }
-                        }
+                        println("categories data ${ProductsRepository.allCategories.size}")
+                        println("page index $page")
+                        val category=ProductsRepository.allCategories[page].uppercase()
+                        CategoriesBox(category = category, onCategoriesClick = {})
+//                        Box(
+//                            modifier = Modifier
+//                                .height(135.dp)
+//                                .width(343.dp)
+//                                .background(
+//                                    color = MaterialTheme.colorScheme.primary,
+//                                    shape = RoundedCornerShape(10.dp) // Adjust the corner radius as needed
+//                                )
+//
+//                        ) {
+//                            Row(verticalAlignment = Alignment.CenterVertically) {
+//                                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+//                                    Text(
+//                                        text = "Get Winter Discount",
+//                                        style = textStyle(textColor = Color.White)["titleMedium"]!!
+//                                    )
+//                                    Text(
+//                                        text = "20% Off", style = TextStyle(
+//                                            fontSize = 20.sp,
+//                                            color = Color.White,
+//                                            fontWeight = FontWeight.W500
+//                                        )
+//                                    )
+//                                    Text(
+//                                        text = "For Children ",
+//                                        style = textStyle(textColor = Color.White)["titleMedium"]!!
+//                                    )
+//                                }
+//                                Spacer(modifier = Modifier.weight(1f))
+//                                Image(
+//                                    painter = painterResource(id = R.drawable.child_home),
+//                                    contentDescription = null,
+//                                    modifier = Modifier
+//                                        .height(140.dp)
+//                                        .width(89.dp)
+//
+//                                )
+//
+//                            }
+//                        }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Row(
@@ -216,8 +225,8 @@ fun HomeView(navController: NavController) {
 //                Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     Box() {
                         Column {
-                            CategoriesSeeAll(category = "Featured", onClick = {}, navController)
-//                            LazyRow {
+//                            CategoriesSeeAll(category = "Featured", onClick = {}, navController)
+////                            LazyRow {
 //                                itemsIndexed(HomeViewModel.itemsName) { index, dayData ->
 //                                    val itemName = HomeViewModel.itemsName[index]
 //                                    val itemPrice = HomeViewModel.itemsPrice[index]
@@ -235,33 +244,13 @@ fun HomeView(navController: NavController) {
 //                                    // WeatherItem(index = index, iconUrl = dayData[0] as String, temp = dayData[1] as String, day = dayData[2] as String)
 //                                }
 //                            }
-                            CategoriesSeeAll(category = "Most Popular",
-                                navController = navController,
-                                onClick = {})
-//                            LazyColumn {
-//                                itemsIndexed(HomeViewModel.allProducts) { index, itemName ->
-//                                    val price = HomeViewModel.allProducts.getOrNull(index)?.price
-//                                        ?: "" // Ensure index safety
-//                                    val title = HomeViewModel.allProducts.getOrNull(index)?.title
-//                                        ?: "" // Ensure index safety
-//                                    val image = HomeViewModel.allProducts.getOrNull(index)?.image
-//                                        ?: "" // Ensure index safety
-//
-//
-//                                    ItemTitleWithImage(onItemClick = {
-//                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
-//                                    },
-//                                        onAddItemClick = { /* Handle add item click */ },
-//                                        itemName = title,
-//                                        itemPrice = price.toString()
-//                                    )
-//
-//                                    Spacer(modifier = Modifier.width(10.dp))
-//                                }
-//                            }
+//                            CategoriesSeeAll(category = "Most Popular",
+//                                navController = navController,
+//                                onClick = {})
+                            Text(text = "All Products", style = textStyle()["titleLarge"]!!)
+                            Spacer(modifier = Modifier.height(10.dp))
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(2), // Set the number of columns in the grid
-//                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                                 horizontalArrangement = Arrangement.spacedBy(20.dp),
                                 verticalArrangement = Arrangement.spacedBy(16.dp)
                             ) {
@@ -273,22 +262,16 @@ fun HomeView(navController: NavController) {
                                     ItemTitleWithImage(onItemClick = {
                                         println("passed index $index")
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
-                                        navController.navigate("product_description_view/$index")
+//                                        navController.navigate("product_description_view/$index")
+                                        ProductDescriptionViewModel.product =
+                                            CommonFunctions.findProductById(product.id)
+                                        navController.navigate("product_description_view")
                                     },
                                         onAddItemClick = { /* Handle add item click */ },
                                         itemName = title,
                                         itemPrice = price.toString(),
                                         image = image
                                     )
-
-//                                    ItemTitleWithImage(
-////                                        isAddButton = true,
-//                                        onItemClick = { /*TODO*/ },
-//                                        onAddItemClick = { /*TODO*/ },
-//                                        itemName = HomeViewModel.itemsName[index],
-//                                        itemPrice = HomeViewModel.itemsPrice[index]
-//                                    )
-//                    Text(text = items[index])
                                 }
                             }
                         }

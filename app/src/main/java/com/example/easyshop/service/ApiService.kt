@@ -10,6 +10,9 @@ interface ApiService {
     @GET("/products")
     fun getAllProducts(
     ): Call<List<ProductModel>>
+    @GET("/products/category/")
+    fun getProductsByCategory(
+    ): Call<List<ProductModel>>
     @GET("/products/categories")
     fun getAllCategories(
     ): Call<List<String>>

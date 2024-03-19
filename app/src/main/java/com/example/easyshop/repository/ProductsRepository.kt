@@ -22,7 +22,7 @@ object ProductsRepository {
     val BASE_URL = "https://fakestoreapi.com"
     var allProductsList = mutableStateListOf<ProductModel>()
     var allCategories = mutableStateListOf<String>()
-        var isDataLoaded = mutableStateOf(false)
+    var isDataLoaded = mutableStateOf(false)
 
     val retrofitBuilder =
         Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(BASE_URL)
@@ -45,7 +45,6 @@ object ProductsRepository {
                         allProductsList.clear() // Clear existing data
                         allProductsList.addAll(it) // Add new data
                     }
-                    isDataLoaded.value=true
 //                    allProductsList=productsData
 //                    HomeVie"wModel.updateWeatherDataInHomeViewModel(completeWeatherData!!)
 
@@ -65,6 +64,7 @@ object ProductsRepository {
 
 
     }
+
     fun getAllCategoriesFromApi() {
 //        println("location while calling func $lat, $lon")
         println("fetching")
@@ -83,6 +83,8 @@ object ProductsRepository {
                         allCategories.clear() // Clear existing data
                         allCategories.addAll(it) // Add new data
                     }
+                    isDataLoaded.value = true
+
 //                    productsData?.let {
 //                        allProductsList.clear() // Clear existing data
 //                        allProductsList.addAll(it) // Add new data

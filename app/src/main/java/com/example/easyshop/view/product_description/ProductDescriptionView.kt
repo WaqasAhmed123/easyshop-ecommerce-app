@@ -48,6 +48,7 @@ import com.example.easyshop.composables.SubmitButton
 import com.example.easyshop.model.ProductModel
 import com.example.easyshop.repository.ProductsRepository
 import com.example.easyshop.view.cart.CartViewModel
+import com.example.easyshop.view.product_description.ProductDescriptionViewModel.product
 import kotlinx.coroutines.launch
 import org.jetbrains.annotations.Async
 import textStyle
@@ -56,12 +57,13 @@ import textStyle
 @SuppressLint("UnrememberedMutableState", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProductDescriptionView(
-//    navController: NavController, productName: String, productPrice: String
-    navController: NavController, productIndex: Int
+//    navController: NavController, productIndex: Int
+//    navController: NavController, productId: Int
+    navController: NavController
 ) {
     var isFavourite = mutableStateOf(false)
     val snackbarHostState = remember { SnackbarHostState() }
-    var product = ProductsRepository.allProductsList[productIndex]
+//    var product = ProductsRepository.allProductsList[productIndex]
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -73,7 +75,7 @@ fun ProductDescriptionView(
 
                 AsyncImage(
 //                    model =  product.image,
-                    model = product.image,
+                    model = ProductDescriptionViewModel.product?.image,
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
 
@@ -91,20 +93,22 @@ fun ProductDescriptionView(
                         ) // Clip the image to a circular shape
                 )
             }
-            Box(modifier = Modifier
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())) {
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
 //                    text = productName,
-                        text = "${product.title}", style = TextStyle(
+                        text = "${ProductDescriptionViewModel.product?.title}", style = TextStyle(
                             fontSize = 20.sp, fontWeight = FontWeight.W500, color = Color.Black
                         )
                     )
                     Text(
                         modifier = Modifier.align(Alignment.End),
 //                    text = productPrice,
-                        text = "$${product.price}",
+                        text = "$${ProductDescriptionViewModel.product?.price}",
 //                    style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.W500, color = Color.Black)
                         style = textStyle(textColor = MaterialTheme.colorScheme.primary)["titleLarge"]!!
                     )
@@ -115,7 +119,10 @@ fun ProductDescriptionView(
                             tint = Color(0xFFFFC107)
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(text = "${product.rating.rate}", style = textStyle()["bodySmall"]!!)
+                        Text(
+                            text = "${ProductDescriptionViewModel.product?.rating?.rate}",
+                            style = textStyle()["bodySmall"]!!
+                        )
 
                     }
                     Spacer(modifier = Modifier.height(15.dp))
@@ -124,7 +131,7 @@ fun ProductDescriptionView(
 
                     Text(
 //                        text = "Culpa aliquam consequuntur veritatis at consequuntur praesentium beatae temporibus nobis. Velit dolorem facilis neque autem. Itaque voluptatem expedita qui eveniet id veritatis eaque. Blanditiis quia placeat nemo. Nobis laudantium nesciunt perspiciatis sit eligendi.",
-                        text = product.description,
+                        text = ProductDescriptionViewModel.product?.description!!,
                         style = textStyle(textColor = Color(0xFF9B9999))["bodySmall"]!!
                     )
                     Spacer(modifier = Modifier.height(15.dp))
@@ -149,7 +156,10 @@ fun ProductDescriptionView(
                     ) {
                         SubmitButton(
                             onClick = {
-                                CartViewModel.cartProducts.add(mutableListOf(product, 0))
+//                                CartViewModel.cartProducts.add(mutableListOf(ProductDescriptionViewModel?.product, 0))
+                                ProductDescriptionViewModel.product?.let { product ->
+                                    CartViewModel.cartProducts.add(mutableListOf(product, 1))
+                                }
 //
 //                                    .add(
 //                                    listOf(

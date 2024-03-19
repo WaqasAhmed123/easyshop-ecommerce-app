@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
 
         FirebaseService.auth = Firebase.auth
         ProductsRepository.getAllProductsFromApi()
-//        ProductsRepository.getAllCategoriesFromApi()
+        ProductsRepository.getAllCategoriesFromApi()
 //        val FirebaseService.currentUser = FirebaseService.auth.currentUser
 
         setContent {
@@ -96,16 +96,20 @@ fun App() {
 
             CartView(navController)
         }
-        composable(route = "product_description_view/{productIndex}",
-            arguments = listOf(navArgument(name = "productIndex") {
-                type = NavType.IntType
-            })) {
-            val productIndex = it.arguments!!.getInt("productIndex")
+        composable(route = "product_description_view") {
 
-            ProductDescriptionView(
-                productIndex = productIndex, navController = navController
-
-            )
+            ProductDescriptionView(navController)
         }
+//        composable(route = "product_description_view/{productId}",
+//            arguments = listOf(navArgument(name = "productId") {
+//                type = NavType.IntType
+//            })) {
+//            val productId = it.arguments!!.getInt("productId")
+//
+//            ProductDescriptionView(
+//                productId = productId, navController = navController
+//
+//            )
+//        }
     }
 }

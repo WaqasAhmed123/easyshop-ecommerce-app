@@ -86,8 +86,9 @@ fun CartProductBox(
                         Text(
                             text = "$productName",
                             style = textStyle()["titleMedium"]!!,
+                            modifier = Modifier.weight(1f)
                         )
-                        Spacer(modifier = Modifier.weight(1f))
+                        Spacer(modifier = Modifier.width(8.dp))
                         Icon(
                             modifier = Modifier
                                 .clickable(onClick = onProductDelete)

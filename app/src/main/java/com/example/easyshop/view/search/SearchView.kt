@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -36,14 +39,15 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.easyshop.composables.ItemTitleWithImage
+import com.example.easyshop.view.home.HomeViewModel
 import textStyle
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchViewScreen(navController: NavController) {
-    Scaffold(modifier = Modifier.padding(16.dp),
-        topBar = {
+    Scaffold(modifier = Modifier.padding(16.dp), topBar = {
         Row {
 //            IconButton(onClick = { /* do something */ }) {
 //                Icon(
@@ -119,9 +123,11 @@ fun SearchViewScreen(navController: NavController) {
         }
     }) {
 
+        val filteredProducts = SearchViewModel.filterProductsByKeyword()
+
 
         Column(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-            if (SearchViewModel.visibleSearchResult.value) {
+            if (filteredProducts.isNotEmpty()) {
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     //            Text(text = category, style = textStyle()["titleLarge"]!!)
@@ -140,14 +146,48 @@ fun SearchViewScreen(navController: NavController) {
                     Spacer(modifier = Modifier.weight(1f))
                     TextButton(onClick = { }) {
                         Text(
-                            text = "${SearchViewModel.totalResults.value} Results Found",
+                            text = "${filteredProducts.size} Results Found",
                             style = textStyle(textColor = MaterialTheme.colorScheme.primary)["bodySmall"]!!
                         )
 
                     }
                 }
-
             }
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2), // Set the number of columns in the grid
+//                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(filteredProducts.size) { index ->
+                    val product = filteredProducts[index]
+                    val price = "$${product.price}" ?: "" // Ensure null safety
+                    val title = product.title ?: "" // Ensure null safety
+                    val image = product.image ?: "" // Ensure null safety
+                    ItemTitleWithImage(
+                        onItemClick = {
+                            println("passed index $index")
+//                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
+                            navController.navigate("product_description_view/$index")
+                        },
+                        onAddItemClick = { /* Handle add item click */ },
+                        itemName = title,
+                        itemPrice = price.toString(),
+                        image = image
+                    )
+
+//                                    ItemTitleWithImage(
+////                                        isAddButton = true,
+//                                        onItemClick = { /*TODO*/ },
+//                                        onAddItemClick = { /*TODO*/ },
+//                                        itemName = HomeViewModel.itemsName[index],
+//                                        itemPrice = HomeViewModel.itemsPrice[index]
+//                                    )
+//                    Text(text = items[index])
+                }
+            }
+
+//            }
         }
     }
 }
