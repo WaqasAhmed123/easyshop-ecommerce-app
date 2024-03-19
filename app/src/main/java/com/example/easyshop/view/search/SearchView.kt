@@ -40,7 +40,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.easyshop.composables.ItemTitleWithImage
+import com.example.easyshop.util.CommonFunctions
 import com.example.easyshop.view.home.HomeViewModel
+import com.example.easyshop.view.product_description.ProductDescriptionViewModel
 import textStyle
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -167,8 +169,10 @@ fun SearchViewScreen(navController: NavController) {
                     ItemTitleWithImage(
                         onItemClick = {
                             println("passed index $index")
+                            ProductDescriptionViewModel.product =
+                                CommonFunctions.findProductById(product.id)
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
-                            navController.navigate("product_description_view/$index")
+                            navController.navigate("product_description_view")
                         },
                         onAddItemClick = { /* Handle add item click */ },
                         itemName = title,

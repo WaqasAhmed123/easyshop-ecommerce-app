@@ -17,17 +17,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material3.CircularProgressIndicator
@@ -38,27 +32,21 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.easyshop.R
 import com.example.easyshop.composables.CategoriesBox
-import com.example.easyshop.composables.CategoriesSeeAll
 import com.example.easyshop.composables.ItemTitleWithImage
 import com.example.easyshop.repository.ProductsRepository
+import com.example.easyshop.repository.ProductsRepository.getProductsByCategoryFromApi
 import com.example.easyshop.util.CommonFunctions
 import com.example.easyshop.view.product_description.ProductDescriptionViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import textStyle
 
 
@@ -159,8 +147,19 @@ fun HomeView(navController: NavController) {
                     ) { page ->
                         println("categories data ${ProductsRepository.allCategories.size}")
                         println("page index $page")
-                        val category=ProductsRepository.allCategories[page].uppercase()
-                        CategoriesBox(category = category, onCategoriesClick = {})
+                        val category = ProductsRepository.allCategories[page]
+                        CategoriesBox(category = category, onCategoriesClick = {
+                            scope.launch {
+                                // Call the function and wait for its completion
+                                getProductsByCategoryFromApi(category)
+
+                                // Navigate after the function completes
+                                navController.navigate("selected_products_view")
+                                println("data after navigation ${ProductsRepository.selectedCategoryProducts.size}")
+                            }
+//                            navController.navigate("selected_products_view")
+
+                        })
 //                        Box(
 //                            modifier = Modifier
 //                                .height(135.dp)
@@ -259,14 +258,15 @@ fun HomeView(navController: NavController) {
                                     val price = "$${product.price}" ?: "" // Ensure null safety
                                     val title = product.title ?: "" // Ensure null safety
                                     val image = product.image ?: "" // Ensure null safety
-                                    ItemTitleWithImage(onItemClick = {
-                                        println("passed index $index")
+                                    ItemTitleWithImage(
+                                        onItemClick = {
+                                            println("passed index $index")
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
 //                                        navController.navigate("product_description_view/$index")
-                                        ProductDescriptionViewModel.product =
-                                            CommonFunctions.findProductById(product.id)
-                                        navController.navigate("product_description_view")
-                                    },
+                                            ProductDescriptionViewModel.product =
+                                                CommonFunctions.findProductById(product.id)
+                                            navController.navigate("product_description_view")
+                                        },
                                         onAddItemClick = { /* Handle add item click */ },
                                         itemName = title,
                                         itemPrice = price.toString(),

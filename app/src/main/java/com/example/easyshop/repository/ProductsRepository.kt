@@ -21,6 +21,7 @@ object ProductsRepository {
 
     val BASE_URL = "https://fakestoreapi.com"
     var allProductsList = mutableStateListOf<ProductModel>()
+    var selectedCategoryProducts = mutableStateListOf<ProductModel>()
     var allCategories = mutableStateListOf<String>()
     var isDataLoaded = mutableStateOf(false)
 
@@ -64,6 +65,58 @@ object ProductsRepository {
 
 
     }
+
+//   suspend fun getProductsByCategoryFromApi(categoryName:String) {
+////        println("location while calling func $lat, $lon")
+//        println("fetching")
+//        val retrofitData = retrofitBuilder.getProductsByCategory(categoryName)
+//        retrofitData.enqueue(object : Callback<List<ProductModel>> {
+//            @RequiresApi(Build.VERSION_CODES.O)
+//            override fun onResponse(
+//                call: Call<List<ProductModel>>, response: Response<List<ProductModel>>
+//            ) {
+//                if (response.isSuccessful) {
+//                    println("rep is $response")
+//                    val categoriesData = response.body()
+//                    println("products by category ${categoriesData}")
+//                    categoriesData?.let {
+//                        selectedCategoryProducts.clear() // Clear existing data
+//                        selectedCategoryProducts.addAll(it) // Add new data
+//                    }
+//
+//                } else {
+//                    println("Response not successful: ${response.code()}")
+//                }
+//
+//            }
+//
+//            override fun onFailure(call: Call<List<ProductModel>>, t: Throwable) {
+//                Log.d("TAG", "onFailure: " + t.message)
+//            }
+//        })
+//
+//
+//    }
+suspend fun getProductsByCategoryFromApi(categoryName:String) {
+    println("fetching")
+//    val retrofitData = retrofitBuilder.getProductsByCategory(categoryName)
+    try {
+        val response = retrofitBuilder.getProductsByCategory(categoryName)
+        if (response.isSuccessful) {
+            val categoriesData = response.body()
+            println("products by category ${categoriesData}")
+            categoriesData?.let {
+                selectedCategoryProducts.clear() // Clear existing data
+                selectedCategoryProducts.addAll(it) // Add new data
+            }
+        } else {
+            println("Response not successful: ${response.code()}")
+        }
+    } catch (e: Exception) {
+        println("Exception: ${e.message}")
+    }
+}
+
 
     fun getAllCategoriesFromApi() {
 //        println("location while calling func $lat, $lon")

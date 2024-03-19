@@ -8,18 +8,15 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.easyshop.model.ProductModel
 import com.example.easyshop.repository.ProductsRepository
 import com.example.easyshop.view.profile.ProfieView
 import com.example.easyshop.service.FirebaseService
 import com.example.easyshop.ui.theme.AuthTheme
 import com.example.easyshop.view.TabScreen
-import com.example.easyshop.view.all_products.AllProductsView
+import com.example.easyshop.view.selected_category_products.SelectedProductsView
 import com.example.easyshop.view.cart.CartView
 import com.example.easyshop.view.home.HomeView
 import com.example.easyshop.view.login.LoginView
@@ -37,6 +34,7 @@ class MainActivity : ComponentActivity() {
         FirebaseService.auth = Firebase.auth
         ProductsRepository.getAllProductsFromApi()
         ProductsRepository.getAllCategoriesFromApi()
+//        ProductsRepository.getProductsByCategoryFromApi("jewelery")
 //        val FirebaseService.currentUser = FirebaseService.auth.currentUser
 
         setContent {
@@ -88,9 +86,9 @@ fun App() {
 
             ProfieView(navController)
         }
-        composable(route = "all_products_view") {
+        composable(route = "selected_products_view") {
 
-            AllProductsView(navController)
+            SelectedProductsView(navController)
         }
         composable(route = "cart_view") {
 
