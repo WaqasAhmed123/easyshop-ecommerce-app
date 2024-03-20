@@ -53,6 +53,7 @@ import com.example.easyshop.repository.ProductsRepository.getProductsByCategoryF
 import com.example.easyshop.repository.UserRepository
 import com.example.easyshop.util.CommonFunctions
 import com.example.easyshop.view.product_description.ProductDescriptionViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import textStyle
 
@@ -134,17 +135,17 @@ fun HomeView(navController: NavController) {
                     val pagerState = rememberPagerState(pageCount = {
                         4
                     })
-//                LaunchedEffect(Unit) {
-//                    while (true) {
-//                        delay(2000)
-//                        println("current page ${pagerState.currentPage} page count ${pagerState.pageCount-1}")
-//                        if (pagerState.currentPage == pagerState.pageCount-1) {
-//                            pagerState.animateScrollToPage(0)
-//                        } else {
-//                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-//                        }
-//                    }
-//                }
+                LaunchedEffect(Unit) {
+                    while (true) {
+                        delay(2000)
+                        println("current page ${pagerState.currentPage} page count ${pagerState.pageCount-1}")
+                        if (pagerState.currentPage == pagerState.pageCount-1) {
+                            pagerState.animateScrollToPage(0)
+                        } else {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        }
+                    }
+                }
                     HorizontalPager(
                         state = pagerState,
 //                    modifier = Modifier.fillMaxSize()

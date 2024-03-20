@@ -111,7 +111,7 @@ fun LoginView(navController: NavController) {
                         else {
                             scope.launch {
 //                                val userCreated = FirebaseService.addUser(
-                                ProductsRepository.login(
+                                ProductsRepository.loginFromApi(
                                     loginCredentials = LoginRequest(
                                         username = LoginViewModel.userName.value,
                                         password = LoginViewModel.password.value

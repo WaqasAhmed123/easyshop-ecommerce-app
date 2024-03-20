@@ -3,6 +3,7 @@ package com.example.easyshop.repository
 import SharedPreferenceService
 import android.content.Context
 import android.content.SharedPreferences
+import android.credentials.CredentialManager
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
@@ -10,10 +11,14 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.credentials.CreatePasswordRequest
+import androidx.credentials.exceptions.CreateCredentialCancellationException
+import androidx.credentials.exceptions.CreateCredentialException
 import androidx.navigation.NavController
 import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.model.ProductModel
 import com.example.easyshop.service.ApiService
+import com.example.easyshop.service.CredentialManagerService.credentialManager
 import com.example.easyshop.view.home.HomeViewModel
 import com.example.easyshop.view.login.LoginViewModel
 import com.google.firebase.auth.UserInfo
@@ -85,7 +90,7 @@ object ProductsRepository {
 
     }
 
-    suspend fun login(
+    suspend fun loginFromApi(
         loginCredentials: LoginRequest, navController: NavController, context: Context
     ) {
         LoginViewModel.isLoggingIn.value = true
@@ -98,6 +103,19 @@ object ProductsRepository {
                 println("obtained token ${token}")
                 SharedPreferenceService.saveToken(token!!)
                 SharedPreferenceService.saveUsername(loginCredentials.username)
+//                try {
+//                    val createResponse = credentialManager?.createCredential(
+//                        request = CreatePasswordRequest(
+//                            loginCredentials.username,
+//                            loginCredentials.password
+//                        ), context = context
+////                        activity = activity,
+//                    )
+//                } catch (e: CreateCredentialCancellationException) {
+////                    _errorMessage.value = "User cancelled the save flow"
+//                } catch (e: CreateCredentialException) {
+////                    _errorMessage.value = "Credentials cannot be saved"
+//                }
                 navController.navigate("tab_view") {
                     popUpTo("login_view") {
                         inclusive = true
