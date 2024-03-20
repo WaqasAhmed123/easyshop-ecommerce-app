@@ -12,15 +12,14 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-
     @GET("/products")
-    fun getAllProducts(
-    ): Call<List<ProductModel>>
-//    @GET("/products/category/{categoryName}")
-//    fun getProductsByCategory(
-////        @Query("categoryName") categoryName: String,
-//        @Path("categoryName") String categoryName,
-//    ): Call<List<ProductModel>>
+    suspend fun getAllProducts(
+//        isDesc:Boolean,
+//        @Query("sort") preview: Boolean?
+//        @Query("sort") sort: String? = if (isDesc) "desc" else null
+        @Query("sort") sort: String? = null
+    ): Response<List<ProductModel>>
+
     @GET("/products/category/{categoryName}")
     suspend fun getProductsByCategory(
         @Path("categoryName") categoryName: String

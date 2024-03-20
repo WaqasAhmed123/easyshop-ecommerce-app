@@ -61,30 +61,18 @@ import textStyle
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeView(navController: NavController) {
-
-//    var selectedItemIndex by rememberSaveable {
-//        mutableStateOf(0)
-//    }
     val scope = rememberCoroutineScope()
+    LaunchedEffect(key1 = Unit, block = {
 
-//    Scaffold(modifier = Modifier.padding(16.dp)) {
+        ProductsRepository.getAllProductsFromApi(isDesc = HomeViewModel.isDescProducts.value)
+    })
+
     Scaffold {
-//        LaunchedEffect(key1 = Unit, block = {
-//            ProductsRepository.login(
-//                loginCredentials = LoginRequest(
-//                    username = "mor_2314",
-//                    password = "83r5^_"
-//                )
-//            )
-//
-//        })
         if (!ProductsRepository.isDataLoaded.value) {
             Box(
                 modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-//                            .size(50.dp)
-//                            .background(brush = gradientBackground)
 
             }
 
@@ -95,7 +83,6 @@ fun HomeView(navController: NavController) {
                     .fillMaxSize()
                     .padding(top = 16.dp, end = 16.dp, start = 16.dp)
 
-//            contentAlignment = Alignment.Center
             ) {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -165,7 +152,7 @@ fun HomeView(navController: NavController) {
                         println("categories data ${ProductsRepository.allCategories.size}")
                         println("page index $page")
                         val category = ProductsRepository.allCategories[page]
-                        CategoriesBox(category = category, onCategoriesClick = {
+                        CategoriesBox(category = category, index = page, onCategoriesClick = {
                             scope.launch {
                                 // Call the function and wait for its completion
                                 getProductsByCategoryFromApi(category)
@@ -177,46 +164,6 @@ fun HomeView(navController: NavController) {
 //                            navController.navigate("selected_products_view")
 
                         })
-//                        Box(
-//                            modifier = Modifier
-//                                .height(135.dp)
-//                                .width(343.dp)
-//                                .background(
-//                                    color = MaterialTheme.colorScheme.primary,
-//                                    shape = RoundedCornerShape(10.dp) // Adjust the corner radius as needed
-//                                )
-//
-//                        ) {
-//                            Row(verticalAlignment = Alignment.CenterVertically) {
-//                                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-//                                    Text(
-//                                        text = "Get Winter Discount",
-//                                        style = textStyle(textColor = Color.White)["titleMedium"]!!
-//                                    )
-//                                    Text(
-//                                        text = "20% Off", style = TextStyle(
-//                                            fontSize = 20.sp,
-//                                            color = Color.White,
-//                                            fontWeight = FontWeight.W500
-//                                        )
-//                                    )
-//                                    Text(
-//                                        text = "For Children ",
-//                                        style = textStyle(textColor = Color.White)["titleMedium"]!!
-//                                    )
-//                                }
-//                                Spacer(modifier = Modifier.weight(1f))
-//                                Image(
-//                                    painter = painterResource(id = R.drawable.child_home),
-//                                    contentDescription = null,
-//                                    modifier = Modifier
-//                                        .height(140.dp)
-//                                        .width(89.dp)
-//
-//                                )
-//
-//                            }
-//                        }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Row(
@@ -238,67 +185,55 @@ fun HomeView(navController: NavController) {
                             )
                         }
                     }
-//                Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     Box() {
-                        Column {
-//                            CategoriesSeeAll(category = "Featured", onClick = {}, navController)
-////                            LazyRow {
-//                                itemsIndexed(HomeViewModel.itemsName) { index, dayData ->
-//                                    val itemName = HomeViewModel.itemsName[index]
-//                                    val itemPrice = HomeViewModel.itemsPrice[index]
-////                        ItemTitleWithImage(onItemClick = {}, itemName = "Watch", itemPrice = "$40")
-//                                    ItemTitleWithImage(
-//                                        onItemClick = { navController.navigate("product_description_view?productName=${itemName}&productPrice=${itemPrice}") },
-//                                        onAddItemClick = {},
-//                                        itemName = itemName,
-//                                        itemPrice = itemPrice,
-////                                        image = "null"
-//                                    )
-//                                    Spacer(modifier = Modifier.width(10.dp))
-//                                    // You can access both index and data here
-//                                    // For example:
-//                                    // WeatherItem(index = index, iconUrl = dayData[0] as String, temp = dayData[1] as String, day = dayData[2] as String)
-//                                }
-//                            }
-//                            CategoriesSeeAll(category = "Most Popular",
-//                                navController = navController,
-//                                onClick = {})
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    modifier = Modifier.weight(1f),
-                                    text = "All Products",
-                                    style = textStyle()["titleLarge"]!!
-                                )
-
-                                IconButton(
-                                    onClick = { /* Handle sort button click */ },
-                                    modifier = Modifier.size(24.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Sort,
-                                        contentDescription = "Sort",
-                                        tint = Color.Black
+                        if (HomeViewModel.isDataLoaded.value) {
+                            Column {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        modifier = Modifier.weight(1f),
+                                        text = "All Products",
+                                        style = textStyle()["titleLarge"]!!
                                     )
-                                }
-                                Text(
-                                    text = "Sort", style = textStyle()["titleLarge"]!!
+
+                                    IconButton(
+                                        onClick = {
+                                            HomeViewModel.isDescProducts.value =
+                                                !HomeViewModel.isDescProducts.value
+                                            scope.launch {
+
+                                                ProductsRepository.getAllProductsFromApi(isDesc = HomeViewModel.isDescProducts.value)
+                                            }
+//                                        LaunchedEffect(key1 = Unit, block = {
+//
+//                                        }
+//
+//                                        )
+                                        }, modifier = Modifier.size(24.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Sort,
+                                            contentDescription = "Sort",
+                                            tint = Color.Black
+                                        )
+                                    }
+                                    Text(
+                                        text = "Sort", style = textStyle()["titleLarge"]!!
 //                                    style = MaterialTheme.typography.body1,
 //                                    modifier = Modifier.padding(start = 4.dp)
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(10.dp))
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(2), // Set the number of columns in the grid
-                                horizontalArrangement = Arrangement.spacedBy(20.dp),
-                                verticalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                items(HomeViewModel.allProducts.size) { index ->
-                                    val product = HomeViewModel.allProducts[index]
-                                    val price = "$${product.price}" ?: "" // Ensure null safety
-                                    val title = product.title ?: "" // Ensure null safety
-                                    val image = product.image ?: "" // Ensure null safety
-                                    ItemTitleWithImage(
-                                        onItemClick = {
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(10.dp))
+                                LazyVerticalGrid(
+                                    columns = GridCells.Fixed(2), // Set the number of columns in the grid
+                                    horizontalArrangement = Arrangement.spacedBy(20.dp),
+                                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                                ) {
+                                    items(HomeViewModel.allProducts.size) { index ->
+                                        val product = HomeViewModel.allProducts[index]
+                                        val price = "$${product.price}" ?: "" // Ensure null safety
+                                        val title = product.title ?: "" // Ensure null safety
+                                        val image = product.image ?: "" // Ensure null safety
+                                        ItemTitleWithImage(onItemClick = {
                                             println("passed index $index")
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
 //                                        navController.navigate("product_description_view/$index")
@@ -306,13 +241,24 @@ fun HomeView(navController: NavController) {
                                                 CommonFunctions.findProductById(product.id)
                                             navController.navigate("product_description_view")
                                         },
-                                        onAddItemClick = { /* Handle add item click */ },
-                                        itemName = title,
-                                        itemPrice = price.toString(),
-                                        image = image
-                                    )
+                                            onAddItemClick = { /* Handle add item click */ },
+                                            itemName = title,
+                                            itemPrice = price.toString(),
+                                            image = image
+                                        )
+                                    }
                                 }
                             }
+
+                        } else {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+
+                            }
+
                         }
 
 

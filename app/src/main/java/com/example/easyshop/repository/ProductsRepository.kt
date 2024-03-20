@@ -36,15 +36,14 @@ object ProductsRepository {
         Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(BASE_URL)
             .build().create(ApiService::class.java)
 
-    fun getAllProductsFromApi() {
+    suspend fun getAllProductsFromApi(isDesc: Boolean) {
+        HomeViewModel.isDataLoaded.value = false
+
 //        println("location while calling func $lat, $lon")
         println("fetching")
-        val retrofitData = retrofitBuilder.getAllProducts()
-        retrofitData.enqueue(object : Callback<List<ProductModel>> {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onResponse(
-                call: Call<List<ProductModel>>, response: Response<List<ProductModel>>
-            ) {
+        try {
+            val response = retrofitBuilder.getAllProducts(if (isDesc) "desc" else null)
+            if (response.isSuccessful) {
                 if (response.isSuccessful) {
                     println("rep is $response")
                     val productsData = response.body()
@@ -53,57 +52,18 @@ object ProductsRepository {
                         allProductsList.clear() // Clear existing data
                         allProductsList.addAll(it) // Add new data
                     }
-//                    allProductsList=productsData
-//                    HomeVie"wModel.updateWeatherDataInHomeViewModel(completeWeatherData!!)
-
-
-//                    isDataLoaded.value = true
-
-                } else {
-                    println("Response not successful: ${response.code()}")
                 }
-
+            } else {
+                println("Response not successful: ${response.code()}")
             }
-
-            override fun onFailure(call: Call<List<ProductModel>>, t: Throwable) {
-                Log.d("TAG", "onFailure: " + t.message)
-            }
-        })
+        } catch (e: Exception) {
+            println("Exception: ${e.message}")
+        }
+        HomeViewModel.isDataLoaded.value = true
 
 
     }
 
-    //   suspend fun getProductsByCategoryFromApi(categoryName:String) {
-////        println("location while calling func $lat, $lon")
-//        println("fetching")
-//        val retrofitData = retrofitBuilder.getProductsByCategory(categoryName)
-//        retrofitData.enqueue(object : Callback<List<ProductModel>> {
-//            @RequiresApi(Build.VERSION_CODES.O)
-//            override fun onResponse(
-//                call: Call<List<ProductModel>>, response: Response<List<ProductModel>>
-//            ) {
-//                if (response.isSuccessful) {
-//                    println("rep is $response")
-//                    val categoriesData = response.body()
-//                    println("products by category ${categoriesData}")
-//                    categoriesData?.let {
-//                        selectedCategoryProducts.clear() // Clear existing data
-//                        selectedCategoryProducts.addAll(it) // Add new data
-//                    }
-//
-//                } else {
-//                    println("Response not successful: ${response.code()}")
-//                }
-//
-//            }
-//
-//            override fun onFailure(call: Call<List<ProductModel>>, t: Throwable) {
-//                Log.d("TAG", "onFailure: " + t.message)
-//            }
-//        })
-//
-//
-//    }
     suspend fun getProductsByCategoryFromApi(categoryName: String) {
         println("fetching")
 //    val retrofitData = retrofitBuilder.getProductsByCategory(categoryName)
@@ -122,6 +82,7 @@ object ProductsRepository {
         } catch (e: Exception) {
             println("Exception: ${e.message}")
         }
+
     }
 
     suspend fun login(

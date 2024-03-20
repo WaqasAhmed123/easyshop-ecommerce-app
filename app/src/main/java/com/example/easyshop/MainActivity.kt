@@ -9,26 +9,23 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.repository.ProductsRepository
-import com.example.easyshop.view.profile.ProfileView
 import com.example.easyshop.service.FirebaseService
 import com.example.easyshop.ui.theme.AuthTheme
 import com.example.easyshop.view.TabScreen
-import com.example.easyshop.view.selected_category_products.SelectedProductsView
 import com.example.easyshop.view.cart.CartView
 import com.example.easyshop.view.home.HomeView
 import com.example.easyshop.view.login.LoginView
 import com.example.easyshop.view.product_description.ProductDescriptionView
+import com.example.easyshop.view.profile.ProfileView
 import com.example.easyshop.view.search.SearchViewScreen
+import com.example.easyshop.view.selected_category_products.SelectedProductsView
 import com.example.easyshop.view.signup.SignupView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -36,7 +33,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         FirebaseService.auth = Firebase.auth
-        ProductsRepository.getAllProductsFromApi()
+//        LaunchedEffect(key1 = Unit, block = {
+//            ProductsRepository.getAllProductsFromApi()
+//
+//        }
+
+//        )
         ProductsRepository.getAllCategoriesFromApi()
 //        val scope = rememberCoroutineScope()
 //        scope.launch {
