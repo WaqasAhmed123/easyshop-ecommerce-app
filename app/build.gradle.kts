@@ -84,6 +84,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
 //    firebase fcm(push notifications)
     implementation("com.google.firebase:firebase-messaging-ktx")
+//    inapp message
+    implementation("com.google.firebase:firebase-inappmessaging-display")
+    implementation("com.google.firebase:firebase-analytics")
 //    handling runtime permission
     implementation("com.google.accompanist:accompanist-permissions:0.30.1")
 

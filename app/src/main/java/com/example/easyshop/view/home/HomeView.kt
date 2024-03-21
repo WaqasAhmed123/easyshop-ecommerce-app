@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key.Companion.I
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -51,6 +52,7 @@ import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.repository.ProductsRepository
 import com.example.easyshop.repository.ProductsRepository.getProductsByCategoryFromApi
 import com.example.easyshop.repository.UserRepository
+import com.example.easyshop.service.PermissionsService
 import com.example.easyshop.util.CommonFunctions
 import com.example.easyshop.view.product_description.ProductDescriptionViewModel
 import kotlinx.coroutines.delay
@@ -62,7 +64,9 @@ import textStyle
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeView(navController: NavController) {
+    val context=LocalContext.current
     val scope = rememberCoroutineScope()
+
     LaunchedEffect(key1 = Unit, block = {
 
         ProductsRepository.getAllProductsFromApi(isDesc = HomeViewModel.isDescProducts.value)
@@ -116,7 +120,14 @@ fun HomeView(navController: NavController) {
                         Box(
                             modifier = Modifier
                                 .size(48.dp)
-                                .clickable(onClick = {})
+                                .clickable(onClick = {
+//                                    scope.launch {
+//                                        PermissionsService.RequestNotificationPermissionDialog(
+//                                            context = context
+//                                        )
+//                                    }
+
+                                })
                                 .clip(CircleShape)
                                 .background(Color(0xFFF8F7F7)),
                             contentAlignment = Alignment.Center
@@ -135,17 +146,17 @@ fun HomeView(navController: NavController) {
                     val pagerState = rememberPagerState(pageCount = {
                         4
                     })
-                LaunchedEffect(Unit) {
-                    while (true) {
-                        delay(2000)
-                        println("current page ${pagerState.currentPage} page count ${pagerState.pageCount-1}")
-                        if (pagerState.currentPage == pagerState.pageCount-1) {
-                            pagerState.animateScrollToPage(0)
-                        } else {
-                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                        }
-                    }
-                }
+//                    LaunchedEffect(Unit) {
+//                        while (true) {
+//                            delay(2000)
+//                            println("current page ${pagerState.currentPage} page count ${pagerState.pageCount - 1}")
+//                            if (pagerState.currentPage == pagerState.pageCount - 1) {
+//                                pagerState.animateScrollToPage(0)
+//                            } else {
+//                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
+//                            }
+//                        }
+//                    }
                     HorizontalPager(
                         state = pagerState,
 //                    modifier = Modifier.fillMaxSize()

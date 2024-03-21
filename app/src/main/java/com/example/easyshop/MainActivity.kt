@@ -3,10 +3,12 @@ package com.example.easyshop
 import SharedPreferenceService
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
@@ -14,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.easyshop.repository.ProductsRepository
 import com.example.easyshop.service.FirebaseService
+import com.example.easyshop.service.PermissionsService
 import com.example.easyshop.ui.theme.AuthTheme
 import com.example.easyshop.view.TabScreen
 import com.example.easyshop.view.cart.CartView
@@ -24,15 +27,25 @@ import com.example.easyshop.view.profile.ProfileView
 import com.example.easyshop.view.search.SearchViewScreen
 import com.example.easyshop.view.selected_category_products.SelectedProductsView
 import com.example.easyshop.view.signup.SignupView
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.tasks.await
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+//        FirebaseApp.initializeApp(this)
         FirebaseService.auth = Firebase.auth
+        FirebaseInAppMessaging.getInstance().isAutomaticDataCollectionEnabled = true
+        //        LaunchedEffect(key1 = Unit, block = {
+//            PermissionsService.RequestNotificationPermissionDialog()
+//
+//        })
 //        LaunchedEffect(key1 = Unit, block = {
 //            ProductsRepository.getAllProductsFromApi()
 //
@@ -52,6 +65,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AuthTheme {
                 App()
+
             }
         }
     }
@@ -61,6 +75,21 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun App() {
+//    LaunchedEffect(key1 = Unit) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        PermissionsService.RequestNotificationPermissionDialog()
+    }
+    println("-------------------------------------------------------------------")
+    LaunchedEffect(Unit) {
+        try {
+            val token = Firebase.messaging.token.await()
+            Log.d("FCM token:", token)
+        } catch (e: Exception) {
+            Log.e("FCM token fetching error", e.message ?: "Unknown error")
+        }
+    }
+//    }
+
     val navController = rememberNavController()
     val initialScreenRoute = remember { mutableStateOf("login_view") }
 //        initialScreenRoute.value = "tab_view"

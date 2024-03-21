@@ -19,7 +19,9 @@ class FirebaseNotificationsService : FirebaseMessagingService (){
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         remoteMessage.notification?.let { message ->
+            println()
             sendNotification(message)
+//            showInAppMessage(message)
         }
     }
 
@@ -52,4 +54,23 @@ class FirebaseNotificationsService : FirebaseMessagingService (){
         manager.notify(notificationId,notificationBuilder.build())
 //        manager.notify(random.nextInt(), notificationBuilder.build())
     }
+    private fun showInAppMessage(message: RemoteMessage.Notification) {
+        // Broadcast the received message to be handled by UI components
+        val intent = Intent("com.example.easyshop.MESSAGE_RECEIVED")
+        intent.putExtra("title", message.title)
+        intent.putExtra("body", message.body)
+        sendBroadcast(intent)
+    }
+
+//    @OptIn(DelicateCoroutinesApi::class)
+//    override fun onNewToken(token: String) {
+//        Log.d("Push notification", "Token Refreshed ${token}")
+//
+//        GlobalScope.launch {
+//            NotificationManager.registerTokenOnServer(token)
+//        }
+//
+//    }
+
+
 }
