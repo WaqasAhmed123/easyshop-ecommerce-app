@@ -82,6 +82,10 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     // Declare the dependency for the Firebase Authentication library
     implementation("com.google.firebase:firebase-auth-ktx")
+//    firebase fcm(push notifications)
+    implementation("com.google.firebase:firebase-messaging-ktx")
+//    handling runtime permission
+    implementation("com.google.accompanist:accompanist-permissions:0.30.1")
 
     implementation("androidx.compose.material:material:1.6.3")
 //    shared preference

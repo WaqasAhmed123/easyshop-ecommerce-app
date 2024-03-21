@@ -124,8 +124,8 @@ fun LoginView(navController: NavController) {
 //                                    context = mContext,
 //                                    navController = navController
 //                                )
-                                LoginViewModel.userName.value = ""
-                                LoginViewModel.password.value = ""
+//                                LoginViewModel.userName.value = ""
+//                                LoginViewModel.password.value = ""
 //                                Toast.makeText(
 //                                    mContext, "User Successfully registered", Toast.LENGTH_SHORT
 //                                ).show()

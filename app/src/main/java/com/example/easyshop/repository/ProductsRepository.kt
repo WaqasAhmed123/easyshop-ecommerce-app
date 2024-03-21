@@ -121,6 +121,8 @@ object ProductsRepository {
                         inclusive = true
                     }
                 }
+                LoginViewModel.userName.value = ""
+                LoginViewModel.password.value = ""
 //            categoriesData?.let {
 //                selectedCategoryProducts.clear() // Clear existing data
 //                selectedCategoryProducts.addAll(it) // Add new data

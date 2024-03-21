@@ -213,6 +213,7 @@ fun InputField(
         value = inputText.value,
         onValueChange = { inputText.value = it },
         modifier = Modifier
+
             .border(
                 1.dp, Color.Black, shape = RoundedCornerShape(8.dp)
             )
@@ -229,4 +230,6 @@ fun InputField(
             },
         colors = textFieldColors
     )
+
+
 }
