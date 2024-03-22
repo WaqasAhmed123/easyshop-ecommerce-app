@@ -71,7 +71,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation("androidx.compose.material:material-icons-extended:1.6.3")
+    implementation("androidx.compose.material:material-icons-extended:1.6.4")
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
@@ -87,10 +87,12 @@ dependencies {
 //    inapp message
     implementation("com.google.firebase:firebase-inappmessaging-display")
     implementation("com.google.firebase:firebase-analytics")
+    // Android Maps Compose composables for the Maps SDK for Android
+    implementation ("com.google.maps.android:maps-compose:4.3.3")
 //    handling runtime permission
     implementation("com.google.accompanist:accompanist-permissions:0.30.1")
 
-    implementation("androidx.compose.material:material:1.6.3")
+    implementation("androidx.compose.material:material:1.6.4")
 //    shared preference
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
