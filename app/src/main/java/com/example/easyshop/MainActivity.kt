@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
         FirebaseService.auth = Firebase.auth
         FirebaseInAppMessaging.getInstance().isAutomaticDataCollectionEnabled = true
 //        CoroutineScope().launch {
-        PermissionsService.fetchCurrentLocation(context = this)
+//        PermissionsService.fetchCurrentLocation(context = this)
 
 //        }
         //        LaunchedEffect(key1 = Unit, block = {

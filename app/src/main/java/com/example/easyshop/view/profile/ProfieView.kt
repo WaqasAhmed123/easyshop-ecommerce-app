@@ -1,6 +1,7 @@
 package com.example.easyshop.view.profile
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,6 +36,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import textStyle
 
@@ -84,20 +86,37 @@ fun ProfileView(navController: NavController) {
             SubmitButton(
                 onClick = {
                     scope.launch(Dispatchers.Main) {
-                        if (!locationPermissionState.status.isGranted) {
+                        val permissionResult = async {
                             locationPermissionState.launchPermissionRequest()
-                        }
-//                        async { PermissionsService.fetchCurrentLocation(context = context) }.await()
-//                        ProfileViewModel.signOut(navController)
-                        println("checking latlng before navigation ${UserRepository.lat} ${UserRepository.lon}")
-                        navController.navigate("map_view")
-//                        FirebaseService.signOut(navController = navController)
+                        }.await()
 
+                        if (!locationPermissionState.status.isGranted) {
+                            // Permission denied
+                            Toast.makeText(
+                                context, "Location permission denied", Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            // Permission granted, navigate to map view
+                            navController.navigate("map_view")
+                        }
+
+//                        async { PermissionsService.fetchCurrentLocation(context = context) }.await()
+//                         PermissionsService.fetchCurrentLocation(context = context)
 
                     }
+//                    scope.launch(Dispatchers.Main) {
+//                        job.join()
+//                        println("checking latlng before navigation ${UserRepository.lat} ${UserRepository.lon}")
+//
+////                        ProfileViewModel.signOut(navController)
+////                        FirebaseService.signOut(navController = navController)
+//
+//
+//                    }
 
-                }, buttonTitle = "Track Your Orders", isLoading = ProfileViewModel.isSigningOut
+                }, buttonTitle = "Track Your Orders"
             )
+            Spacer(modifier = Modifier.height(10.dp))
             SubmitButton(
                 onClick = {
                     scope.launch {

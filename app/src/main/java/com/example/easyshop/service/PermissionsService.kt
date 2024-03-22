@@ -15,6 +15,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 
 object PermissionsService {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -115,7 +116,7 @@ object PermissionsService {
 //        }
 //    }
 //@Composable
- fun fetchCurrentLocation(context: Context) {
+ suspend fun fetchCurrentLocation(context: Context) {
 //    val isPermissionGranted = requestLocationPermissionDialog()
 
     // Observe changes to the permission state
@@ -127,8 +128,8 @@ object PermissionsService {
 
                 fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                     // Fetch and process location data
-                    UserRepository.lat = location.latitude
-                    UserRepository.lon = location.longitude
+                    UserRepository.lat.value = location.latitude
+                    UserRepository.lon.value = location.longitude
                     println("Current location: ${UserRepository.lat}, ${UserRepository.lon}")
                 }.addOnFailureListener { e ->
                     // Handle failure

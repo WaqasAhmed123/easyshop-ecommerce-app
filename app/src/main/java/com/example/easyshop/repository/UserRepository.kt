@@ -18,7 +18,10 @@ object UserRepository {
 
     //    var lat by mutableDoubleStateOf<Double>(0.0)
 //    var lon by mutableStateOf<Double>(0.0)
-    var lat by mutableDoubleStateOf(0.0)
-    var lon by mutableDoubleStateOf(0.0)
+//    var lat by mutableDoubleStateOf(0.0)
+//    var lon by mutableDoubleStateOf(0.0)
+    var lat = mutableStateOf(0.0)
+    var lon = mutableStateOf(0.0)
+
 
 }
