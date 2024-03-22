@@ -109,7 +109,7 @@ fun HomeView(navController: NavController) {
                             )
                             Text(
 //                            text = "${HomeViewModel.userName.value}",
-                                text = "${UserRepository().userName}",
+                                text = "${UserRepository.userName}",
                                 style = textStyle()["titleMedium"]!!
                             )
 

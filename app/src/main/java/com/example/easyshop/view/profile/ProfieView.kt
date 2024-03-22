@@ -12,11 +12,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -26,16 +29,30 @@ import androidx.navigation.NavController
 import com.example.easyshop.R
 import com.example.easyshop.composables.SubmitButton
 import com.example.easyshop.repository.UserRepository
+import com.example.easyshop.service.PermissionsService
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import textStyle
 
+@OptIn(ExperimentalPermissionsApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProfileView(navController: NavController) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val locationPermissionState = rememberPermissionState(
+        permission = android.Manifest.permission.ACCESS_FINE_LOCATION
+    )
     Scaffold() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(16.dp).fillMaxSize(),
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
         ) {
             Image(
@@ -50,13 +67,37 @@ fun ProfileView(navController: NavController) {
             )
 
             Text(
-                text = "Welcome ${UserRepository().userName}",
+                text = "Welcome ${UserRepository.userName}",
 //                text = "Welcome ${UserModel().email}",
 //                style = textStyle()["titleLarge"]!!,
                 style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.W500),
 //                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.run { height(20.dp) })
+
+//            TextButton(onClick = { navController.navigate("map_view") }) {
+//                Text(
+//                    text = "Track Your Orders",
+//                    style = textStyle()["titleLarge"]!!
+//                )
+//            }
+            SubmitButton(
+                onClick = {
+                    scope.launch(Dispatchers.Main) {
+                        if (!locationPermissionState.status.isGranted) {
+                            locationPermissionState.launchPermissionRequest()
+                        }
+//                        async { PermissionsService.fetchCurrentLocation(context = context) }.await()
+//                        ProfileViewModel.signOut(navController)
+                        println("checking latlng before navigation ${UserRepository.lat} ${UserRepository.lon}")
+                        navController.navigate("map_view")
+//                        FirebaseService.signOut(navController = navController)
+
+
+                    }
+
+                }, buttonTitle = "Track Your Orders", isLoading = ProfileViewModel.isSigningOut
+            )
             SubmitButton(
                 onClick = {
                     scope.launch {
@@ -66,9 +107,7 @@ fun ProfileView(navController: NavController) {
 
                     }
 
-                },
-                buttonTitle = "Logout",
-                isLoading = ProfileViewModel.isSigningOut
+                }, buttonTitle = "Logout", isLoading = ProfileViewModel.isSigningOut
             )
         }
 

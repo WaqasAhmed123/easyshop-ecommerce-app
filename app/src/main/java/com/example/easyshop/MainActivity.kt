@@ -22,6 +22,7 @@ import com.example.easyshop.view.TabScreen
 import com.example.easyshop.view.cart.CartView
 import com.example.easyshop.view.home.HomeView
 import com.example.easyshop.view.login.LoginView
+import com.example.easyshop.view.map.MapView
 import com.example.easyshop.view.product_description.ProductDescriptionView
 import com.example.easyshop.view.profile.ProfileView
 import com.example.easyshop.view.search.SearchViewScreen
@@ -33,6 +34,7 @@ import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class MainActivity : ComponentActivity() {
@@ -42,6 +44,10 @@ class MainActivity : ComponentActivity() {
 //        FirebaseApp.initializeApp(this)
         FirebaseService.auth = Firebase.auth
         FirebaseInAppMessaging.getInstance().isAutomaticDataCollectionEnabled = true
+//        CoroutineScope().launch {
+        PermissionsService.fetchCurrentLocation(context = this)
+
+//        }
         //        LaunchedEffect(key1 = Unit, block = {
 //            PermissionsService.RequestNotificationPermissionDialog()
 //
@@ -92,8 +98,8 @@ fun App() {
 
     val navController = rememberNavController()
     val initialScreenRoute = remember { mutableStateOf("login_view") }
-//        initialScreenRoute.value = "tab_view"
-//    initialScreenRoute.value = "product_description_view"
+//        initialScreenRoute.value = "map_view"
+    initialScreenRoute.value = "product_description_view"
     if (SharedPreferenceService.hasToken()) {
         initialScreenRoute.value = "tab_view"
 
@@ -138,6 +144,10 @@ fun App() {
         composable(route = "product_description_view") {
 
             ProductDescriptionView(navController)
+        }
+        composable(route = "map_view") {
+
+            MapView(navController)
         }
 //        composable(route = "product_description_view/{productId}",
 //            arguments = listOf(navArgument(name = "productId") {
