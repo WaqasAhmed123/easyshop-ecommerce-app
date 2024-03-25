@@ -7,10 +7,19 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -82,18 +91,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
 //    LaunchedEffect(key1 = Unit) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        PermissionsService.RequestNotificationPermissionDialog()
-    }
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//        PermissionsService.RequestNotificationPermissionDialog()
+//    }
     println("-------------------------------------------------------------------")
-    LaunchedEffect(Unit) {
-        try {
-            val token = Firebase.messaging.token.await()
-            Log.d("FCM token:", token)
-        } catch (e: Exception) {
-            Log.e("FCM token fetching error", e.message ?: "Unknown error")
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        try {
+//            val token = Firebase.messaging.token.await()
+//            Log.d("FCM token:", token)
+//        } catch (e: Exception) {
+//            Log.e("FCM token fetching error", e.message ?: "Unknown error")
+//        }
+//    }
 //    }
 
     val navController = rememberNavController()
@@ -107,7 +116,27 @@ fun App() {
         initialScreenRoute.value = "login_view"
     }
 
-    NavHost(
+    NavHost(enterTransition = {
+        slideIntoContainer(
+            AnimatedContentTransitionScope.SlideDirection.Left, tween(1000)
+        )
+    }, exitTransition = {
+        slideOutOfContainer(
+            AnimatedContentTransitionScope.SlideDirection.Right, tween(1000)
+        )
+    }, popEnterTransition = {
+        slideIntoContainer(
+            AnimatedContentTransitionScope.SlideDirection.Left, tween(1000)
+        )
+    }, popExitTransition = {
+        slideOutOfContainer(
+            AnimatedContentTransitionScope.SlideDirection.Right, tween(1000)
+        )
+    },
+//        enterTransition = { slideInHorizontally {  } (animationSpec = tween(700)) },
+//        exitTransition = { fadeOut(animationSpec = tween(700)) },
+//        popEnterTransition = enterTransition,
+//        popExitTransition = exitTransition,
 //        navController = navController, startDestination = "login_view"
         navController = navController, startDestination = initialScreenRoute.value
     ) {

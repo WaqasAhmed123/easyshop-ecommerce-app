@@ -1,6 +1,7 @@
 package com.example.easyshop.view.home
 
 import android.annotation.SuppressLint
+import android.os.Build
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -64,8 +65,11 @@ import textStyle
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeView(navController: NavController) {
-    val context=LocalContext.current
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        PermissionsService.RequestNotificationPermissionDialog()
+    }
 
     LaunchedEffect(key1 = Unit, block = {
 
@@ -245,14 +249,15 @@ fun HomeView(navController: NavController) {
                                         val price = "$${product.price}" ?: "" // Ensure null safety
                                         val title = product.title ?: "" // Ensure null safety
                                         val image = product.image ?: "" // Ensure null safety
-                                        ItemTitleWithImage(onItemClick = {
-                                            println("passed index $index")
+                                        ItemTitleWithImage(
+                                            onItemClick = {
+                                                println("passed index $index")
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
 //                                        navController.navigate("product_description_view/$index")
-                                            ProductDescriptionViewModel.product =
-                                                CommonFunctions.findProductById(product.id)
-                                            navController.navigate("product_description_view")
-                                        },
+                                                ProductDescriptionViewModel.product =
+                                                    CommonFunctions.findProductById(product.id)
+                                                navController.navigate("product_description_view")
+                                            },
                                             onAddItemClick = { /* Handle add item click */ },
                                             itemName = title,
                                             itemPrice = price.toString(),

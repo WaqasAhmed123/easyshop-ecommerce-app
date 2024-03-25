@@ -86,19 +86,23 @@ fun ProfileView(navController: NavController) {
             SubmitButton(
                 onClick = {
                     scope.launch(Dispatchers.Main) {
-                        val permissionResult = async {
-                            locationPermissionState.launchPermissionRequest()
-                        }.await()
-
-                        if (!locationPermissionState.status.isGranted) {
-                            // Permission denied
-                            Toast.makeText(
-                                context, "Location permission denied", Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            // Permission granted, navigate to map view
+//                        val permissionResult = async {
+                        locationPermissionState.launchPermissionRequest()
+//                        }.await()
+                        if (locationPermissionState.status.isGranted) {
                             navController.navigate("map_view")
+
                         }
+
+//                        if (!locationPermissionState.status.isGranted) {
+//                            // Permission denied
+//                            Toast.makeText(
+//                                context, "Location permission denied", Toast.LENGTH_SHORT
+//                            ).show()
+//                        } else {
+                        // Permission granted, navigate to map view
+//                            navController.navigate("map_view")
+//                        }
 
 //                        async { PermissionsService.fetchCurrentLocation(context = context) }.await()
 //                         PermissionsService.fetchCurrentLocation(context = context)
