@@ -50,32 +50,9 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        FirebaseApp.initializeApp(this)
         FirebaseService.auth = Firebase.auth
         FirebaseInAppMessaging.getInstance().isAutomaticDataCollectionEnabled = true
-//        CoroutineScope().launch {
-//        PermissionsService.fetchCurrentLocation(context = this)
-
-//        }
-        //        LaunchedEffect(key1 = Unit, block = {
-//            PermissionsService.RequestNotificationPermissionDialog()
-//
-//        })
-//        LaunchedEffect(key1 = Unit, block = {
-//            ProductsRepository.getAllProductsFromApi()
-//
-//        }
-
-//        )
         ProductsRepository.getAllCategoriesFromApi()
-//        val scope = rememberCoroutineScope()
-//        scope.launch {
-//        ProductsRepository.login(loginCredentials = LoginRequest(username = "mor_2314", password = "83r5^_"))
-//
-//        }
-
-//        ProductsRepository.getProductsByCategoryFromApi("jewelery")
-//        val FirebaseService.currentUser = FirebaseService.auth.currentUser
 
         setContent {
             AuthTheme {
