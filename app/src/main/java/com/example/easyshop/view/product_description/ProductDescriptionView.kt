@@ -1,4 +1,4 @@
-    package com.example.easyshop.view.product_description
+package com.example.easyshop.view.product_description
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +26,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -42,6 +46,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.easyshop.composables.ProductSizeBox
 import com.example.easyshop.composables.SubmitButton
+import com.example.easyshop.view.cart.CartItem
 import com.example.easyshop.view.cart.CartViewModel
 import kotlinx.coroutines.launch
 import textStyle
@@ -50,13 +55,14 @@ import textStyle
 @SuppressLint("UnrememberedMutableState", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProductDescriptionView(
-    productDescriptionViewModel: ProductDescriptionViewModel,
-    cartViewModel: CartViewModel,
+    productDescriptionViewModel: ProductDescriptionViewModel, cartViewModel: CartViewModel,
 //    navController: NavController, productIndex: Int
 //    navController: NavController, productId: Int
 
     navController: NavController
 ) {
+//    val isAlreadyInCart by productDescriptionViewModel.isAlreadyInCart.collectAsState()
+
     var isFavourite = mutableStateOf(false)
     val snackbarHostState = remember { SnackbarHostState() }
 //    var product = ProductsRepository.allProductsList[productIndex]
@@ -66,6 +72,11 @@ fun ProductDescriptionView(
         },
     ) {
         val scope = rememberCoroutineScope()
+        LaunchedEffect(key1 = Unit) {
+            productDescriptionViewModel.updateIsAlreadyInCart()
+            println("checking through launcheffect")
+
+        }
         Column {
             Box() {
 
@@ -152,23 +163,34 @@ fun ProductDescriptionView(
                     ) {
                         SubmitButton(
                             onClick = {
-//                                CartViewModel.cartProducts.add(mutableListOf(productDescriptionViewModel?.product, 0))
-                                productDescriptionViewModel.product?.let { product ->
-                                    cartViewModel.cartProducts.add(mutableListOf(product, 1))
+                                if (productDescriptionViewModel.isAlreadyInCart.value) {
+                                    productDescriptionViewModel.removeProductFromCart()
+                                    productDescriptionViewModel.updateIsAlreadyInCart()
+
+                                } else {
+                                    productDescriptionViewModel.addProductToCart()
+                                    productDescriptionViewModel.updateIsAlreadyInCart()
+
                                 }
-//
-//                                    .add(
-//                                    listOf(
-//                                        Pair("productName", productName),
-//                                        Pair("brand", "rolex"),
-//                                        Pair("quantity", 2),
-//                                        Pair("price", productPrice)
+
+//                                scope.launch {
+//                                }
+//                                CartViewModel.cartProducts.add(mutableListOf(productDescriptionViewModel?.product, 0))
+
+//                                productDescriptionViewModel.product?.let { product ->
+////                                    cartViewModel.cartProducts.add(mutableListOf(product, 1))
+//                                    cartViewModel.cartProducts.add(
+//                                        CartItem(
+//                                            product = product,
+//                                            quantity = 1
+//                                        )
 //                                    )
-//                                )
+//                                }
 
                                 scope.launch {
                                     val result = snackbarHostState.showSnackbar(
-                                        message = "Product Added to Cart",
+//                                        message = "Product Added to Cart",
+                                        message = productDescriptionViewModel.snackbarMessage,
                                         actionLabel = "View",
                                         duration = SnackbarDuration.Short
                                     )
@@ -181,11 +203,21 @@ fun ProductDescriptionView(
                                         }
                                     }
                                 }
-                            }, buttonTitle = "Add to Cart", buttonWidth = 0.35f
+//                            }, buttonTitle = "Add to Cart",
+                            },
+                            buttonWidth = 7f,
+                            buttonTitle = if (productDescriptionViewModel.isAlreadyInCart.value) {
+                                "Remove From Cart"
+
+                            } else {
+
+                                "Add to Cart"
+                            }
                         )
-                        SubmitButton(
-                            onClick = { /*TODO*/ }, buttonTitle = "Remove From Cart", buttonWidth = 0.5f
-                        )
+//                        SubmitButton(
+//                            onClick = { /*TODO*/ }, buttonTitle = "Remove From Cart", buttonWidth = 0.65f
+////                            onClick = { /*TODO*/ }, buttonTitle = "Remove From Cart"
+//                        )
                     }
                 }
 

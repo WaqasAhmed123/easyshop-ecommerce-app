@@ -166,8 +166,6 @@ fun HomeView(
                         state = pagerState,
 //                    modifier = Modifier.fillMaxSize()
                     ) { page ->
-                        println("categories data ${homeViewModel.allCategoriesList.size}")
-                        println("page index $page")
                         val category = homeViewModel.allCategoriesList[page]
                         CategoriesBox(category = category, index = page, onCategoriesClick = {
                             scope.launch {

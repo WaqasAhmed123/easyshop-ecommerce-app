@@ -26,7 +26,7 @@ import textStyle
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CartView(navController: NavController,cartViewModel: CartViewModel) {
+fun CartView(navController: NavController, cartViewModel: CartViewModel) {
 
     Scaffold(modifier = Modifier.padding(horizontal = 16.dp), topBar = {
 
@@ -42,8 +42,10 @@ fun CartView(navController: NavController,cartViewModel: CartViewModel) {
         LazyColumn(modifier = Modifier.padding(top = it.calculateTopPadding())) {
             items(cartViewModel.cartProducts.size) { index ->
                 val item = cartViewModel.cartProducts[index]
-                val product = item[0] as ProductModel
-                val quantity = item[1] as Int
+//                val product = item[0] as ProductModel
+//                val quantity = item[1] as Int
+                val product = item.product
+                val quantity = item.quantity
 
                 // Access product attributes
                 val productName = product.title

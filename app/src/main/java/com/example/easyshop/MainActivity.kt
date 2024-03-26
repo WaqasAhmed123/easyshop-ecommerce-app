@@ -77,7 +77,7 @@ fun App() {
 //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 //        PermissionsService.RequestNotificationPermissionDialog()
 //    }
-    println("-------------------------------------------------------------------")
+//    println("-------------------------------------------------------------------")
 //    LaunchedEffect(Unit) {
 //        try {
 //            val token = Firebase.messaging.token.await()
