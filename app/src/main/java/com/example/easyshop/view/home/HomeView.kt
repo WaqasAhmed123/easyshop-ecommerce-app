@@ -26,7 +26,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Sort
-import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,13 +34,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.I
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -49,14 +46,13 @@ import androidx.navigation.NavController
 import com.example.easyshop.R
 import com.example.easyshop.composables.CategoriesBox
 import com.example.easyshop.composables.ItemTitleWithImage
-import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.repository.ProductsRepository
 import com.example.easyshop.repository.ProductsRepository.getProductsByCategoryFromApi
 import com.example.easyshop.repository.UserRepository
 import com.example.easyshop.service.PermissionsService
 import com.example.easyshop.util.CommonFunctions
 import com.example.easyshop.view.product_description.ProductDescriptionViewModel
-import kotlinx.coroutines.delay
+//import com.example.easyshop.view.product_description.ProductDescriptionViewModel.product
 import kotlinx.coroutines.launch
 import textStyle
 
@@ -64,20 +60,20 @@ import textStyle
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeView(navController: NavController) {
+fun HomeView(navController: NavController, homeViewModel: HomeViewModel,productDescriptionViewModel: ProductDescriptionViewModel) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         PermissionsService.RequestNotificationPermissionDialog()
     }
 
-    LaunchedEffect(key1 = Unit, block = {
-
-        ProductsRepository.getAllProductsFromApi(isDesc = HomeViewModel.isDescProducts.value)
-    })
+//    LaunchedEffect(key1 = Unit, block = {
+//
+//        ProductsRepository.getAllProductsFromApi(isDesc = homeViewModel.isDescProducts.value)
+//    })
 
     Scaffold {
-        if (!ProductsRepository.isDataLoaded.value) {
+        if (!homeViewModel.isDataLoaded.value) {
             Box(
                 modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
             ) {
@@ -91,6 +87,7 @@ fun HomeView(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 16.dp, end = 16.dp, start = 16.dp)
+
 
             ) {
                 Column {
@@ -112,7 +109,7 @@ fun HomeView(navController: NavController) {
                                 style = textStyle(textColor = Color.Gray)["bodySmall"]!!
                             )
                             Text(
-//                            text = "${HomeViewModel.userName.value}",
+//                            text = "${homeViewModel.userName.value}",
                                 text = "${UserRepository.userName}",
                                 style = textStyle()["titleMedium"]!!
                             )
@@ -165,9 +162,9 @@ fun HomeView(navController: NavController) {
                         state = pagerState,
 //                    modifier = Modifier.fillMaxSize()
                     ) { page ->
-                        println("categories data ${ProductsRepository.allCategories.size}")
+                        println("categories data ${homeViewModel.allCategoriesList.size}")
                         println("page index $page")
-                        val category = ProductsRepository.allCategories[page]
+                        val category = homeViewModel.allCategoriesList[page]
                         CategoriesBox(category = category, index = page, onCategoriesClick = {
                             scope.launch {
                                 // Call the function and wait for its completion
@@ -202,7 +199,7 @@ fun HomeView(navController: NavController) {
                         }
                     }
                     Box() {
-                        if (HomeViewModel.isDataLoaded.value) {
+                        if (homeViewModel.isDataLoaded.value) {
                             Column {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(
@@ -213,11 +210,11 @@ fun HomeView(navController: NavController) {
 
                                     IconButton(
                                         onClick = {
-                                            HomeViewModel.isDescProducts.value =
-                                                !HomeViewModel.isDescProducts.value
+                                            homeViewModel.isDescProducts.value =
+                                                !homeViewModel.isDescProducts.value
                                             scope.launch {
 
-                                                ProductsRepository.getAllProductsFromApi(isDesc = HomeViewModel.isDescProducts.value)
+                                                ProductsRepository.getAllProductsFromApi(isDesc = homeViewModel.isDescProducts.value)
                                             }
 //                                        LaunchedEffect(key1 = Unit, block = {
 //
@@ -244,8 +241,10 @@ fun HomeView(navController: NavController) {
                                     horizontalArrangement = Arrangement.spacedBy(20.dp),
                                     verticalArrangement = Arrangement.spacedBy(16.dp)
                                 ) {
-                                    items(HomeViewModel.allProducts.size) { index ->
-                                        val product = HomeViewModel.allProducts[index]
+                                    items(homeViewModel.allProducts.size) { index ->
+                                        val product = homeViewModel.allProducts[index]
+//                                        items(ProductsRepository.allProductsList.size) { index ->
+//                                        val product = ProductsRepository.allProductsList[index]
                                         val price = "$${product.price}" ?: "" // Ensure null safety
                                         val title = product.title ?: "" // Ensure null safety
                                         val image = product.image ?: "" // Ensure null safety
@@ -254,7 +253,7 @@ fun HomeView(navController: NavController) {
                                                 println("passed index $index")
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
 //                                        navController.navigate("product_description_view/$index")
-                                                ProductDescriptionViewModel.product =
+                                                productDescriptionViewModel.product =
                                                     CommonFunctions.findProductById(product.id)
                                                 navController.navigate("product_description_view")
                                             },
@@ -285,9 +284,9 @@ fun HomeView(navController: NavController) {
                 }
             }
 
+//        }
+
         }
-
-
     }
 }
 //}

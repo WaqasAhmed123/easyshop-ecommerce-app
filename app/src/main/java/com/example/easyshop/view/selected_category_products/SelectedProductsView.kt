@@ -27,13 +27,12 @@ import androidx.navigation.NavController
 import com.example.easyshop.composables.ItemTitleWithImage
 import com.example.easyshop.util.CommonFunctions
 import com.example.easyshop.view.product_description.ProductDescriptionViewModel
-import com.example.easyshop.view.selected_category_products.SelectedProductsViewModel.categoryWiseProducts
 import textStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SelectedProductsView(navController: NavController) {
+fun SelectedProductsView(navController: NavController,selectedProductsViewModel: SelectedProductsViewModel) {
     Scaffold(modifier = Modifier.padding(horizontal = 16.dp), topBar = {
         CenterAlignedTopAppBar(
             title = {
@@ -67,15 +66,15 @@ fun SelectedProductsView(navController: NavController) {
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(categoryWiseProducts.size) { index ->
-                val product = categoryWiseProducts[index]
+            items(selectedProductsViewModel.categoryWiseProducts.size) { index ->
+                val product = selectedProductsViewModel.categoryWiseProducts[index]
                 val price = "$${product.price}" ?: "" // Ensure null safety
                 val title = product.title ?: "" // Ensure null safety
                 val image = product.image ?: "" // Ensure null safety
                 ItemTitleWithImage(onItemClick = {
                     println("passed index $index")
-                    ProductDescriptionViewModel.product =
-                        CommonFunctions.findProductById(product.id)
+//                    ProductDescriptionViewModel.product =
+//                        CommonFunctions.findProductById(product.id)
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
                     navController.navigate("product_description_view")
                 },

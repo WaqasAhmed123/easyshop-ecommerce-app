@@ -48,7 +48,7 @@ import textStyle
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchViewScreen(navController: NavController) {
+fun SearchViewScreen(navController: NavController,productDescriptionViewModel: ProductDescriptionViewModel) {
     Scaffold(modifier = Modifier.padding(16.dp), topBar = {
         Row {
 //            IconButton(onClick = { /* do something */ }) {
@@ -169,7 +169,7 @@ fun SearchViewScreen(navController: NavController) {
                     ItemTitleWithImage(
                         onItemClick = {
                             println("passed index $index")
-                            ProductDescriptionViewModel.product =
+                            productDescriptionViewModel.product =
                                 CommonFunctions.findProductById(product.id)
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
                             navController.navigate("product_description_view")

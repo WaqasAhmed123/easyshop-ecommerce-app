@@ -3,56 +3,51 @@ package com.example.easyshop
 import SharedPreferenceService
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.navigation.NavBackStackEntry
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.ViewModelInitializer
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.easyshop.repository.ProductsRepository
 import com.example.easyshop.service.FirebaseService
-import com.example.easyshop.service.PermissionsService
 import com.example.easyshop.ui.theme.AuthTheme
-import com.example.easyshop.view.TabScreen
 import com.example.easyshop.view.cart.CartView
+import com.example.easyshop.view.cart.CartViewModel
 import com.example.easyshop.view.home.HomeView
+import com.example.easyshop.view.home.HomeViewModel
 import com.example.easyshop.view.login.LoginView
 import com.example.easyshop.view.map.MapView
 import com.example.easyshop.view.product_description.ProductDescriptionView
+import com.example.easyshop.view.product_description.ProductDescriptionViewModel
 import com.example.easyshop.view.profile.ProfileView
 import com.example.easyshop.view.search.SearchViewScreen
 import com.example.easyshop.view.selected_category_products.SelectedProductsView
+import com.example.easyshop.view.selected_category_products.SelectedProductsViewModel
 import com.example.easyshop.view.signup.SignupView
-import com.google.firebase.FirebaseApp
+import com.example.easyshop.view.tab_view.TabScreen
+import com.example.easyshop.view.tab_view.TabScreenViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
+
+//val LocalProductDescriptionViewModel= compositionLocalOf<viewModel<SelectedProductsViewModel>()> { error("failed to create local viewmodel") }
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseService.auth = Firebase.auth
         FirebaseInAppMessaging.getInstance().isAutomaticDataCollectionEnabled = true
-        ProductsRepository.getAllCategoriesFromApi()
+//        ProductsRepository.getAllCategoriesFromApi()
 
         setContent {
             AuthTheme {
@@ -67,6 +62,9 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun App() {
+    val tabScreenViewModel = viewModel<TabScreenViewModel>()
+    val selectedProductsViewModel = viewModel<SelectedProductsViewModel>()
+//    val cartViewModel = viewModel<CartViewModel>()
 //    LaunchedEffect(key1 = Unit) {
 //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 //        PermissionsService.RequestNotificationPermissionDialog()
@@ -121,19 +119,37 @@ fun App() {
             LoginView(navController)
         }
         composable(route = "tab_view") {
-            TabScreen(navController)
+            val homeViewModel = viewModel<HomeViewModel>()
+            TabScreen(
+                navController,
+                homeViewModel = homeViewModel,
+                tabScreenViewModel = tabScreenViewModel
+            )
         }
         composable(route = "signup_view") {
 
             SignupView(navController)
         }
         composable(route = "home_view") {
+            val homeViewModel = viewModel<HomeViewModel>()
+            val productDescriptionViewModel = viewModel<ProductDescriptionViewModel>()
 
-            HomeView(navController)
+
+
+            HomeView(
+                navController,
+                homeViewModel = homeViewModel,
+                productDescriptionViewModel = productDescriptionViewModel
+            )
         }
         composable(route = "search_view") {
+            val productDescriptionViewModel = viewModel<ProductDescriptionViewModel>()
 
-            SearchViewScreen(navController)
+
+            SearchViewScreen(
+                navController,
+                productDescriptionViewModel = productDescriptionViewModel
+            )
         }
         composable(route = "profile_view") {
 
@@ -141,15 +157,27 @@ fun App() {
         }
         composable(route = "selected_products_view") {
 
-            SelectedProductsView(navController)
+            SelectedProductsView(
+                navController, selectedProductsViewModel = selectedProductsViewModel
+            )
         }
         composable(route = "cart_view") {
+            val cartViewModel = viewModel<CartViewModel>()
 
-            CartView(navController)
+            CartView(navController, cartViewModel = cartViewModel)
         }
         composable(route = "product_description_view") {
+            val cartViewModel = viewModel<CartViewModel>()
+            val productDescriptionViewModel = viewModel<ProductDescriptionViewModel>()
 
-            ProductDescriptionView(navController)
+
+
+
+            ProductDescriptionView(
+                productDescriptionViewModel = productDescriptionViewModel,
+                cartViewModel = cartViewModel,
+                navController
+            )
         }
         composable(route = "map_view") {
 

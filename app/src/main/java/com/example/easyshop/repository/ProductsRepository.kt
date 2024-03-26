@@ -42,7 +42,7 @@ object ProductsRepository {
             .build().create(ApiService::class.java)
 
     suspend fun getAllProductsFromApi(isDesc: Boolean) {
-        HomeViewModel.isDataLoaded.value = false
+//        HomeViewModel.isDataLoaded.value = false
 
 //        println("location while calling func $lat, $lon")
         println("fetching")
@@ -64,7 +64,7 @@ object ProductsRepository {
         } catch (e: Exception) {
             println("Exception: ${e.message}")
         }
-        HomeViewModel.isDataLoaded.value = true
+//        HomeViewModel.isDataLoaded.value = true
 
 
     }
@@ -160,7 +160,7 @@ object ProductsRepository {
                         allCategories.clear() // Clear existing data
                         allCategories.addAll(it) // Add new data
                     }
-                    isDataLoaded.value = true
+//                    isDataLoaded.value = true
 
 //                    productsData?.let {
 //                        allProductsList.clear() // Clear existing data

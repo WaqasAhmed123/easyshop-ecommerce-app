@@ -1,4 +1,4 @@
-package com.example.easyshop.view
+package com.example.easyshop.view.tab_view
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
@@ -25,7 +25,7 @@ import com.example.easyshop.view.search.SearchViewScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TabScreen(navController: NavController) {
+fun TabScreen(navController: NavController,homeViewModel: HomeViewModel,tabScreenViewModel: TabScreenViewModel) {
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
@@ -43,13 +43,13 @@ fun TabScreen(navController: NavController) {
                 backgroundColor = MaterialTheme.colorScheme.secondary,
                 selectedTabIndex = selectedItemIndex
             ) {
-                HomeViewModel.bottomNavItems.forEachIndexed { index, tabItem ->
+                tabScreenViewModel.bottomNavItems.forEachIndexed { index, tabItem ->
                     Tab(selected = selectedItemIndex == index, onClick = {
                         selectedItemIndex = index
 //                                  navController.navigate(HomeViewModel.bottomNavItems[index].route)
                     }, icon = {
                         Icon(
-                            imageVector = HomeViewModel.bottomNavItems[index].icon,
+                            imageVector = tabScreenViewModel.bottomNavItems[index].icon,
                             contentDescription = null,
                             tint = if (selectedItemIndex == index) {
                                 MaterialTheme.colorScheme.primary
@@ -72,7 +72,7 @@ fun TabScreen(navController: NavController) {
         when (selectedItemIndex) {
 
             0 -> Box(modifier = Modifier.padding(innerPadding)) {
-                HomeView(navController = navController)
+                HomeView(navController = navController,homeViewModel)
             }
 
             1 -> Box(modifier = Modifier.padding(innerPadding)) {

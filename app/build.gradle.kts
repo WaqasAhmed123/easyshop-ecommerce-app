@@ -41,7 +41,7 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig =true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -89,9 +89,9 @@ dependencies {
     implementation("com.google.firebase:firebase-inappmessaging-display")
     implementation("com.google.firebase:firebase-analytics")
     // Android Maps Compose composables for the Maps SDK for Android
-    implementation ("com.google.maps.android:maps-compose:4.3.3")
+    implementation("com.google.maps.android:maps-compose:4.3.3")
 //    for location lat,lon
-    implementation ("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 //    handling runtime permission
     implementation("com.google.accompanist:accompanist-permissions:0.30.1")
 
@@ -110,6 +110,10 @@ dependencies {
     implementation("androidx.autofill:autofill:1.1.0")
     //Credentials support
     implementation("androidx.credentials:credentials:1.3.0-alpha01")
+//    viewmodel
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
+//...
 
     // optional - needed for credentials support from play services, for devices running
     // Android 13 and below.

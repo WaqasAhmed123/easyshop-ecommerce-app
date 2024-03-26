@@ -1,11 +1,9 @@
 package com.example.easyshop.view.cart
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import com.example.easyshop.model.ProductModel
-import com.example.easyshop.view.cart.CartViewModel.cartProducts
+import androidx.lifecycle.ViewModel
 
-object CartViewModel {
+class CartViewModel:ViewModel() {
 
     val cartProducts = mutableStateListOf<List<Any>>()
 
