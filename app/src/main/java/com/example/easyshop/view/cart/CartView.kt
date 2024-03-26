@@ -1,7 +1,12 @@
 package com.example.easyshop.view.cart
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,9 +20,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.easyshop.R
 import com.example.easyshop.composables.CartProductBox
 import com.example.easyshop.model.ProductModel
 import com.google.android.play.core.integrity.z
@@ -39,31 +47,58 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
         )
 
     }) {
-        LazyColumn(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-            items(cartViewModel.cartProducts.size) { index ->
-                val item = cartViewModel.cartProducts[index]
+        Column(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+            if (cartViewModel.cartProducts.isNotEmpty()) {
+
+                LazyColumn {
+                    items(cartViewModel.cartProducts.size) { index ->
+                        val item = cartViewModel.cartProducts[index]
 //                val product = item[0] as ProductModel
 //                val quantity = item[1] as Int
-                val product = item.product
-                val quantity = item.quantity
+                        val product = item.product
+                        val quantity = item.quantity
 
-                // Access product attributes
-                val productName = product.title
-                val image = product.image
-                val price = product.price
+                        // Access product attributes
+                        val productName = product.title
+                        val image = product.image
+                        val price = product.price
 
-                CartProductBox(image = image,
-                    productName = productName,
-                    quantity = quantity,
-                    price = "$${price}",
-                    onAddProductClick = { cartViewModel.incrementQuantity(index) },
-                    onDeleteProductClick = { cartViewModel.decrementQuantity(index) },
-                    onProductDelete = { cartViewModel.deleteProduct(index) })
+                        CartProductBox(image = image,
+                            productName = productName,
+                            quantity = quantity,
+                            price = "$${price}",
+                            onAddProductClick = { cartViewModel.incrementQuantity(index) },
+                            onDeleteProductClick = { cartViewModel.decrementQuantity(index) },
+                            onProductDelete = { cartViewModel.deleteProduct(index) })
 
-                Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+
+
+            } else {
+                Box(
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+
+
+//                        .align(Alignment.CenterVertically)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.empty_cart),
+                        contentDescription = null,
+                        modifier = Modifier
+                            //                        .height(198.dp) // Set height
+                            //                        .fillMaxHeight(0.4f) // Set height
+                            .fillMaxHeight(0.4f) // Set height
+                            //                        .width(336.dp)
+                            .fillMaxWidth()
+//                            .align(Alignment.CenterHorizontally)
+
+                    )
+                }
+
             }
         }
-
 
     }
 }
