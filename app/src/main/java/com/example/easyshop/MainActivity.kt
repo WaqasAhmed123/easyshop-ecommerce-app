@@ -40,7 +40,6 @@ import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.ktx.Firebase
 
 
-//val LocalProductDescriptionViewModel= compositionLocalOf<viewModel<SelectedProductsViewModel>()> { error("failed to create local viewmodel") }
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +63,9 @@ class MainActivity : ComponentActivity() {
 fun App() {
     val tabScreenViewModel = viewModel<TabScreenViewModel>()
     val selectedProductsViewModel = viewModel<SelectedProductsViewModel>()
-//    val cartViewModel = viewModel<CartViewModel>()
+    val productDescriptionViewModel = viewModel<ProductDescriptionViewModel>()
+    val cartViewModel = viewModel<CartViewModel>()
+    val homeViewModel = viewModel<HomeViewModel>()
 //    LaunchedEffect(key1 = Unit) {
 //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 //        PermissionsService.RequestNotificationPermissionDialog()
@@ -119,11 +120,14 @@ fun App() {
             LoginView(navController)
         }
         composable(route = "tab_view") {
-            val homeViewModel = viewModel<HomeViewModel>()
+
             TabScreen(
                 navController,
                 homeViewModel = homeViewModel,
-                tabScreenViewModel = tabScreenViewModel
+                tabScreenViewModel = tabScreenViewModel,
+                productDescriptionViewModel = productDescriptionViewModel,
+                cartViewModel = cartViewModel
+
             )
         }
         composable(route = "signup_view") {
@@ -131,9 +135,6 @@ fun App() {
             SignupView(navController)
         }
         composable(route = "home_view") {
-            val homeViewModel = viewModel<HomeViewModel>()
-            val productDescriptionViewModel = viewModel<ProductDescriptionViewModel>()
-
 
 
             HomeView(
@@ -143,12 +144,10 @@ fun App() {
             )
         }
         composable(route = "search_view") {
-            val productDescriptionViewModel = viewModel<ProductDescriptionViewModel>()
 
 
             SearchViewScreen(
-                navController,
-                productDescriptionViewModel = productDescriptionViewModel
+                navController, productDescriptionViewModel = productDescriptionViewModel
             )
         }
         composable(route = "profile_view") {
@@ -158,25 +157,22 @@ fun App() {
         composable(route = "selected_products_view") {
 
             SelectedProductsView(
-                navController, selectedProductsViewModel = selectedProductsViewModel
+                navController,
+                selectedProductsViewModel = selectedProductsViewModel,
+                productDescriptionViewModel
             )
         }
-        composable(route = "cart_view") {
-            val cartViewModel = viewModel<CartViewModel>()
 
-            CartView(navController, cartViewModel = cartViewModel)
+        composable(route = "cart_view") {
+            CartView(navController = navController, cartViewModel = cartViewModel)
         }
         composable(route = "product_description_view") {
-            val cartViewModel = viewModel<CartViewModel>()
-            val productDescriptionViewModel = viewModel<ProductDescriptionViewModel>()
-
-
 
 
             ProductDescriptionView(
-                productDescriptionViewModel = productDescriptionViewModel,
                 cartViewModel = cartViewModel,
-                navController
+                productDescriptionViewModel = productDescriptionViewModel,
+                navController = navController
             )
         }
         composable(route = "map_view") {

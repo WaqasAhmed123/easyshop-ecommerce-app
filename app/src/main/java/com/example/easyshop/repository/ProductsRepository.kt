@@ -142,47 +142,107 @@ object ProductsRepository {
     }
 
 
-    fun getAllCategoriesFromApi() {
+    suspend fun getAllCategoriesFromApi() {
 //        println("location while calling func $lat, $lon")
         println("fetching")
-        val retrofitData = retrofitBuilder.getAllCategories()
-        retrofitData.enqueue(object : Callback<List<String>> {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onResponse(
-                call: Call<List<String>>, response: Response<List<String>>
-            ) {
-                if (response.isSuccessful) {
-                    println("rep is $response")
-                    val allCategoriesData = response.body()
-                    println("resp of categories ${allCategoriesData}")
+        try {
+            val response = retrofitBuilder.getAllCategories()
+            if (response.isSuccessful) {
+                println("rep is $response")
+                val allCategoriesData = response.body()
+                println("resp of categories ${allCategoriesData}")
 //                    allCategories= allCategoriesData as SnapshotStateList<String>
-                    allCategoriesData?.let {
-                        allCategories.clear() // Clear existing data
-                        allCategories.addAll(it) // Add new data
-                    }
-//                    isDataLoaded.value = true
-
-//                    productsData?.let {
-//                        allProductsList.clear() // Clear existing data
-//                        allProductsList.addAll(it) // Add new data
-//                    }
-//                    allProductsList=productsData
-//                    HomeVie"wModel.updateWeatherDataInHomeViewModel(completeWeatherData!!)
-
-
-//                    isDataLoaded.value = true
-
-                } else {
-                    println("Response not successful: ${response.code()}")
+                allCategoriesData?.let {
+                    allCategories.clear() // Clear existing data
+                    allCategories.addAll(it) // Add new data// Add new data
                 }
-
+            } else {
+                println("Response not successful: ${response.code()}")
             }
+        } catch (e: Exception) {
+            println("Exception: ${e.message}")
+        }
+//        val retrofitData = retrofitBuilder.getAllCategories()
+//        retrofitData.enqueue(object : Callback<List<String>> {
+//            @RequiresApi(Build.VERSION_CODES.O)
+//            override fun onResponse(
+//                call: Call<List<String>>, response: Response<List<String>>
+//            ) {
+//                if (response.isSuccessful) {
+//                    println("rep is $response")
+//                    val allCategoriesData = response.body()
+//                    println("resp of categories ${allCategoriesData}")
+////                    allCategories= allCategoriesData as SnapshotStateList<String>
+//                    allCategoriesData?.let {
+//                        allCategories.clear() // Clear existing data
+//                        allCategories.addAll(it) // Add new data
+//                    }
+////                    isDataLoaded.value = true
+//
+////                    productsData?.let {
+////                        allProductsList.clear() // Clear existing data
+////                        allProductsList.addAll(it) // Add new data
+////                    }
+////                    allProductsList=productsData
+////                    HomeVie"wModel.updateWeatherDataInHomeViewModel(completeWeatherData!!)
+//
+//
+////                    isDataLoaded.value = true
+//
+//                } else {
+//                    println("Response not successful: ${response.code()}")
+//                }
+//
+//            }
+//
+//            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+//                Log.d("TAG", "onFailure: " + t.message)
+//            }
 
-            override fun onFailure(call: Call<List<String>>, t: Throwable) {
-                Log.d("TAG", "onFailure: " + t.message)
-            }
-        })
 
 
     }
+//    fun getAllCategoriesFromApi() {
+////        println("location while calling func $lat, $lon")
+//        println("fetching")
+//        val retrofitData = retrofitBuilder.getAllCategories()
+//        retrofitData.enqueue(object : Callback<List<String>> {
+//            @RequiresApi(Build.VERSION_CODES.O)
+//            override fun onResponse(
+//                call: Call<List<String>>, response: Response<List<String>>
+//            ) {
+//                if (response.isSuccessful) {
+//                    println("rep is $response")
+//                    val allCategoriesData = response.body()
+//                    println("resp of categories ${allCategoriesData}")
+////                    allCategories= allCategoriesData as SnapshotStateList<String>
+//                    allCategoriesData?.let {
+//                        allCategories.clear() // Clear existing data
+//                        allCategories.addAll(it) // Add new data
+//                    }
+////                    isDataLoaded.value = true
+//
+////                    productsData?.let {
+////                        allProductsList.clear() // Clear existing data
+////                        allProductsList.addAll(it) // Add new data
+////                    }
+////                    allProductsList=productsData
+////                    HomeVie"wModel.updateWeatherDataInHomeViewModel(completeWeatherData!!)
+//
+//
+////                    isDataLoaded.value = true
+//
+//                } else {
+//                    println("Response not successful: ${response.code()}")
+//                }
+//
+//            }
+//
+//            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+//                Log.d("TAG", "onFailure: " + t.message)
+//            }
+//        })
+//
+//
+//    }
 }

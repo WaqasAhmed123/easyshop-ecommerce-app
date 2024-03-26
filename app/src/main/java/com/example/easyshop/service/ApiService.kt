@@ -26,8 +26,8 @@ interface ApiService {
     ): Response<List<ProductModel>>
 
     @GET("/products/categories")
-    fun getAllCategories(
-    ): Call<List<String>>
+    suspend fun getAllCategories(
+    ): Response<List<String>>
 
     @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResponse>

@@ -60,7 +60,11 @@ import textStyle
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeView(navController: NavController, homeViewModel: HomeViewModel,productDescriptionViewModel: ProductDescriptionViewModel) {
+fun HomeView(
+    navController: NavController,
+    homeViewModel: HomeViewModel,
+    productDescriptionViewModel: ProductDescriptionViewModel
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -249,18 +253,21 @@ fun HomeView(navController: NavController, homeViewModel: HomeViewModel,productD
                                         val title = product.title ?: "" // Ensure null safety
                                         val image = product.image ?: "" // Ensure null safety
                                         ItemTitleWithImage(
-                                            onItemClick = {
-                                                println("passed index $index")
-//                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
-//                                        navController.navigate("product_description_view/$index")
-                                                productDescriptionViewModel.product =
-                                                    CommonFunctions.findProductById(product.id)
-                                                navController.navigate("product_description_view")
-                                            },
+                                            productId = product.id,
+                                            productDescriptionViewModel = productDescriptionViewModel,
+//                                            onItemClick = {
+//                                                println("passed index $index")
+////                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
+////                                        navController.navigate("product_description_view/$index")
+//                                                productDescriptionViewModel.product =
+//                                                    CommonFunctions.findProductById(product.id)
+//                                                navController.navigate("product_description_view")
+//                                            },
                                             onAddItemClick = { /* Handle add item click */ },
                                             itemName = title,
                                             itemPrice = price.toString(),
-                                            image = image
+                                            image = image,
+                                            navController = navController
                                         )
                                     }
                                 }

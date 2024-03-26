@@ -184,7 +184,7 @@ fun ProductDescriptionView(
                             }, buttonTitle = "Add to Cart", buttonWidth = 0.35f
                         )
                         SubmitButton(
-                            onClick = { /*TODO*/ }, buttonTitle = "Buy Now", buttonWidth = 0.5f
+                            onClick = { /*TODO*/ }, buttonTitle = "Remove From Cart", buttonWidth = 0.5f
                         )
                     }
                 }

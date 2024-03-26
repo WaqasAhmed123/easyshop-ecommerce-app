@@ -59,19 +59,21 @@ fun ItemTitleWithImage(
         .height(143.dp)
         .clip(RoundedCornerShape(10.dp))
         .background(MaterialTheme.colorScheme.secondary)
-        .clickable {
+        .clickable(onClick = {
+            productDescriptionViewModel?.product = CommonFunctions.findProductById(productId)
+            navController.navigate("product_description_view")
+
+        }
+
+        )
 //            onItemClick({
 
 //            }
 //            println("passed index $id")
 //                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
 //                                        navController.navigate("product_description_view/$index")
-            productDescriptionViewModel.product = CommonFunctions.findProductById(productId)
-            navController.navigate("product_description_view")
 
 
-
-        }
 //            .padding(8.dp) // Add padding to control space around the Column
     ) {
         Column(

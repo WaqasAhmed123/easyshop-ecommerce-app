@@ -167,13 +167,17 @@ fun SearchViewScreen(navController: NavController,productDescriptionViewModel: P
                     val title = product.title ?: "" // Ensure null safety
                     val image = product.image ?: "" // Ensure null safety
                     ItemTitleWithImage(
-                        onItemClick = {
-                            println("passed index $index")
-                            productDescriptionViewModel.product =
-                                CommonFunctions.findProductById(product.id)
-//                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
-                            navController.navigate("product_description_view")
-                        },
+                        productId = product.id,
+                        productDescriptionViewModel = productDescriptionViewModel,
+                        navController = navController,
+
+//                        onItemClick = {
+//                            println("passed index $index")
+//                            productDescriptionViewModel.product =
+//                                CommonFunctions.findProductById(product.id)
+////                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
+//                            navController.navigate("product_description_view")
+//                        },
                         onAddItemClick = { /* Handle add item click */ },
                         itemName = title,
                         itemPrice = price.toString(),

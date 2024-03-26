@@ -18,14 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.example.easyshop.view.cart.CartView
+import com.example.easyshop.view.cart.CartViewModel
 import com.example.easyshop.view.home.HomeView
 import com.example.easyshop.view.home.HomeViewModel
+import com.example.easyshop.view.product_description.ProductDescriptionViewModel
 import com.example.easyshop.view.profile.ProfileView
 import com.example.easyshop.view.search.SearchViewScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TabScreen(navController: NavController,homeViewModel: HomeViewModel,tabScreenViewModel: TabScreenViewModel) {
+fun TabScreen(navController: NavController,homeViewModel: HomeViewModel,tabScreenViewModel: TabScreenViewModel,productDescriptionViewModel: ProductDescriptionViewModel,cartViewModel: CartViewModel) {
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
@@ -72,15 +74,15 @@ fun TabScreen(navController: NavController,homeViewModel: HomeViewModel,tabScree
         when (selectedItemIndex) {
 
             0 -> Box(modifier = Modifier.padding(innerPadding)) {
-                HomeView(navController = navController,homeViewModel)
+                HomeView(navController = navController,homeViewModel, productDescriptionViewModel =productDescriptionViewModel )
             }
 
             1 -> Box(modifier = Modifier.padding(innerPadding)) {
-                SearchViewScreen(navController = navController)
+                SearchViewScreen(navController = navController, productDescriptionViewModel = productDescriptionViewModel)
             }
 
             2 -> Box(modifier = Modifier.padding(innerPadding)) {
-                CartView(navController)
+                CartView(navController, cartViewModel = cartViewModel)
             }
 
             3
