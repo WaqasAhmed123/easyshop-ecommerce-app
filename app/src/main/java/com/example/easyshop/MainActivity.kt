@@ -13,6 +13,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.ViewModelInitializer
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -63,8 +64,14 @@ class MainActivity : ComponentActivity() {
 fun App() {
     val tabScreenViewModel = viewModel<TabScreenViewModel>()
     val selectedProductsViewModel = viewModel<SelectedProductsViewModel>()
-    val productDescriptionViewModel = viewModel<ProductDescriptionViewModel>()
     val cartViewModel = viewModel<CartViewModel>()
+    val productDescriptionViewModel = viewModel<ProductDescriptionViewModel>(
+        factory = object :ViewModelProvider.Factory{
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return ProductDescriptionViewModel(cartViewModel=cartViewModel) as T
+            }
+        }
+    )
     val homeViewModel = viewModel<HomeViewModel>()
 //    LaunchedEffect(key1 = Unit) {
 //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
