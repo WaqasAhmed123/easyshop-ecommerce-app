@@ -23,11 +23,21 @@ import com.example.easyshop.view.home.HomeView
 import com.example.easyshop.view.home.HomeViewModel
 import com.example.easyshop.view.product_description.ProductDescriptionViewModel
 import com.example.easyshop.view.profile.ProfileView
+import com.example.easyshop.view.profile.ProfileViewModel
+import com.example.easyshop.view.search.SearchViewModel
 import com.example.easyshop.view.search.SearchViewScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TabScreen(navController: NavController,homeViewModel: HomeViewModel,tabScreenViewModel: TabScreenViewModel,productDescriptionViewModel: ProductDescriptionViewModel,cartViewModel: CartViewModel) {
+fun TabScreen(
+    navController: NavController,
+    homeViewModel: HomeViewModel,
+    tabScreenViewModel: TabScreenViewModel,
+    productDescriptionViewModel: ProductDescriptionViewModel,
+    cartViewModel: CartViewModel,
+    searchViewModel: SearchViewModel,
+    profileViewModel: ProfileViewModel
+) {
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
@@ -74,11 +84,19 @@ fun TabScreen(navController: NavController,homeViewModel: HomeViewModel,tabScree
         when (selectedItemIndex) {
 
             0 -> Box(modifier = Modifier.padding(innerPadding)) {
-                HomeView(navController = navController,homeViewModel, productDescriptionViewModel =productDescriptionViewModel )
+                HomeView(
+                    navController = navController,
+                    homeViewModel,
+                    productDescriptionViewModel = productDescriptionViewModel
+                )
             }
 
             1 -> Box(modifier = Modifier.padding(innerPadding)) {
-                SearchViewScreen(navController = navController, productDescriptionViewModel = productDescriptionViewModel)
+                SearchViewScreen(
+                    navController = navController,
+                    productDescriptionViewModel = productDescriptionViewModel,
+                    searchViewModel = searchViewModel
+                )
             }
 
             2 -> Box(modifier = Modifier.padding(innerPadding)) {
@@ -88,7 +106,7 @@ fun TabScreen(navController: NavController,homeViewModel: HomeViewModel,tabScree
             3
 
             -> Box(modifier = Modifier.padding(innerPadding)) {
-                ProfileView(navController)
+                ProfileView(navController, profileViewModel = profileViewModel)
 
             }
         }

@@ -43,7 +43,7 @@ import textStyle
 @OptIn(ExperimentalPermissionsApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ProfileView(navController: NavController) {
+fun ProfileView(navController: NavController, profileViewModel: ProfileViewModel) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val locationPermissionState = rememberPermissionState(
@@ -124,13 +124,13 @@ fun ProfileView(navController: NavController) {
             SubmitButton(
                 onClick = {
                     scope.launch {
-                        ProfileViewModel.signOut(navController)
+                        profileViewModel.signOut(navController)
 //                        FirebaseService.signOut(navController = navController)
 
 
                     }
 
-                }, buttonTitle = "Logout", isLoading = ProfileViewModel.isSigningOut
+                }, buttonTitle = "Logout", isLoading = profileViewModel.isSigningOut
             )
         }
 

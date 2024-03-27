@@ -26,10 +26,14 @@ import com.example.easyshop.view.cart.CartViewModel
 import com.example.easyshop.view.home.HomeView
 import com.example.easyshop.view.home.HomeViewModel
 import com.example.easyshop.view.login.LoginView
+import com.example.easyshop.view.login.LoginViewModel
 import com.example.easyshop.view.map.MapView
+import com.example.easyshop.view.map.MapViewModel
 import com.example.easyshop.view.product_description.ProductDescriptionView
 import com.example.easyshop.view.product_description.ProductDescriptionViewModel
 import com.example.easyshop.view.profile.ProfileView
+import com.example.easyshop.view.profile.ProfileViewModel
+import com.example.easyshop.view.search.SearchViewModel
 import com.example.easyshop.view.search.SearchViewScreen
 import com.example.easyshop.view.selected_category_products.SelectedProductsView
 import com.example.easyshop.view.selected_category_products.SelectedProductsViewModel
@@ -65,14 +69,17 @@ fun App() {
     val tabScreenViewModel = viewModel<TabScreenViewModel>()
     val selectedProductsViewModel = viewModel<SelectedProductsViewModel>()
     val cartViewModel = viewModel<CartViewModel>()
-    val productDescriptionViewModel = viewModel<ProductDescriptionViewModel>(
-        factory = object :ViewModelProvider.Factory{
+    val productDescriptionViewModel =
+        viewModel<ProductDescriptionViewModel>(factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return ProductDescriptionViewModel(cartViewModel=cartViewModel) as T
+                return ProductDescriptionViewModel(cartViewModel = cartViewModel) as T
             }
-        }
-    )
+        })
     val homeViewModel = viewModel<HomeViewModel>()
+    val loginViewModel = viewModel<LoginViewModel>()
+    val searchViewModel = viewModel<SearchViewModel>()
+    val profileViewModel = viewModel<ProfileViewModel>()
+    val mapViewModel = viewModel<MapViewModel>()
 //    LaunchedEffect(key1 = Unit) {
 //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 //        PermissionsService.RequestNotificationPermissionDialog()
@@ -91,7 +98,7 @@ fun App() {
     val navController = rememberNavController()
     val initialScreenRoute = remember { mutableStateOf("login_view") }
 //        initialScreenRoute.value = "map_view"
-    initialScreenRoute.value = "product_description_view"
+//    initialScreenRoute.value = "map_view"
     if (SharedPreferenceService.hasToken()) {
         initialScreenRoute.value = "tab_view"
 
@@ -124,7 +131,7 @@ fun App() {
         navController = navController, startDestination = initialScreenRoute.value
     ) {
         composable(route = "login_view") {
-            LoginView(navController)
+            LoginView(navController, loginViewModel = loginViewModel)
         }
         composable(route = "tab_view") {
 
@@ -133,7 +140,9 @@ fun App() {
                 homeViewModel = homeViewModel,
                 tabScreenViewModel = tabScreenViewModel,
                 productDescriptionViewModel = productDescriptionViewModel,
-                cartViewModel = cartViewModel
+                cartViewModel = cartViewModel,
+                searchViewModel = searchViewModel,
+                profileViewModel = profileViewModel
 
             )
         }
@@ -154,12 +163,14 @@ fun App() {
 
 
             SearchViewScreen(
-                navController, productDescriptionViewModel = productDescriptionViewModel
+                navController,
+                productDescriptionViewModel = productDescriptionViewModel,
+                searchViewModel = searchViewModel
             )
         }
         composable(route = "profile_view") {
 
-            ProfileView(navController)
+            ProfileView(navController, profileViewModel = profileViewModel)
         }
         composable(route = "selected_products_view") {
 
@@ -184,7 +195,7 @@ fun App() {
         }
         composable(route = "map_view") {
 
-            MapView(navController)
+            MapView(navController, mapViewModel = mapViewModel)
         }
 //        composable(route = "product_description_view/{productId}",
 //            arguments = listOf(navArgument(name = "productId") {

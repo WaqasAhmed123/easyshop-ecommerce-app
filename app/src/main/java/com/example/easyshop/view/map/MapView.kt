@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import com.example.easyshop.service.PermissionsService
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.play.integrity.internal.f
 import com.google.maps.android.compose.Circle
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
@@ -28,9 +30,12 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.ktx.model.cameraPosition
+import kotlinx.coroutines.delay
 
 @Composable
-fun MapView(navController: NavController) {
+fun MapView(navController: NavController, mapViewModel: MapViewModel) {
+    val currentLocation by mapViewModel.currentLocation.collectAsState()
+//    val currentLocation by mapViewModel.currentLocation.collectAsState()
     var uiSettings by remember {
         mutableStateOf(
             MapUiSettings(
@@ -47,9 +52,9 @@ fun MapView(navController: NavController) {
 //    val initialLocation = remember {
 //        mutableStateOf(LatLng(UserRepository.lat.value, UserRepository.lon.value))
 //    }
-    val location = LatLng(UserRepository.lat.value, UserRepository.lon.value)
+//    val location = LatLng(UserRepository.lat.value, UserRepository.lon.value)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(location, 10f)
+        position = CameraPosition.fromLatLngZoom(currentLocation, 10f)
     }
 
 
@@ -63,9 +68,9 @@ fun MapView(navController: NavController) {
 
 
         modifier = Modifier.fillMaxSize(), cameraPositionState = cameraPositionState
-    ){
+    ) {
         Marker(
-            state = MarkerState(position = location),
+            state = MarkerState(position = currentLocation),
 //            title = "Singapore",
 //            snippet = "Marker in Singapore"
         )
@@ -76,15 +81,19 @@ fun MapView(navController: NavController) {
 //        MapUiSettings(myLocationButtonEnabled = true, compassEnabled = true)
 
 //    LaunchedEffect(key1 = UserRepository.lat.value + UserRepository.lon.value) {
-    LaunchedEffect(key1 = location) {
-        PermissionsService.fetchCurrentLocation(context = context)
+    LaunchedEffect(key1 = currentLocation.latitude + currentLocation.longitude) {
+        println("launch called location before in map ${currentLocation}")
+//        PermissionsService.fetchCurrentLocation(context = context)
+//        delay(2000)
+        mapViewModel.getCurrentLocation(context = context)
+        println("launch called location after ${currentLocation}")
 
         // Animate camera to the new location
         cameraPositionState.animate(
             CameraUpdateFactory.newCameraPosition(
                 CameraPosition.fromLatLngZoom(
 //                    LatLng(UserRepository.lat.value, UserRepository.lon.value), 15f
-                    location, 15f
+                    currentLocation, 18f
                 )
             )
         )

@@ -24,6 +24,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
+import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.CircularProgressIndicator
@@ -226,7 +228,7 @@ fun HomeView(
                                         }, modifier = Modifier.size(24.dp)
                                     ) {
                                         Icon(
-                                            imageVector = Icons.Filled.Sort,
+                                            imageVector = Icons.AutoMirrored.Rounded.Sort,
                                             contentDescription = "Sort",
                                             tint = Color.Black
                                         )

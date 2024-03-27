@@ -108,12 +108,12 @@ fun SignupView(navController: NavController) {
 
                                 scope.launch {
 //                                val userCreated = FirebaseService.addUser(
-                                    FirebaseService.addUser(
-                                        email = SignupViewModel.email.value,
-                                        password = SignupViewModel.password.value,
-                                        context = mContext,
-                                        navController = navController
-                                    )
+//                                    FirebaseService.addUser(
+//                                        email = SignupViewModel.email.value,
+//                                        password = SignupViewModel.password.value,
+//                                        context = mContext,
+//                                        navController = navController
+//                                    )
                                     SignupViewModel.email.value=""
                                     SignupViewModel.password.value=""
                                     SignupViewModel.confirmPassword.value=""

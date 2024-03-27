@@ -1,14 +1,15 @@
 package com.example.easyshop.view.search
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 import com.example.easyshop.model.ProductModel
 import com.example.easyshop.repository.ProductsRepository.allProductsList
 
 
-object SearchViewModel {
+class SearchViewModel:ViewModel() {
     var searchProduct = mutableStateOf("")
     var visibleSearchResult = mutableStateOf(false)
-    var totalResults = mutableStateOf<Int>(0)
+//    var totalResults = mutableStateOf<Int>(0)
 
     fun filterProductsByKeyword(): List<ProductModel> {
         return if (searchProduct.value.isNotBlank()) {
@@ -20,7 +21,7 @@ object SearchViewModel {
                 )
             }
         } else {
-            emptyList()
+           return emptyList()
         }
     }
 

@@ -2,9 +2,10 @@ package com.example.easyshop.view.profile
 
 import SharedPreferenceService
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 
-object ProfileViewModel {
+class ProfileViewModel :ViewModel(){
     var isSigningOut = mutableStateOf(false)
 
 

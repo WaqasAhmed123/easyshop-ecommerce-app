@@ -95,27 +95,27 @@ fun ItemTitleWithImage(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(10.dp)) // Clip the image to a circular shape
                 )
-                IconButton(
-                    onClick = {
-                        isFavourite.value = !isFavourite.value
-                    }, modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(top = 2.dp, end = 2.dp)
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .background(Color.Transparent),
-                        imageVector = Icons.Outlined.Favorite,
-                        contentDescription = "Favorite",
-                        tint = if (isFavourite.value) {
-//                            Color.Red
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            Color.White
-                        }
-                    )
-                }
+//                IconButton(
+//                    onClick = {
+//                        isFavourite.value = !isFavourite.value
+//                    }, modifier = Modifier
+//                        .align(Alignment.TopEnd)
+//                        .padding(top = 2.dp, end = 2.dp)
+//                ) {
+//                    Icon(
+//                        modifier = Modifier
+//                            .size(24.dp)
+//                            .background(Color.Transparent),
+//                        imageVector = Icons.Outlined.Favorite,
+//                        contentDescription = "Favorite",
+//                        tint = if (isFavourite.value) {
+////                            Color.Red
+//                            MaterialTheme.colorScheme.primary
+//                        } else {
+//                            Color.White
+//                        }
+//                    )
+//                }
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,

@@ -84,10 +84,11 @@ object ProductsRepository {
 
     suspend fun loginFromApi(
         loginCredentials: LoginRequest, navController: NavController, context: Context
-    ) {
-        LoginViewModel.isLoggingIn.value = true
+    ): Boolean {
+//        LoginViewModel.isLoggingIn.value = true
         println("loggingin")
 //    val retrofitData = retrofitBuilder.getProductsByCategory(categoryName)
+        var isLoginSuccessful = false
         try {
             val response = retrofitBuilder.login(loginCredentials)
             if (response.isSuccessful) {
@@ -95,6 +96,7 @@ object ProductsRepository {
                 println("obtained token ${token}")
                 SharedPreferenceService.saveToken(token!!)
                 SharedPreferenceService.saveUsername(loginCredentials.username)
+
 //                try {
 //                    val createResponse = credentialManager?.createCredential(
 //                        request = CreatePasswordRequest(
@@ -113,8 +115,10 @@ object ProductsRepository {
                         inclusive = true
                     }
                 }
-                LoginViewModel.userName.value = ""
-                LoginViewModel.password.value = ""
+                isLoginSuccessful = true
+                return isLoginSuccessful
+//                LoginViewModel.userName.value = ""
+//                LoginViewModel.password.value = ""
 //            categoriesData?.let {
 //                selectedCategoryProducts.clear() // Clear existing data
 //                selectedCategoryProducts.addAll(it) // Add new data
@@ -130,7 +134,8 @@ object ProductsRepository {
         } catch (e: Exception) {
             println("Exception: ${e.message}")
         }
-        LoginViewModel.isLoggingIn.value = false
+        return isLoginSuccessful
+//        LoginViewModel.isLoggingIn.value = false
     }
 
 

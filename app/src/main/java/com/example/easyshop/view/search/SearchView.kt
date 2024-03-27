@@ -48,7 +48,11 @@ import textStyle
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchViewScreen(navController: NavController,productDescriptionViewModel: ProductDescriptionViewModel) {
+fun SearchViewScreen(
+    navController: NavController,
+    productDescriptionViewModel: ProductDescriptionViewModel,
+    searchViewModel: SearchViewModel
+) {
     Scaffold(modifier = Modifier.padding(16.dp), topBar = {
         Row {
 //            IconButton(onClick = { /* do something */ }) {
@@ -61,8 +65,8 @@ fun SearchViewScreen(navController: NavController,productDescriptionViewModel: P
             OutlinedTextField(
                 leadingIcon = {
                     IconButton(onClick = {
-                        if (SearchViewModel.searchProduct.value.isNotEmpty()) {
-                            SearchViewModel.visibleSearchResult.value = true
+                        if (searchViewModel.searchProduct.value.isNotEmpty()) {
+                            searchViewModel.visibleSearchResult.value = true
 
 
                         }
@@ -85,8 +89,8 @@ fun SearchViewScreen(navController: NavController,productDescriptionViewModel: P
                             .clip(CircleShape)
                             .background(Color.Black)
                             .clickable {
-                                SearchViewModel.searchProduct.value = ""
-                                SearchViewModel.visibleSearchResult.value = false
+                                searchViewModel.searchProduct.value = ""
+                                searchViewModel.visibleSearchResult.value = false
                             }, contentAlignment = Alignment.Center
                     ) {
                         Icon(
@@ -104,10 +108,10 @@ fun SearchViewScreen(navController: NavController,productDescriptionViewModel: P
                         style = textStyle(textColor = Color.Gray)["bodySmall"]!!
                     )
                 },
-                value = SearchViewModel.searchProduct.value,
+                value = searchViewModel.searchProduct.value,
                 textStyle = textStyle(textColor = Color.Gray)["bodySmall"]!!,
                 onValueChange = {
-                    SearchViewModel.searchProduct.value = it
+                    searchViewModel.searchProduct.value = it
                 },
                 modifier = Modifier
                     .border(
@@ -125,11 +129,11 @@ fun SearchViewScreen(navController: NavController,productDescriptionViewModel: P
         }
     }) {
 
-        val filteredProducts = SearchViewModel.filterProductsByKeyword()
+        val filteredProducts = searchViewModel.filterProductsByKeyword()
 
 
         Column(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-            if (filteredProducts.isNotEmpty()) {
+            if (searchViewModel.searchProduct.value.isNotBlank()) {
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     //            Text(text = category, style = textStyle()["titleLarge"]!!)
@@ -139,7 +143,7 @@ fun SearchViewScreen(navController: NavController,productDescriptionViewModel: P
                                 append("Results for ")
                             }
                             withStyle(style = SpanStyle(color = Color.Black)) {
-                                append("\"${SearchViewModel.searchProduct.value}\"")
+                                append("\"${searchViewModel.searchProduct.value}\"")
                             }
 
 

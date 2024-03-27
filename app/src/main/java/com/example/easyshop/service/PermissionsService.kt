@@ -116,33 +116,50 @@ object PermissionsService {
 //        }
 //    }
 //@Composable
- suspend fun fetchCurrentLocation(context: Context) {
-//    val isPermissionGranted = requestLocationPermissionDialog()
+     suspend fun fetchCurrentLocation(context: Context) {
+    //    val isPermissionGranted = requestLocationPermissionDialog()
 
-    // Observe changes to the permission state
-//    DisposableEffect(isPermissionGranted) {
-//        if (isPermissionGranted.value) {
-            try {
-                val fusedLocationClient: FusedLocationProviderClient =
-                    LocationServices.getFusedLocationProviderClient(context)
+        // Observe changes to the permission state
+    //    DisposableEffect(isPermissionGranted) {
+    //        if (isPermissionGranted.value) {
+                try {
+                    val fusedLocationClient: FusedLocationProviderClient =
+                        LocationServices.getFusedLocationProviderClient(context)
 
-                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                    // Fetch and process location data
-                    UserRepository.lat.value = location.latitude
-                    UserRepository.lon.value = location.longitude
-                    println("Current location: ${UserRepository.lat}, ${UserRepository.lon}")
-                }.addOnFailureListener { e ->
-                    // Handle failure
-                    println("Failed to fetch location: $e")
+                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                        // Fetch and process location data
+                        UserRepository.userLocation.value = LatLng(location.latitude,location.longitude)
+//                        UserRepository.lon.value = location.longitude
+                        println("Current location: ${UserRepository.userLocation}")
+                    }.addOnFailureListener { e ->
+                        // Handle failure
+                        println("Failed to fetch location: $e")
+                    }
+                } catch (e: SecurityException) {
+                    // Handle security exception
+                    println("Security exception: $e")
                 }
-            } catch (e: SecurityException) {
-                // Handle security exception
-                println("Security exception: $e")
-            }
-//        }
+    //        }
 
         // Don't forget to dispose the effect
     }
+}
+//suspend fun fetchCurrentLocation(context: Context, onLocationFetched: (Double, Double) -> Unit) {
+//    try {
+//        val fusedLocationClient: FusedLocationProviderClient =
+//            LocationServices.getFusedLocationProviderClient(context)
+//
+//        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+//            // Fetch and process location data
+//            onLocationFetched(location.latitude, location.longitude)
+//            println("Current location: ${location.latitude}, ${location.longitude}")
+//        }.addOnFailureListener { e ->
+//            // Handle failure
+//            println("Failed to fetch location: $e")
+//        }
+//    } catch (e: SecurityException) {
+//        // Handle security exception
+//        println("Security exception: $e")
+//    }
 //}
 
-}

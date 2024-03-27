@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginView(navController: NavController) {
+fun LoginView(navController: NavController, loginViewModel: LoginViewModel) {
     val mContext = LocalContext.current
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
@@ -75,17 +75,17 @@ fun LoginView(navController: NavController) {
                 Text(text = "Enter UserName/Email:", style = MaterialTheme.typography.bodyLarge)
 
                 InputField(
-//                    inputText = LoginViewModel.userName,
-//                    inputText = LoginViewModel.userName, autofillNode = autofillNodeUserName
-                    inputText = LoginViewModel.userName, isUserName = true
+//                    inputText = loginViewModel.userName,
+//                    inputText = loginViewModel.userName, autofillNode = autofillNodeUserName
+                    inputText = loginViewModel.userName, isUserName = true
                 )
-//                InputField(inputText = LoginViewModel.userName, onNextFieldRequested = {
+//                InputField(inputText = loginViewModel.userName, onNextFieldRequested = {
 //                    focusManager.moveFocus(FocusDirection.Next)
 //                })
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = "Enter Password:", style = MaterialTheme.typography.bodyLarge)
                 InputField(
-                    inputText = LoginViewModel.password, showTrailingIcon = true
+                    inputText = loginViewModel.password, showTrailingIcon = true
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -95,37 +95,38 @@ fun LoginView(navController: NavController) {
                 ) {
                     SubmitButton(onClick = {
                         focusManager.clearFocus()
-                        if (LoginViewModel.userName.value.isEmpty() and LoginViewModel.password.value.isNotEmpty()) {
+                        if (loginViewModel.userName.value.isEmpty() and loginViewModel.password.value.isNotEmpty()) {
                             Toast.makeText(mContext, "Username is Empty", Toast.LENGTH_SHORT).show()
-                        } else if (LoginViewModel.password.value.isEmpty() and LoginViewModel.userName.value.isNotEmpty()) {
+                        } else if (loginViewModel.password.value.isEmpty() and loginViewModel.userName.value.isNotEmpty()) {
                             Toast.makeText(mContext, "Password is Empty", Toast.LENGTH_SHORT).show()
-                        } else if (LoginViewModel.userName.value.isEmpty() and LoginViewModel.password.value.isEmpty()) {
+                        } else if (loginViewModel.userName.value.isEmpty() and loginViewModel.password.value.isEmpty()) {
                             Toast.makeText(
                                 mContext, "Username and Password are Empty", Toast.LENGTH_SHORT
                             ).show()
                         }
 //                        else if (!EmailAndPasswordValidator.isValidPassword(
-//                                password = LoginViewModel.password.value, context = mContext
+//                                password = loginViewModel.password.value, context = mContext
 //                            )
 //                        )
                         else {
                             scope.launch {
+                                loginViewModel.login(context = mContext, navController)
 //                                val userCreated = FirebaseService.addUser(
-                                ProductsRepository.loginFromApi(
-                                    loginCredentials = LoginRequest(
-                                        username = LoginViewModel.userName.value,
-                                        password = LoginViewModel.password.value
-                                    ), context = mContext, navController = navController
+//                                ProductsRepository.loginFromApi(
+//                                    loginCredentials = LoginRequest(
+//                                        username = loginViewModel.userName.value,
+//                                        password = loginViewModel.password.value
+//                                    ), context = mContext, navController = navController
 
-                                )
+//                                )
 //                                FirebaseService.login(
-//                                    userName = LoginViewModel.userName.value,
-//                                    password = LoginViewModel.password.value,
+//                                    userName = loginViewModel.userName.value,
+//                                    password = loginViewModel.password.value,
 //                                    context = mContext,
 //                                    navController = navController
 //                                )
-//                                LoginViewModel.userName.value = ""
-//                                LoginViewModel.password.value = ""
+//                                loginViewModel.userName.value = ""
+//                                loginViewModel.password.value = ""
 //                                Toast.makeText(
 //                                    mContext, "User Successfully registered", Toast.LENGTH_SHORT
 //                                ).show()
@@ -139,7 +140,7 @@ fun LoginView(navController: NavController) {
 //                            Toast.makeText(mContext, "Successfully Validated", Toast.LENGTH_SHORT)
 //                                .show()
 //                        }
-                    }, "Login", isLoading = LoginViewModel.isLoggingIn)
+                    }, "Login", isLoading = loginViewModel.isLoggingIn)
                 }
                 TextButton(
                     onClick = {
@@ -147,8 +148,8 @@ fun LoginView(navController: NavController) {
 
 
                         navController.navigate("signup_view")/* Do something when button is clicked */
-                        LoginViewModel.userName.value = ""
-                        LoginViewModel.password.value = ""
+                        loginViewModel.userName.value = ""
+                        loginViewModel.password.value = ""
                     }, modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                 ) {
                     Text(

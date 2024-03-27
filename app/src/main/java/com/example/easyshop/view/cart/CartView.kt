@@ -85,26 +85,26 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Column {
-                    Image(
-                        painter = painterResource(id = R.drawable.empty_cart),
-                        contentDescription = null,
-                        modifier = Modifier
-                            //                        .height(198.dp) // Set height
-                            //                        .fillMaxHeight(0.4f) // Set height
-                            .fillMaxHeight(0.4f) // Set height
-                            //                        .width(336.dp)
-                            .fillMaxWidth()
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Image(
+                            painter = painterResource(id = R.drawable.empty_cart),
+                            contentDescription = null,
+                            modifier = Modifier
+                                //                        .height(198.dp) // Set height
+                                //                        .fillMaxHeight(0.4f) // Set height
+                                .fillMaxHeight(0.4f) // Set height
+                                //                        .width(336.dp)
+                                .fillMaxWidth()
 //                            .align(Alignment.CenterHorizontally)
 
-                    )
+                        )
                         Text(
                             text = "Your cart is empty, explore to add.",
                             style = textStyle()["titleLarge"]!!,
                             textAlign = TextAlign.Center
                         )
 
-                        
+
                     }
                 }
 
