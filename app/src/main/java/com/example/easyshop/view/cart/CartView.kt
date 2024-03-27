@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.easyshop.R
@@ -78,11 +80,12 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
 
             } else {
                 Box(
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-
-
-//                        .align(Alignment.CenterVertically)
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
+                    Column {
                     Image(
                         painter = painterResource(id = R.drawable.empty_cart),
                         contentDescription = null,
@@ -95,6 +98,14 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
 //                            .align(Alignment.CenterHorizontally)
 
                     )
+                        Text(
+                            text = "Your cart is empty, explore to add.",
+                            style = textStyle()["titleLarge"]!!,
+                            textAlign = TextAlign.Center
+                        )
+
+                        
+                    }
                 }
 
             }
