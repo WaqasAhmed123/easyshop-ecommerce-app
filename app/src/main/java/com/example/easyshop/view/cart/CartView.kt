@@ -57,6 +57,8 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
                         val item = cartViewModel.cartProducts[index]
 //                val product = item[0] as ProductModel
 //                val quantity = item[1] as Int
+//                        val product = item.value.product
+//                        val quantity = item.value.quantity
                         val product = item.product
                         val quantity = item.quantity
 
@@ -64,10 +66,10 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
                         val productName = product.title
                         val image = product.image
                         val price = product.price
-
+0
                         CartProductBox(image = image,
                             productName = productName,
-                            quantity = quantity,
+                            quantity = quantity.value,
                             price = "$${price}",
                             onAddProductClick = { cartViewModel.incrementQuantity(index) },
                             onDeleteProductClick = { cartViewModel.decrementQuantity(index) },

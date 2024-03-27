@@ -127,10 +127,14 @@ object PermissionsService {
                         LocationServices.getFusedLocationProviderClient(context)
 
                     fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                        // Fetch and process location data
-                        UserRepository.userLocation.value = LatLng(location.latitude,location.longitude)
-//                        UserRepository.lon.value = location.longitude
-                        println("Current location: ${UserRepository.userLocation}")
+                        if (location != null) {
+                            // Fetch and process location data
+                            UserRepository.userLocation.value = LatLng(location.latitude, location.longitude)
+                            println("Current location: ${UserRepository.userLocation}")
+                        } else {
+                            // Handle case where last known location is not available
+                            println("Last known location is not available")
+                        }
                     }.addOnFailureListener { e ->
                         // Handle failure
                         println("Failed to fetch location: $e")
