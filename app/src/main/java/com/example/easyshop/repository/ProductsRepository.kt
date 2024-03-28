@@ -22,6 +22,9 @@ import com.example.easyshop.service.CredentialManagerService.credentialManager
 import com.example.easyshop.view.home.HomeViewModel
 import com.example.easyshop.view.login.LoginViewModel
 import com.google.firebase.auth.UserInfo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 //import okhttp3.Callback
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,6 +33,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ProductsRepository {
+//    val userRepository=UserRepository()
 
     val BASE_URL = "https://fakestoreapi.com"
     var allProductsList = mutableStateListOf<ProductModel>()
@@ -94,8 +98,12 @@ object ProductsRepository {
             if (response.isSuccessful) {
                 val token = response.body()?.token
                 println("obtained token ${token}")
-                SharedPreferenceService.saveToken(context=context,token!!)
-                SharedPreferenceService.saveUsername(context, loginCredentials.username)
+                val sharedPreferenceService = SharedPreferenceService(context = context)
+                coroutineScope {
+                    sharedPreferenceService.saveToken(token!!)
+                    sharedPreferenceService.saveUsername(loginCredentials.username)
+
+                }
 
 //                try {
 //                    val createResponse = credentialManager?.createCredential(

@@ -26,7 +26,8 @@ class ProfileViewModel : ViewModel() {
                 inclusive = true
             }
             viewModelScope.launch {
-                SharedPreferenceService.clearDataStore(context = context)
+                val sharedPreferenceService=SharedPreferenceService(context)
+                sharedPreferenceService.clearDataStore(context = context)
 
             }
         }

@@ -11,17 +11,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-object SharedPreferenceService {
-
+class SharedPreferenceService (private val context: Context){
+    companion object{
     private const val PREF_NAME = "UserPreferences"
     private val KEY_TOKEN = stringPreferencesKey("token")
     private val KEY_NAME = stringPreferencesKey("username")
+    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREF_NAME)
+
+    }
+
 //    private const val KEY_NAME = "username"
 
-    private var sharedPreferences: SharedPreferences? = null
+//    private var sharedPreferences: SharedPreferences? = null
 
     // At the top level of your kotlin file:
-    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREF_NAME)
 //    suspend fun saveExampleCounter(context: Context) {
 //        val EXAMPLE_COUNTER = intPreferencesKey("token")
 //        val exampleCounterFlow: Flow<String> = context.dataStore.data.map { preferences ->
@@ -31,7 +34,7 @@ object SharedPreferenceService {
 //
 //    }
 
-    suspend fun saveToken(context: Context, token: String) {
+    suspend fun saveToken(token: String) {
         context.dataStore.edit {
             it[KEY_TOKEN] = token
         }
@@ -48,10 +51,11 @@ object SharedPreferenceService {
         }
     }
 
-    suspend fun saveUsername(context: Context, username: String) {
+    suspend fun saveUsername(username: String) {
         context.dataStore.edit {
             it[KEY_NAME] = username
         }
+        println("saved name")
     }
     fun getUsername(context: Context): Flow<String?> {
         return context.dataStore.data.map { preferences ->

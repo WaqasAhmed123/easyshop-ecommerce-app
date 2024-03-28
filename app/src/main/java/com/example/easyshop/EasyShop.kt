@@ -28,11 +28,11 @@ class EasyShop : Application() {
             println("Firebase initialization complete")
 
             // Check if token is available after Firebase initialization
-            println("Has token: ${SharedPreferenceService.hasToken(context = this@EasyShop)}")
+//            println("Has token: ${SharedPreferenceService.hasToken(context = this@EasyShop)}")
 
             // Example: You can proceed with other initialization tasks here
             // ...
-            println(" has token${SharedPreferenceService.hasToken(context = this@EasyShop)}")
+//            println(" has token${SharedPreferenceService.hasToken(context = this@EasyShop)}")
         }
 
 
