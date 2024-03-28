@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.example.easyshop.service.FirebaseService
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -14,7 +15,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 object UserRepository {
-    val userName: String = SharedPreferenceService?.getUsername() ?: ""
+//    val scope= rememberCoroutineScope()
+//    val userName: String = SharedPreferenceService?.getUsername() ?: ""
+    val userName: String = ""
 
     //    val email:String=FirebaseService.auth.currentUser?.email!!,
     val email: String = FirebaseService.auth.currentUser?.email ?: ""

@@ -12,10 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,9 +48,21 @@ import textStyle
 fun ProfileView(navController: NavController, profileViewModel: ProfileViewModel) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val snackBarState = remember { SnackbarHostState() }
     val locationPermissionState = rememberPermissionState(
         permission = android.Manifest.permission.ACCESS_FINE_LOCATION
-    )
+    ) { granted ->
+        if (granted) {
+            navController.navigate("map_view")
+        } else {
+            Toast.makeText(
+                context, "Location permission denied", Toast.LENGTH_SHORT
+            ).show()
+
+
+        }
+
+    }
     Scaffold() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,22 +90,17 @@ fun ProfileView(navController: NavController, profileViewModel: ProfileViewModel
 //                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.run { height(20.dp) })
-
-//            TextButton(onClick = { navController.navigate("map_view") }) {
-//                Text(
-//                    text = "Track Your Orders",
-//                    style = textStyle()["titleLarge"]!!
-//                )
-//            }
             SubmitButton(
                 onClick = {
                     scope.launch(Dispatchers.Main) {
 //                        val permissionResult = async {
-                        locationPermissionState.launchPermissionRequest()
+//                        locationPermissionState.launchPermissionRequest()
 //                        }.await()
                         if (locationPermissionState.status.isGranted) {
                             navController.navigate("map_view")
 
+                        } else {
+                            locationPermissionState.launchPermissionRequest()
                         }
 
 //                        if (!locationPermissionState.status.isGranted) {
@@ -124,7 +133,7 @@ fun ProfileView(navController: NavController, profileViewModel: ProfileViewModel
             SubmitButton(
                 onClick = {
                     scope.launch {
-                        profileViewModel.signOut(navController)
+                        profileViewModel.signOut(navController,context=context)
 //                        FirebaseService.signOut(navController = navController)
 
 

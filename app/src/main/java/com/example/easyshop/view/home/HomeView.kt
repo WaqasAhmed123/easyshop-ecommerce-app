@@ -1,5 +1,6 @@
 package com.example.easyshop.view.home
 
+//import com.example.easyshop.view.product_description.ProductDescriptionViewModel.product
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -24,10 +25,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.filled.NotificationsNone
-import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -52,9 +51,7 @@ import com.example.easyshop.repository.ProductsRepository
 import com.example.easyshop.repository.ProductsRepository.getProductsByCategoryFromApi
 import com.example.easyshop.repository.UserRepository
 import com.example.easyshop.service.PermissionsService
-import com.example.easyshop.util.CommonFunctions
 import com.example.easyshop.view.product_description.ProductDescriptionViewModel
-//import com.example.easyshop.view.product_description.ProductDescriptionViewModel.product
 import kotlinx.coroutines.launch
 import textStyle
 

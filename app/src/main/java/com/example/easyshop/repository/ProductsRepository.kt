@@ -94,8 +94,8 @@ object ProductsRepository {
             if (response.isSuccessful) {
                 val token = response.body()?.token
                 println("obtained token ${token}")
-                SharedPreferenceService.saveToken(token!!)
-                SharedPreferenceService.saveUsername(loginCredentials.username)
+                SharedPreferenceService.saveToken(context=context,token!!)
+                SharedPreferenceService.saveUsername(context, loginCredentials.username)
 
 //                try {
 //                    val createResponse = credentialManager?.createCredential(
