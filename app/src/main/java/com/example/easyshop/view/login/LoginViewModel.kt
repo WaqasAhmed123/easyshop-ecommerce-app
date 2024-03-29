@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.repository.ProductsRepository
+import com.example.easyshop.repository.UserRepository
+import kotlinx.coroutines.flow.StateFlow
 
 class LoginViewModel : ViewModel() {
+
     var isLoggingIn = mutableStateOf(false)
     var email = mutableStateOf("")
     var userName = mutableStateOf("")
@@ -17,7 +20,7 @@ class LoginViewModel : ViewModel() {
         isLoggingIn.value = true
         val loginResult = ProductsRepository.loginFromApi(
             loginCredentials = LoginRequest(
-                username = userName.value, password = password.value
+                username = userName.value.trim(), password = password.value.trim()
             ), context = context, navController = navController
         )
         isLoggingIn.value = false

@@ -17,6 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -46,6 +48,9 @@ import textStyle
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProfileView(navController: NavController, profileViewModel: ProfileViewModel) {
+    val username by profileViewModel.userName.collectAsState()
+
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val snackBarState = remember { SnackbarHostState() }
@@ -83,7 +88,8 @@ fun ProfileView(navController: NavController, profileViewModel: ProfileViewModel
             )
 
             Text(
-                text = "Welcome ${UserRepository.userName}",
+//                text = "Welcome ${UserRepository.userName.value}",
+                text = "Welcome $username",
 //                text = "Welcome ${UserModel().email}",
 //                style = textStyle()["titleLarge"]!!,
                 style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.W500),
@@ -133,7 +139,7 @@ fun ProfileView(navController: NavController, profileViewModel: ProfileViewModel
             SubmitButton(
                 onClick = {
                     scope.launch {
-                        profileViewModel.signOut(navController,context=context)
+                        profileViewModel.signOut(navController, context = context)
 //                        FirebaseService.signOut(navController = navController)
 
 

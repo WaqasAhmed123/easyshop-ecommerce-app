@@ -1,6 +1,6 @@
 package com.example.easyshop.view.profile
 
-import SharedPreferenceService
+import DataStoreService
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
@@ -12,11 +12,15 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.easyshop.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ProfileViewModel : ViewModel() {
     var isSigningOut = mutableStateOf(false)
+    val userName: StateFlow<String> = UserRepository.userName
+
 
 
     fun signOut(navController: NavController,context:Context) {
@@ -26,8 +30,8 @@ class ProfileViewModel : ViewModel() {
                 inclusive = true
             }
             viewModelScope.launch {
-                val sharedPreferenceService=SharedPreferenceService(context)
-                sharedPreferenceService.clearDataStore(context = context)
+                val dataStoreService=DataStoreService(context)
+                dataStoreService.clearDataStore(context = context)
 
             }
         }

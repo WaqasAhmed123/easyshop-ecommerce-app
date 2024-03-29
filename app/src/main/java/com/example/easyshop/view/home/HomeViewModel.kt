@@ -12,12 +12,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.easyshop.model.BottomNavigationItemsData
 import com.example.easyshop.repository.ProductsRepository
+import com.example.easyshop.repository.UserRepository
+import com.example.easyshop.repository.UserRepository.userName
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
     @SuppressLint("MutableCollectionMutableState")
     val allProducts = ProductsRepository.allProductsList
     var allCategoriesList = ProductsRepository.allCategories
+    val userName: StateFlow<String> = UserRepository.userName
 
     var isDataLoaded = mutableStateOf(false)
     var isDescProducts = mutableStateOf(false)
@@ -29,6 +33,8 @@ class HomeViewModel : ViewModel() {
             ProductsRepository.getAllProductsFromApi(isDesc = isDescProducts.value)
             println("func executed data is ${allCategoriesList.size}")
             isDataLoaded.value = true
+            println("user name in user repo is ${UserRepository.userName.value}")
+            println("user name in viewModel is is ${userName.value}")
 
 
         }

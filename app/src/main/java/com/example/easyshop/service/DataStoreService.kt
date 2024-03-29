@@ -1,17 +1,15 @@
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.easyshop.dataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-class SharedPreferenceService (private val context: Context){
+class DataStoreService (private val context: Context){
     companion object{
     private const val PREF_NAME = "UserPreferences"
     private val KEY_TOKEN = stringPreferencesKey("token")

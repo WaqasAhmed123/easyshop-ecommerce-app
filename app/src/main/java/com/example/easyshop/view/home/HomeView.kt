@@ -36,6 +36,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,12 +69,13 @@ fun HomeView(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val username by homeViewModel.userName.collectAsState()
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         PermissionsService.RequestNotificationPermissionDialog()
     }
 
     LaunchedEffect(key1 = Unit, block = {
-        UserRepository.loadUsername(context=context, coroutineScope = scope)
+        UserRepository.loadUsername(context = context, coroutineScope = scope)
 //        ProductsRepository.getAllProductsFromApi(isDesc = homeViewModel.isDescProducts.value)
     })
 
@@ -114,7 +117,8 @@ fun HomeView(
                             )
                             Text(
 //                            text = "${homeViewModel.userName.value}",
-                                text = "${UserRepository.userName}",
+                                text = username,
+//                                text = "${user}",
                                 style = textStyle()["titleMedium"]!!
                             )
 

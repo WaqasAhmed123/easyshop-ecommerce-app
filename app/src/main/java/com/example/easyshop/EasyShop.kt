@@ -1,6 +1,6 @@
 package com.example.easyshop
 
-import SharedPreferenceService
+import DataStoreService
 import android.app.Application
 import com.example.easyshop.service.CredentialManagerService
 import com.google.firebase.FirebaseApp
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class EasyShop : Application() {
     override fun onCreate() {
         super.onCreate()
-//        SharedPreferenceService.initialize(this)
+//        DataStoreService.initialize(this)
         CredentialManagerService.initialize(this)
         CoroutineScope(Dispatchers.Main).launch {
 
@@ -28,11 +28,11 @@ class EasyShop : Application() {
             println("Firebase initialization complete")
 
             // Check if token is available after Firebase initialization
-//            println("Has token: ${SharedPreferenceService.hasToken(context = this@EasyShop)}")
+//            println("Has token: ${DataStoreService.hasToken(context = this@EasyShop)}")
 
             // Example: You can proceed with other initialization tasks here
             // ...
-//            println(" has token${SharedPreferenceService.hasToken(context = this@EasyShop)}")
+//            println(" has token${DataStoreService.hasToken(context = this@EasyShop)}")
         }
 
 

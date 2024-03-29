@@ -91,7 +91,7 @@ fun AppView() {
 //    }
 //    LaunchedEffect(key1 = Unit) {
 ////        withContext(Dispatchers.Main) {
-//            if (SharedPreferenceService.hasToken(context = context)) {
+//            if (DataStoreService.hasToken(context = context)) {
 //                initialScreenRoute.value = "tab_view"
 //
 //            } else {
