@@ -1,6 +1,6 @@
 package com.example.easyshop.view.app
 
-import DataStoreService
+import PreferenceDataStoreService
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class AppViewModel(context: Context) : ViewModel() {
     var hasToken = mutableStateOf(false)
     var checkingToken = mutableStateOf(false)
-    val dataStoreService=DataStoreService(context=context)
+    val preferenceDataStoreService=PreferenceDataStoreService(context=context)
 
 
 
@@ -19,7 +19,7 @@ class AppViewModel(context: Context) : ViewModel() {
     init {
         viewModelScope.launch {
             checkingToken.value=true
-            hasToken.value = dataStoreService.hasToken(context)
+            hasToken.value = preferenceDataStoreService.hasToken(context)
             checkingToken.value=false
 
         }

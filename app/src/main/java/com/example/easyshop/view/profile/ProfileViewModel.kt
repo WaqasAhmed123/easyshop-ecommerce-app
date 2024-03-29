@@ -1,6 +1,6 @@
 package com.example.easyshop.view.profile
 
-import DataStoreService
+import PreferenceDataStoreService
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
@@ -30,8 +30,8 @@ class ProfileViewModel : ViewModel() {
                 inclusive = true
             }
             viewModelScope.launch {
-                val dataStoreService=DataStoreService(context)
-                dataStoreService.clearDataStore(context = context)
+                val preferenceDataStoreService=PreferenceDataStoreService(context)
+                preferenceDataStoreService.clearDataStore(context = context)
 
             }
         }

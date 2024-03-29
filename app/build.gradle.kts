@@ -1,8 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+    id("com.google.protobuf")
+    id("org.jetbrains.kotlin.plugin.serialization")
 
 }
 
@@ -98,6 +99,12 @@ dependencies {
     implementation("androidx.compose.material:material:1.6.4")
 //    shared preference
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+//    proto db
+    implementation("androidx.datastore:datastore:1.0.0")
+    implementation("com.google.protobuf:protobuf-javalite:3.21.7")
+    implementation("com.google.protobuf:protobuf-kotlin-lite:3.21.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+//    implementation  ("com.google.protobuf:protobuf-kotlin-lite:3.18.0")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -120,4 +127,21 @@ dependencies {
 //    implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
 //    implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.0")
 
+}
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.21.7"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.plugins{
+                create("java") {
+                    option("lite")
+                }
+                create("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }

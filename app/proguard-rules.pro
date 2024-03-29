@@ -23,3 +23,8 @@
 -keep class androidx.credentials.playservices.** {
   *;
 }
+
+#-keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
+#    <fields>;
+#}
+-keep class * extends com.google.protobuf.GeneratedMessageLite { *; }

@@ -1,6 +1,6 @@
 package com.example.easyshop.repository
 
-import DataStoreService
+import PreferenceDataStoreService
 import android.content.Context
 import android.content.SharedPreferences
 import android.credentials.CredentialManager
@@ -98,10 +98,10 @@ object ProductsRepository {
             if (response.isSuccessful) {
                 val token = response.body()?.token
                 println("obtained token ${token}")
-                val dataStoreService = DataStoreService(context = context)
+                val preferenceDataStoreService = PreferenceDataStoreService(context = context)
                 coroutineScope {
-                    dataStoreService.saveToken(token!!)
-                    dataStoreService.saveUsername(loginCredentials.username)
+                    preferenceDataStoreService.saveToken(token!!)
+                    preferenceDataStoreService.saveUsername(loginCredentials.username)
 
                 }
 

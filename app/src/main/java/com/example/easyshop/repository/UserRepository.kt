@@ -1,6 +1,6 @@
 package com.example.easyshop.repository
 
-import DataStoreService
+import PreferenceDataStoreService
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,6 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.datastore.preferences.core.intPreferencesKey
 import com.example.easyshop.service.FirebaseService
+import com.example.easyshop.view.cart.CartItem
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -24,36 +25,27 @@ import kotlinx.coroutines.launch
 object UserRepository {
     //    val scope= rememberCoroutineScope()
     val userName = MutableStateFlow("")
+    val cartProducts = MutableStateFlow(mutableListOf<CartItem>())
+    var userLocation = MutableStateFlow(LatLng(0.0, 0.0))
+    
+    
 
 
     fun loadUsername(context: Context, coroutineScope: CoroutineScope) {
-        val dataStoreService = DataStoreService(context)
+        val preferenceDataStoreService = PreferenceDataStoreService(context)
 
         coroutineScope.launch {
-            dataStoreService.getUsername(context).collect { username ->
+            preferenceDataStoreService.getUsername(context).collect { username ->
                 userName.value = username ?: ""
                 println("name is ${userName.value} private")
                 println("name is ${username} public")
-                dataStoreService.getToken(context = context).collect { token ->
+                preferenceDataStoreService.getToken(context = context).collect { token ->
                     println("token is $token")
                 }
             }
         }
     }
 
-//    val userName: String = ""
-
-    //    val email:String=FirebaseService.auth.currentUser?.email!!,
-    val email: String = FirebaseService.auth.currentUser?.email ?: ""
-    var userLocation = MutableStateFlow(LatLng(0.0, 0.0))
-//    var userLocation: StateFlow<LatLng> = _userLocation
-
-    //    var lat by mutableDoubleStateOf<Double>(0.0)
-//    var lon by mutableStateOf<Double>(0.0)
-//    var lat by mutableDoubleStateOf(0.0)
-//    var lon by mutableDoubleStateOf(0.0)
-//    var lat = mutableStateOf(0.0)
-//    var lon = mutableStateOf(0.0)
-
+//    val email: String = FirebaseService.auth.currentUser?.email ?: ""
 
 }
