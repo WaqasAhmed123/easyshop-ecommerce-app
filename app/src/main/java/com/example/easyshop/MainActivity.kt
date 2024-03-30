@@ -15,6 +15,7 @@ import com.example.easyshop.view.app.AppView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
 
 //val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "PREF_NAME")
 
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AuthTheme {
+//                CoroutineScope()
                 AppView()
 
             }
