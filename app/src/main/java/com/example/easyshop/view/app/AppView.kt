@@ -49,7 +49,11 @@ fun AppView() {
     val scope = rememberCoroutineScope()
     val tabScreenViewModel = viewModel<TabScreenViewModel>()
     val selectedProductsViewModel = viewModel<SelectedProductsViewModel>()
-    val cartViewModel = viewModel<CartViewModel>()
+    val cartViewModel = viewModel<CartViewModel>(factory = object : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return CartViewModel(context = context) as T
+        }
+    })
     val productDescriptionViewModel =
         viewModel<ProductDescriptionViewModel>(factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {

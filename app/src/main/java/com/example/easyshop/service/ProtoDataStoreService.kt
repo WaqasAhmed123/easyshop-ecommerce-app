@@ -1,77 +1,117 @@
 package com.example.easyshop.service
 
 import android.content.Context
-import android.util.Log
-import androidx.compose.runtime.mutableStateOf
-import com.example.easyshop.model.ProductModel
-import com.example.easyshop.model.Rating
 import com.example.easyshop.service.UserCartSerializer.userInfoDataStore
-import com.example.easyshop.view.cart.CartItem
+import com.example.easyshop.view.cart.CartItemLocal
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 object ProtoDataStoreService {
+    suspend fun getSavedCartItemLocals(context: Context): MutableStateFlow<List<CartItemLocal>> {
+        val cartItemLocalFlow = MutableStateFlow<List<CartItemLocal>>(emptyList())
 
-    suspend fun getSavedCartItem(context: Context): CartItem {
-        return withContext(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             val userInfo = context.userInfoDataStore.data.firstOrNull()
             if (userInfo == null) {
-                CartItem(
-                    product = ProductModel(
-                        id = 1,
-                        title = "dfhk",
-                        price = 34,
-                        description = "afg",
-                        category = "afs",
-                        image = "afh",
-                        rating = Rating(rate = 4.00, count = 35)
-                    ),
-                    quantity = mutableStateOf(2)
-                )
-//                CartItem(
-//                    nickname = "", emailAddress = ""
-//                )
+                println("Return empty list if no data is found")
+            } else {
+                val decodedList = mutableListOf<CartItemLocal>()
+                userInfo.cartProductsList.forEach { cartItemJson ->
+                    try {
+                        val decodedItem = Json.decodeFromString<List<CartItemLocal>>(cartItemJson)
+                        decodedList.addAll(decodedItem)
+                    } catch (e: Exception) {
+                        // Handle decoding exceptions here
+                        println("Error decoding JSON: $e")
+                    }
+                }
+                println("Saved list is $decodedList")
+                cartItemLocalFlow.value = decodedList
             }
-            val retrievedInfoString = userInfo!!.CartItem
-            try {
-                val retrievedInfo = Json.decodeFromString<CartItem>(retrievedInfoString)
-                retrievedInfo
-//                println(retrievedInfo)
-            } catch (_: Exception) {
-                CartItem(
-                    product = ProductModel(
-                        id = 1,
-                        title = "dfhk",
-                        price = 34,
-                        description = "afg",
-                        category = "afs",
-                        image = "afh",
-                        rating = Rating(rate = 4.00, count = 35)
-                    ),
-                    quantity = mutableStateOf(2)
-                )
-            }
-
         }
+
+        return cartItemLocalFlow
     }
 
-//    suspend fun savedCartItem(newInfo: CartItem, context: Context) {
-//        val statusJson = Json.encodeToString(newInfo)
+//    suspend fun getSavedCartItemLocals(context: Context): List<CartItemLocal> {
+//        return withContext(Dispatchers.IO) {
+//            val userInfo = context.userInfoDataStore.data.firstOrNull()
+//            if (userInfo == null) {
+//                println("Return empty list if no data is found")
+//                emptyList()
+//            } else {
+//                val decodedList = mutableListOf<CartItemLocal>()
+////                val books = Json.decodeFromString<List<CartItemLocal>>(userInfo)
 //
-//        withContext(Dispatchers.IO) {
-//            try {
-//                context.userInfoDataStore.updateData { currentUser: MyUserInfo ->
-//                    currentUser.toBuilder().setCartItem(statusJson).build()
+//                userInfo.cartProductsList.forEach { cartItemJson ->
+//                    try {
+//                        val decodedItem = Json.decodeFromString<List<CartItemLocal>>(cartItemJson)
+//                        decodedList.addAll(decodedItem)
+//                    } catch (e: Exception) {
+//                        // Handle decoding exceptions here
+//                        println("Error decoding JSON: $e")
+//                    }
 //                }
-//            } catch (e: Exception) {
-//                Log.e("Error", "Error writing to proto store: $e")
-//                throw e
+//                println(
+//                    "saved list is $decodedList"
+//                )
+//                decodedList // Return the list of successfully decoded items
 //            }
-//
 //        }
 //    }
+
+
+//    suspend fun getSavedCartItemLocals(context: Context): List<CartItemLocal> {
+//        val decodedList: List<CartItemLocal> = emptyList()
+//        return withContext(Dispatchers.IO) {
+//            val userInfo = context.userInfoDataStore.data.firstOrNull()
+//            if (userInfo == null) {
+//                println(" Return empty list if no data is found")
+//                emptyList()
+//            } else {
+//                userInfo.cartProductsList.mapNotNull { cartItemJson ->
+//                    try {
+//                        Json.decodeFromString<CartItemLocal>(cartItemJson).let {
+//                            decodedList
+//                        }
+//                        Json.decodeFromString<CartItemLocal>(cartItemJson)
+//                    } catch (e: Exception) {
+//                        null
+//                    }
+//                }
+//                // Deserialize the cart items from JSON string
+////                val cartItemsJson = userInfo.cartProductsList
+////                val cartItemsJson = userInfo.cartProductsList
+////                val cartProductsObt=Json.decodeFromString<List<CartItemLocal>>(cartItemsJson)
+////                cartItemsJson
+////                cartItemsJson?.let {cartItem->
+////                    Json.decodeFromString<List<CartItemLocal>>(
+////
+////                    )
+////                } ?: emptyList()
+//            }
+//        }
+//    }
+
+    suspend fun saveCartItemLocals(cartItems: List<CartItemLocal>, context: Context) {
+        withContext(Dispatchers.IO) {
+            // Serialize the cart items to JSON string
+            println("saving cartitems")
+            val cartItemsJson = Json.encodeToString(cartItems)
+            println("saved $cartItemsJson")
+
+            // Save the JSON string to data store
+            context.userInfoDataStore.updateData { currentUser ->
+                currentUser.toBuilder().addCartProducts(cartItemsJson).build()
+            }
+        }
+    }
 }
+
+

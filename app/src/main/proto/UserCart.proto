@@ -4,20 +4,26 @@ option java_package = "com.example.easyshop.proto";
 option java_multiple_files = true;
 
 message UserCart {
-  repeated string cartProducts = 1;
+  repeated string   cartProducts = 1;
+//  repeated CartProduct   cartProducts = 1;
+}
+message CartProduct{
+  ProductModel product = 1;
+  int32 quantity = 2;
+
+
+}
+message ProductModel {
+  int32 id = 1;
+  string title = 2;
+  double price = 3;
+  string description = 4;
+  string category = 5;
+  string image = 6;
+  Rating rating = 7;
 }
 
-//message ProductModel {
-//  int32 id = 1;
-//  string title = 2;
-//  double price = 3;
-//  string description = 4;
-//  string category = 5;
-//  string image = 6;
-//  Rating rating = 7;
-//}
-//
-//message Rating {
-//  double rate = 1;
-//  int32 count = 2;
-//}
+message Rating {
+  double rate = 1;
+  int32 count = 2;
+}
