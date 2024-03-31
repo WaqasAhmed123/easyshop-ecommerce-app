@@ -17,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,7 +39,9 @@ import textStyle
 @Composable
 fun CartView(navController: NavController, cartViewModel: CartViewModel) {
 
+    val localCartProducts by cartViewModel.cartProductsLocal.collectAsState()
     Scaffold(modifier = Modifier.padding(horizontal = 16.dp), topBar = {
+
 
         CenterAlignedTopAppBar(
             title = {
@@ -50,6 +53,37 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
 
     }) {
         Column(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+            if (localCartProducts.isNotEmpty()) {
+
+//                LazyColumn {
+//                    items(localCartProducts.size) { index ->
+//                        val item = localCartProducts[index]
+////                val product = item[0] as ProductModel
+////                val quantity = item[1] as Int
+////                        val product = item.value.product
+////                        val quantity = item.value.quantity
+//                        val product = item.product
+//                        val quantity = item.quantity
+//
+//                        // Access product attributes
+//                        val productName = product.title
+//                        val image = product.image
+//                        val price = product.price
+//                        0
+//                        CartProductBox(image = image,
+//                            productName = productName,
+//                            quantity = quantity,
+//                            price = "$${price}",
+//                            onAddProductClick = { cartViewModel.incrementQuantity(index) },
+//                            onDeleteProductClick = { cartViewModel.decrementQuantity(index) },
+//                            onProductDelete = { cartViewModel.deleteProduct(index) })
+//
+//                        Spacer(modifier = Modifier.height(10.dp))
+//                    }
+//                }
+//
+//
+//            }
             if (cartViewModel.cartProducts.isNotEmpty()) {
 
                 LazyColumn {
@@ -80,7 +114,8 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
                 }
 
 
-            } else {
+            }
+            else {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)

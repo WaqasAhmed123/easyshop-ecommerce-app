@@ -5,25 +5,25 @@ option java_multiple_files = true;
 
 message UserCart {
   repeated string   cartProducts = 1;
-//  repeated CartProduct   cartProducts = 1;
+//  repeated CartProduct cartProducts = 1;
 }
 message CartProduct{
-  ProductModel product = 1;
+  ProductModelProto product = 1;
   int32 quantity = 2;
 
 
 }
-message ProductModel {
+message ProductModelProto {
   int32 id = 1;
   string title = 2;
   double price = 3;
   string description = 4;
   string category = 5;
   string image = 6;
-  Rating rating = 7;
+  RatingProto rating = 7;
 }
 
-message Rating {
+message RatingProto {
   double rate = 1;
   int32 count = 2;
 }

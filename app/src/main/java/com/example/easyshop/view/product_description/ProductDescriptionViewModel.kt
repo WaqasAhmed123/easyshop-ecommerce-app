@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.easyshop.model.ProductModel
 import com.example.easyshop.repository.ProductsRepository.allProductsList
 import com.example.easyshop.view.cart.CartItem
+import com.example.easyshop.view.cart.CartItemLocal
 import com.example.easyshop.view.cart.CartViewModel
 import com.google.android.play.integrity.internal.i
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +21,7 @@ class ProductDescriptionViewModel(private val cartViewModel: CartViewModel) : Vi
     var isAlreadyInCart =
 //        mutableStateOf(cartViewModel.cartProducts.any { cartItem -> cartItem.product.id == product?.id })
         mutableStateOf(cartViewModel.cartProducts.any { cartItem -> cartItem.product == product })
+//        mutableStateOf(cartViewModel.cartProductsLocal.value.any { cartItem -> cartItem.product == product })
 //        private set
 
     //    init {
@@ -27,21 +29,35 @@ class ProductDescriptionViewModel(private val cartViewModel: CartViewModel) : Vi
 //    }
 //
     fun updateIsAlreadyInCart() {
-        isAlreadyInCart.value =
-            cartViewModel.cartProducts.any { cartItem -> cartItem.product.id == product?.id }
+//        isAlreadyInCart.value =
+//            cartViewModel.cartProductsLocal.value.any { cartItem -> cartItem.product.id == product?.id }
+        isAlreadyInCart . value =
+        cartViewModel.cartProducts.any { cartItem -> cartItem.product.id == product?.id }
 
     }
 
-    fun addProductToCart() {
-        product?.let { product ->
-            cartViewModel.cartProducts.add(
-                CartItem(
-                    product = product, quantity = mutableStateOf(1)
-                )
-            )
-        }
-        snackbarMessage = "Product Added to Cart"
-    }
+//    fun addProductToCart() {
+//        product?.let { product ->
+//            cartViewModel.addCartProduct(List<CartItemLocal>(CartItemLocal(product=product,1)))
+//            List<CartItemL>(
+//            cartViewModel.cartProducts.add(
+//                CartItemLocal(
+//                    product = product, quantity = mutableStateOf(1)
+//                )
+//            ))
+//        }
+//        snackbarMessage = "Product Added to Cart"
+//    }
+//fun addProductToCart() {
+//        product?.let { product ->
+//            cartViewModel.cartProducts.add(
+//                CartItem(
+//                    product = product, quantity = mutableStateOf(1)
+//                )
+//            )
+//        }
+//        snackbarMessage = "Product Added to Cart"
+//    }
 
     fun removeProductFromCart() {
 //        cartViewModel.cartProducts.firstOrNull { cartItem ->

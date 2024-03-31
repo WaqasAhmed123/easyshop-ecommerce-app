@@ -18,9 +18,9 @@ import kotlinx.serialization.Serializable
 data class CartItemLocal(
     @Serializable
     val product: ProductModel, // Assuming ProductModel is your product data class
-//    var quantity: Int
     @Serializable
     var quantity: Int
+//    var quantity: Int
 )
 
 data class CartItem(
@@ -29,12 +29,28 @@ data class CartItem(
     var quantity: MutableState<Int>
 )
 
-class CartViewModel(context: Context) : ViewModel() {
+class CartViewModel(private  val context: Context) : ViewModel() {
 
     var cartProducts = mutableStateListOf<CartItem>()
-    var _cartProductsLocal = MutableStateFlow<List<CartItemLocal>>(emptyList())
-    val cartProductsLocal: StateFlow<List<CartItemLocal>> = _cartProductsLocal
+//    var _cartProductsLocal = MutableStateFlow<List<CartItemLocal>>(emptyList())
+//    val cartProductsLocal: StateFlow<List<CartItemLocal>> = _cartProductsLocal
+//var cartProductsLocal: StateFlow<List<CartItemLocal>> = ProtoDataStoreService.getSavedCartItemLocals(context)
+    suspend fun addCartProduct(cartItem:List<CartItemLocal> ){
+        ProtoDataStoreService.saveCartItemLocals(cartItems = cartItem, context = context)
+    }
 
+val dummyCartItem=CartItemLocal(
+    product = ProductModel(
+        id = 1,
+        title = "Product 1",
+        price = 10.0,
+        description = "Description of Product 1",
+        category = "Category 1",
+        image = "image_url_1",
+        rating = Rating(rate = 4.5, count = 20)
+    ),
+    quantity = 2
+)
     val dummyCartItems: List<CartItemLocal> = listOf(
         CartItemLocal(
             product = ProductModel(
@@ -83,9 +99,9 @@ class CartViewModel(context: Context) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            ProtoDataStoreService.saveCartItemLocals(cartItems = dummyCartItems, context)
-            _cartProductsLocal.value=ProtoDataStoreService.getSavedCartItemLocals(context).value
-            println("in viewModel saved cart ${cartProductsLocal.value}")
+//            ProtoDataStoreService.saveCartItemLocals(cartItems= dummyCartItems, context)
+//            _cartProductsLocal.value=ProtoDataStoreService.getSavedCartItemLocals(context).value
+//            println("in viewModel saved cart ${cartProductsLocal.value}")
         }
     }
 
