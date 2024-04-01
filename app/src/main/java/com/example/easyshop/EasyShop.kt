@@ -2,6 +2,8 @@ package com.example.easyshop
 
 import PreferenceDataStoreService
 import android.app.Application
+import androidx.room.Room
+import com.example.easyshop.room_db.RoomInstance
 import com.example.easyshop.service.CredentialManagerService
 import com.google.firebase.FirebaseApp
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
@@ -13,6 +15,8 @@ import kotlinx.coroutines.launch
 class EasyShop : Application() {
     override fun onCreate() {
         super.onCreate()
+        RoomInstance.initialize(applicationContext)
+
 //        PreferenceDataStoreService.initialize(this)
         CredentialManagerService.initialize(this)
         CoroutineScope(Dispatchers.Main).launch {

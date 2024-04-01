@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.example.easyshop.model.ProductModel
 import com.example.easyshop.repository.ProductsRepository.allProductsList
 import com.example.easyshop.view.cart.CartItem
-import com.example.easyshop.view.cart.CartItemLocal
 import com.example.easyshop.view.cart.CartViewModel
 import com.google.android.play.integrity.internal.i
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,16 +47,16 @@ class ProductDescriptionViewModel(private val cartViewModel: CartViewModel) : Vi
 //        }
 //        snackbarMessage = "Product Added to Cart"
 //    }
-//fun addProductToCart() {
-//        product?.let { product ->
-//            cartViewModel.cartProducts.add(
-//                CartItem(
-//                    product = product, quantity = mutableStateOf(1)
-//                )
-//            )
-//        }
-//        snackbarMessage = "Product Added to Cart"
-//    }
+fun addProductToCart() {
+        product?.let { product ->
+            cartViewModel.cartProducts.add(
+                CartItem(
+                    product = product, quantity = mutableStateOf(1)
+                )
+            )
+        }
+        snackbarMessage = "Product Added to Cart"
+    }
 
     fun removeProductFromCart() {
 //        cartViewModel.cartProducts.firstOrNull { cartItem ->

@@ -8,20 +8,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.easyshop.model.ProductModel
 import com.example.easyshop.model.Rating
 import com.example.easyshop.repository.UserRepository
+import com.example.easyshop.room_db.CartItemLocal
+import com.example.easyshop.room_db.RoomInstance
 import com.example.easyshop.service.ProtoDataStoreService
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@Serializable
-data class CartItemLocal(
-    @Serializable
-    val product: ProductModel, // Assuming ProductModel is your product data class
-    @Serializable
-    var quantity: Int
-//    var quantity: Int
-)
 
 data class CartItem(
     val product: ProductModel, // Assuming ProductModel is your product data class
@@ -29,55 +26,64 @@ data class CartItem(
     var quantity: MutableState<Int>
 )
 
-class CartViewModel(private  val context: Context) : ViewModel() {
-
+class CartViewModel(private val context: Context) : ViewModel() {
+    val cartDao = RoomInstance.db?.dao
     var cartProducts = mutableStateListOf<CartItem>()
+    val cartProductsStateFlow: StateFlow<List<CartItemLocal>>? =
+        cartDao?.getCartProducts()?.conflate()
+            ?.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
+//    val cartProducsDb: StateFlow<List<CartItemLocal>> = cartDao.getCartProducts()
+
+    suspend fun addProductToDb(cartItemLocal: CartItemLocal) {
+        cartDao?.addProductToCart(cartItemLocal)
+    }
 //    var _cartProductsLocal = MutableStateFlow<List<CartItemLocal>>(emptyList())
 //    val cartProductsLocal: StateFlow<List<CartItemLocal>> = _cartProductsLocal
 //var cartProductsLocal: StateFlow<List<CartItemLocal>> = ProtoDataStoreService.getSavedCartItemLocals(context)
-    suspend fun addCartProduct(cartItem:List<CartItemLocal> ){
-        ProtoDataStoreService.saveCartItemLocals(cartItems = cartItem, context = context)
-    }
+//    suspend fun addCartProduct(cartItem:List<CartItemLocal> ){
+//        ProtoDataStoreService.saveCartItemLocals(cartItems = cartItem, context = context)
+//    }
 
-val dummyCartItem=CartItemLocal(
-    product = ProductModel(
-        id = 1,
-        title = "Product 1",
-        price = 10.0,
-        description = "Description of Product 1",
-        category = "Category 1",
-        image = "image_url_1",
-        rating = Rating(rate = 4.5, count = 20)
-    ),
-    quantity = 2
-)
-    val dummyCartItems: List<CartItemLocal> = listOf(
-        CartItemLocal(
-            product = ProductModel(
-                id = 1,
-                title = "Product 1",
-                price = 10.0,
-                description = "Description of Product 1",
-                category = "Category 1",
-                image = "image_url_1",
-                rating = Rating(rate = 4.5, count = 20)
-            ),
-            quantity = 2
-        ),
-        CartItemLocal(
-            product = ProductModel(
-                id = 2,
-                title = "Product 2",
-                price = 15.0,
-                description = "Description of Product 2",
-                category = "Category 2",
-                image = "image_url_2",
-                rating = Rating(rate = 4.0, count = 15)
-            ),
-            quantity = 3
-        )
-        // Add more dummy cart items as needed
-    )
+//val dummyCartItem=CartItemLocal(
+//    product = ProductModel(
+//        id = 1,
+//        title = "Product 1",
+//        price = 10.0,
+//        description = "Description of Product 1",
+//        category = "Category 1",
+//        image = "image_url_1",
+//        rating = Rating(rate = 4.5, count = 20)
+//    ),
+//    quantity = 2
+//)
+//    val dummyCartItems: List<CartItemLocal> = listOf(
+//        CartItemLocal(
+//            product = ProductModel(
+//                id = 1,
+//                title = "Product 1",
+//                price = 10.0,
+//                description = "Description of Product 1",
+//                category = "Category 1",
+//                image = "image_url_1",
+//                rating = Rating(rate = 4.5, count = 20)
+//            ),
+//            quantity = 2
+//        ),
+//        CartItemLocal(
+//            product = ProductModel(
+//                id = 2,
+//                title = "Product 2",
+//                price = 15.0,
+//                description = "Description of Product 2",
+//                category = "Category 2",
+//                image = "image_url_2",
+//                rating = Rating(rate = 4.0, count = 15)
+//            ),
+//            quantity = 3
+//        )
+//        // Add more dummy cart items as needed
+//    )
 
     fun incrementQuantity(index: Int) {
         val item = cartProducts[index]

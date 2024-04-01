@@ -1,5 +1,6 @@
 package com.example.easyshop.view.app
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -22,6 +23,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import com.example.easyshop.room_db.CartDatabase
 import com.example.easyshop.view.cart.CartView
 import com.example.easyshop.view.cart.CartViewModel
 import com.example.easyshop.view.home.HomeView
@@ -42,9 +45,12 @@ import com.example.easyshop.view.signup.SignupView
 import com.example.easyshop.view.tab_view.TabScreen
 import com.example.easyshop.view.tab_view.TabScreenViewModel
 
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppView() {
+
+
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val tabScreenViewModel = viewModel<TabScreenViewModel>()
@@ -70,46 +76,9 @@ fun AppView() {
     val searchViewModel = viewModel<SearchViewModel>()
     val profileViewModel = viewModel<ProfileViewModel>()
     val mapViewModel = viewModel<MapViewModel>()
-//    val appViewModel = viewModel<AppViewModel>()
-//    LaunchedEffect(key1 = Unit) {
-//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//        PermissionsService.RequestNotificationPermissionDialog()
-//    }
-//    println("-------------------------------------------------------------------")
-//    LaunchedEffect(Unit) {
-//        try {
-//            val token = Firebase.messaging.token.await()
-//            Log.d("FCM token:", token)
-//        } catch (e: Exception) {
-//            Log.e("FCM token fetching error", e.message ?: "Unknown error")
-//        }
-//    }
-//    }
 
     val navController = rememberNavController()
     val initialScreenRoute = remember { mutableStateOf("login_view") }
-//        initialScreenRoute.value = "map_view"
-//    initialScreenRoute.value = "map_view"
-//    scope.launch {
-//
-//    }
-//    LaunchedEffect(key1 = Unit) {
-////        withContext(Dispatchers.Main) {
-//            if (PreferenceDataStoreService.hasToken(context = context)) {
-//                initialScreenRoute.value = "tab_view"
-//
-//            } else {
-//                initialScreenRoute.value = "login_view"
-//            }
-//
-//
-////        }
-//
-//
-
-//    LaunchedEffect(Unit) {
-//        runBlocking(Dispatchers.Main) {
-//        }
 
     if (appViewModel.hasToken.value) {
         initialScreenRoute.value = "tab_view"
@@ -139,13 +108,7 @@ fun AppView() {
             slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right, tween(1000)
             )
-        },
-//        enterTransition = { slideInHorizontally {  } (animationSpec = tween(700)) },
-//        exitTransition = { fadeOut(animationSpec = tween(700)) },
-//        popEnterTransition = enterTransition,
-//        popExitTransition = exitTransition,
-//        navController = navController, startDestination = "login_view"
-            navController = navController, startDestination = initialScreenRoute.value
+        }, navController = navController, startDestination = initialScreenRoute.value
         ) {
             composable(route = "login_view") {
                 LoginView(navController, loginViewModel = loginViewModel)
@@ -214,18 +177,6 @@ fun AppView() {
 
                 MapView(navController, mapViewModel = mapViewModel)
             }
-//        composable(route = "product_description_view/{productId}",
-//            arguments = listOf(navArgument(name = "productId") {
-//                type = NavType.IntType
-//            })) {
-//            val productId = it.arguments!!.getInt("productId")
-//
-//            ProductDescriptionView(
-//                productId = productId, navController = navController
-//
-//            )
-//        }
-//    }
         }
     } else {
         Box(

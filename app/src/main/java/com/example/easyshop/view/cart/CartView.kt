@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,15 +32,18 @@ import androidx.navigation.NavController
 import com.example.easyshop.R
 import com.example.easyshop.composables.CartProductBox
 import com.example.easyshop.model.ProductModel
+import com.example.easyshop.room_db.CartItemLocal
 import com.google.android.play.core.integrity.z
+import kotlinx.coroutines.launch
 import textStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CartView(navController: NavController, cartViewModel: CartViewModel) {
+    val scope = rememberCoroutineScope()
 
-    val localCartProducts by cartViewModel.cartProductsLocal.collectAsState()
+//    val localCartProducts by cartViewModel.cartProductsLocal.collectAsState()
     Scaffold(modifier = Modifier.padding(horizontal = 16.dp), topBar = {
 
 
@@ -53,7 +57,7 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
 
     }) {
         Column(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-            if (localCartProducts.isNotEmpty()) {
+//            if (localCartProducts.isNotEmpty()) {
 
 //                LazyColumn {
 //                    items(localCartProducts.size) { index ->
@@ -100,12 +104,14 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
                         val productName = product.title
                         val image = product.image
                         val price = product.price
-0
                         CartProductBox(image = image,
                             productName = productName,
                             quantity = quantity.value,
                             price = "$${price}",
-                            onAddProductClick = { cartViewModel.incrementQuantity(index) },
+                            onAddProductClick = {
+
+                                cartViewModel.incrementQuantity(index)
+                            },
                             onDeleteProductClick = { cartViewModel.decrementQuantity(index) },
                             onProductDelete = { cartViewModel.deleteProduct(index) })
 
@@ -114,8 +120,7 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
                 }
 
 
-            }
-            else {
+            } else {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)

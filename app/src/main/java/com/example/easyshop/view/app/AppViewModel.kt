@@ -10,7 +10,6 @@ import com.example.easyshop.model.ProductModel
 import com.example.easyshop.model.Rating
 import com.example.easyshop.service.ProtoDataStoreService
 import com.example.easyshop.view.cart.CartItem
-import com.example.easyshop.view.cart.CartItemLocal
 import kotlinx.coroutines.launch
 
 class AppViewModel(context: Context) : ViewModel() {

@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.protobuf")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("kotlin-kapt")
 
 }
 
@@ -55,6 +56,16 @@ android {
 }
 
 dependencies {
+    val room_version = "2.6.1"
+
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    implementation ("androidx.room:room-ktx:$rootProject.roomVersion")
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
+//...
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
@@ -120,7 +131,8 @@ dependencies {
 //    viewmodel
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
-//...
+//    room
+
 
     // optional - needed for credentials support from play services, for devices running
     // Android 13 and below.
@@ -134,7 +146,7 @@ protobuf {
     }
     generateProtoTasks {
         all().forEach { task ->
-            task.plugins{
+            task.plugins {
                 create("java") {
                     option("lite")
                 }
