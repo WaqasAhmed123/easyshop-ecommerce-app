@@ -15,11 +15,21 @@ import kotlinx.coroutines.launch
 class EasyShop : Application() {
     override fun onCreate() {
         super.onCreate()
-        RoomInstance.initialize(applicationContext)
+        RoomInstance.initialize(this)
 
 //        PreferenceDataStoreService.initialize(this)
-        CredentialManagerService.initialize(this)
         CoroutineScope(Dispatchers.Main).launch {
+            CredentialManagerService.initialize(this@EasyShop)
+            if (RoomInstance.db?.dao != null) {
+                println("${
+                    RoomInstance.db?.dao?.getCartProducts()!!.collect {
+                        println(it)
+                    }
+
+                }dadgadg")
+            } else {
+                println("null instance")
+            }
 
             // Initialize Firebase asynchronously
             FirebaseApp.initializeApp(this@EasyShop)

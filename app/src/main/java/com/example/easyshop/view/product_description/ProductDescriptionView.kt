@@ -62,7 +62,6 @@ fun ProductDescriptionView(
     navController: NavController
 ) {
 //    val isAlreadyInCart by productDescriptionViewModel.isAlreadyInCart.collectAsState()
-
     var isFavourite = mutableStateOf(false)
     val snackbarHostState = remember { SnackbarHostState() }
 //    var product = ProductsRepository.allProductsList[productIndex]
@@ -72,11 +71,13 @@ fun ProductDescriptionView(
         },
     ) {
         val scope = rememberCoroutineScope()
-        LaunchedEffect(key1 = Unit) {
-            productDescriptionViewModel.updateIsAlreadyInCart()
-            println("checking through launcheffect")
+        val isAlreadyInCart by productDescriptionViewModel.isAlreadyInCart.collectAsState()
 
-        }
+//        LaunchedEffect(key1 = Unit) {
+//            productDescriptionViewModel.updateIsAlreadyInCart()
+//            println("checking through launcheffect")
+//
+//        }
         Column {
             Box() {
 
@@ -137,7 +138,6 @@ fun ProductDescriptionView(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Text(
-//                        text = "Culpa aliquam consequuntur veritatis at consequuntur praesentium beatae temporibus nobis. Velit dolorem facilis neque autem. Itaque voluptatem expedita qui eveniet id veritatis eaque. Blanditiis quia placeat nemo. Nobis laudantium nesciunt perspiciatis sit eligendi.",
                         text = productDescriptionViewModel.product?.description!!,
                         style = textStyle(textColor = Color(0xFF9B9999))["bodySmall"]!!
                     )
@@ -168,6 +168,10 @@ fun ProductDescriptionView(
                                     productDescriptionViewModel.updateIsAlreadyInCart()
 
                                 } else {
+                                    scope.launch {
+                                        productDescriptionViewModel.addProductToDb()
+                                        println("added in db")
+                                    }
                                     productDescriptionViewModel.addProductToCart()
                                     productDescriptionViewModel.updateIsAlreadyInCart()
 

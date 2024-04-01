@@ -10,8 +10,11 @@ import kotlinx.coroutines.flow.Flow
 interface CartDao {
     @Insert
     suspend fun addProductToCart(cartItemLocal: CartItemLocal)
-    @Delete
-    suspend fun deleteProductInCart(cartItemLocal: CartItemLocal)
+
+    //        @Delete
+//        suspend fun deleteProductInCart(cartItemLocal: CartItemLocal)
+    @Query("DELETE FROM cart_items WHERE productId = :productId")
+    suspend fun deleteProductInCart(productId: Int)
 
     @Query("SELECT * FROM cart_items")
     fun getCartProducts(): Flow<List<CartItemLocal>>

@@ -7,10 +7,10 @@ import androidx.room.RoomDatabase
 object RoomInstance {
     var db: CartDatabase? = null
 
-    fun initialize(applicationContext: Context) {
+    fun initialize(context: Context) {
         db = Room.databaseBuilder(
-            applicationContext.applicationContext, // Use application context
-            CartDatabase::class.java, "contacts.db"
+            context.applicationContext, // Use application context
+            CartDatabase::class.java, "cart.db"
         ).build()
     }
 
