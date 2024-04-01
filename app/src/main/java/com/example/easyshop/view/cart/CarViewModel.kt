@@ -27,7 +27,7 @@ class CartViewModel() : ViewModel() {
     val cartDao = RoomInstance.db?.dao
 
         val cartProducts: StateFlow<List<CartItem>>? = cartDao?.getCartProducts()?.conflate()
-        ?.stateIn(viewModelScope, SharingStarted.WhileSubscribed(),emptyList())
+        ?.stateIn(viewModelScope, SharingStarted.Eagerly,emptyList())
 //    private val _cartProducts = MutableStateFlow<List<CartItem>>(emptyList())
 //    val cartProducts: StateFlow<List<CartItem>> = _cartProducts
 
