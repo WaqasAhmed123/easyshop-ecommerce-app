@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.easyshop.repository.UserRepository
+import com.example.easyshop.room_db.RoomInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class ProfileViewModel : ViewModel() {
             viewModelScope.launch {
                 val preferenceDataStoreService=PreferenceDataStoreService(context)
                 preferenceDataStoreService.clearDataStore(context = context)
+                RoomInstance.db?.dao?.clearCart()
 
             }
         }

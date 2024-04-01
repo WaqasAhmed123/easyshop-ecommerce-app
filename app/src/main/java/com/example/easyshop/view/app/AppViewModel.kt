@@ -5,12 +5,7 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide.init
-import com.example.easyshop.model.ProductModel
-import com.example.easyshop.model.Rating
 import com.example.easyshop.room_db.RoomInstance
-import com.example.easyshop.service.ProtoDataStoreService
-import com.example.easyshop.view.cart.CartItem
 import kotlinx.coroutines.launch
 
 class AppViewModel(context: Context) : ViewModel() {
@@ -26,8 +21,8 @@ class AppViewModel(context: Context) : ViewModel() {
             hasToken.value = preferenceDataStoreService.hasToken(context)
             checkingToken.value = false
             println("rrom in app ${RoomInstance.db?.dao}")
-//            ProtoDataStoreService.saveCartItemLocals(cartItems = dummyCartItems,context)
-//            ProtoDataStoreService.getSavedCartItemLocals(context)
+//            ProtoDataStoreService.saveCartItems(cartItems = dummyCartItems,context)
+//            ProtoDataStoreService.getSavedCartItems(context)
 
         }
 

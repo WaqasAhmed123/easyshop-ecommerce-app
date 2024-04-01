@@ -46,7 +46,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.easyshop.composables.ProductSizeBox
 import com.example.easyshop.composables.SubmitButton
-import com.example.easyshop.view.cart.CartItem
+
 import com.example.easyshop.view.cart.CartViewModel
 import kotlinx.coroutines.launch
 import textStyle
@@ -163,17 +163,23 @@ fun ProductDescriptionView(
                     ) {
                         SubmitButton(
                             onClick = {
-                                if (productDescriptionViewModel.isAlreadyInCart.value) {
-                                    productDescriptionViewModel.removeProductFromCart()
-                                    productDescriptionViewModel.updateIsAlreadyInCart()
+                                if (isAlreadyInCart) {
+                                    scope.launch {
+                                        productDescriptionViewModel.deleteProductInDb()
+
+                                    }
+//                                    productDescriptionViewModel.updateIsAlreadyInCart()
+//                                    if (productDescriptionViewModel.isAlreadyInCart.value) {
+//                                        productDescriptionViewModel.removeProductFromCart()
+//                                        productDescriptionViewModel.updateIsAlreadyInCart()
 
                                 } else {
                                     scope.launch {
                                         productDescriptionViewModel.addProductToDb()
                                         println("added in db")
                                     }
-                                    productDescriptionViewModel.addProductToCart()
-                                    productDescriptionViewModel.updateIsAlreadyInCart()
+//                                    productDescriptionViewModel.addProductToCart()
+//                                    productDescriptionViewModel.updateIsAlreadyInCart()
 
                                 }
 
@@ -210,7 +216,8 @@ fun ProductDescriptionView(
 //                            }, buttonTitle = "Add to Cart",
                             },
                             buttonWidth = 7f,
-                            buttonTitle = if (productDescriptionViewModel.isAlreadyInCart.value) {
+//                            buttonTitle = if (productDescriptionViewModel.isAlreadyInCart.value) {
+                            buttonTitle = if (isAlreadyInCart) {
                                 "Remove From Cart"
 
                             } else {

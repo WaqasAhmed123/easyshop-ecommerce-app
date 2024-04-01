@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 
 
 @Database(
-    entities = [CartItemLocal::class],
+    entities = [CartItem::class],
     version = 1
 
 )

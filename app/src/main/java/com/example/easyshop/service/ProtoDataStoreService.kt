@@ -1,6 +1,6 @@
 package com.example.easyshop.service
 
-import com.example.easyshop.room_db.CartItemLocal
+import com.example.easyshop.room_db.CartItem
 import com.example.easyshop.service.UserCartSerializer.userInfoDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,8 +14,8 @@ object ProtoDataStoreService {
 
 //    val cartDataStore:DataStore<UserCart>
 
-//    suspend fun getRecentLocations(context: Context): MutableStateFlow<List<CartItemLocal>> {
-//        val cartItemsFlow = MutableStateFlow<List<CartItemLocal>>(emptyList())
+//    suspend fun getRecentLocations(context: Context): MutableStateFlow<List<CartItem>> {
+//        val cartItemsFlow = MutableStateFlow<List<CartItem>>(emptyList())
 //
 //        val dataStore: DataStore<UserCart> = context.userInfoDataStore
 //
@@ -33,7 +33,7 @@ object ProtoDataStoreService {
 //                }
 //                .map { userCart ->
 //                    userCart.cartProductsList.map { cartProduct ->
-//                        CartItemLocal(
+//                        CartItem(
 //                            product = cartProduct.product.toProductModel(),
 //                            quantity = cartProduct.quantity
 //                        )
@@ -48,18 +48,18 @@ object ProtoDataStoreService {
 //    }
 
 
-//    suspend fun getSavedCartItemLocals(context: Context): MutableStateFlow<List<CartItemLocal>> {
-//        val cartItemLocalFlow = MutableStateFlow<List<CartItemLocal>>(emptyList())
+//    suspend fun getSavedCartItems(context: Context): MutableStateFlow<List<CartItem>> {
+//        val cartItemLocalFlow = MutableStateFlow<List<CartItem>>(emptyList())
 //
 //        withContext(Dispatchers.IO) {
 //            val userInfo = context.userInfoDataStore.data.firstOrNull()
 //            if (userInfo == null) {
 //                println("Return empty list if no data is found")
 //            } else {
-//                val decodedList = mutableListOf<CartItemLocal>()
+//                val decodedList = mutableListOf<CartItem>()
 //                userInfo.cartProductsList.forEach { cartItemJson ->
 //                    try {
-//                        val decodedItem = Json.decodeFromString<List<CartItemLocal>>(cartItemJson.toString())
+//                        val decodedItem = Json.decodeFromString<List<CartItem>>(cartItemJson.toString())
 //                        decodedList.addAll(decodedItem)
 //                    } catch (e: Exception) {
 //                        // Handle decoding exceptions here
@@ -74,19 +74,19 @@ object ProtoDataStoreService {
 //        return cartItemLocalFlow
 //    }
 
-//    suspend fun getSavedCartItemLocals(context: Context): List<CartItemLocal> {
+//    suspend fun getSavedCartItems(context: Context): List<CartItem> {
 //        return withContext(Dispatchers.IO) {
 //            val userInfo = context.userInfoDataStore.data.firstOrNull()
 //            if (userInfo == null) {
 //                println("Return empty list if no data is found")
 //                emptyList()
 //            } else {
-//                val decodedList = mutableListOf<CartItemLocal>()
-////                val books = Json.decodeFromString<List<CartItemLocal>>(userInfo)
+//                val decodedList = mutableListOf<CartItem>()
+////                val books = Json.decodeFromString<List<CartItem>>(userInfo)
 //
 //                userInfo.cartProductsList.forEach { cartItemJson ->
 //                    try {
-//                        val decodedItem = Json.decodeFromString<List<CartItemLocal>>(cartItemJson)
+//                        val decodedItem = Json.decodeFromString<List<CartItem>>(cartItemJson)
 //                        decodedList.addAll(decodedItem)
 //                    } catch (e: Exception) {
 //                        // Handle decoding exceptions here
@@ -102,8 +102,8 @@ object ProtoDataStoreService {
 //    }
 
 
-//    suspend fun getSavedCartItemLocals(context: Context): List<CartItemLocal> {
-//        val decodedList: List<CartItemLocal> = emptyList()
+//    suspend fun getSavedCartItems(context: Context): List<CartItem> {
+//        val decodedList: List<CartItem> = emptyList()
 //        return withContext(Dispatchers.IO) {
 //            val userInfo = context.userInfoDataStore.data.firstOrNull()
 //            if (userInfo == null) {
@@ -112,10 +112,10 @@ object ProtoDataStoreService {
 //            } else {
 //                userInfo.cartProductsList.mapNotNull { cartItemJson ->
 //                    try {
-//                        Json.decodeFromString<CartItemLocal>(cartItemJson).let {
+//                        Json.decodeFromString<CartItem>(cartItemJson).let {
 //                            decodedList
 //                        }
-//                        Json.decodeFromString<CartItemLocal>(cartItemJson)
+//                        Json.decodeFromString<CartItem>(cartItemJson)
 //                    } catch (e: Exception) {
 //                        null
 //                    }
@@ -123,10 +123,10 @@ object ProtoDataStoreService {
 //                // Deserialize the cart items from JSON string
 ////                val cartItemsJson = userInfo.cartProductsList
 ////                val cartItemsJson = userInfo.cartProductsList
-////                val cartProductsObt=Json.decodeFromString<List<CartItemLocal>>(cartItemsJson)
+////                val cartProductsObt=Json.decodeFromString<List<CartItem>>(cartItemsJson)
 ////                cartItemsJson
 ////                cartItemsJson?.let {cartItem->
-////                    Json.decodeFromString<List<CartItemLocal>>(
+////                    Json.decodeFromString<List<CartItem>>(
 ////
 ////                    )
 ////                } ?: emptyList()
@@ -134,8 +134,8 @@ object ProtoDataStoreService {
 //        }
 //    }
 
-//    suspend fun saveCartItemLocals(cartItems: List<CartItemLocal>, context: Context) {
-//    suspend fun saveCartItemLocals(cartItems: List<CartItemLocal>, context: Context) {
+//    suspend fun saveCartItems(cartItems: List<CartItem>, context: Context) {
+//    suspend fun saveCartItems(cartItems: List<CartItem>, context: Context) {
 //        withContext(Dispatchers.IO) {
 //            // Serialize the cart items to JSON string
 //            println("saving cartitems")
@@ -149,13 +149,13 @@ object ProtoDataStoreService {
 //        }
 //    }
 
-//    suspend fun getSavedCartItemLocals(context: Context): MutableStateFlow<List<CartItemLocal>> {
-//        val cartItemLocalFlow = MutableStateFlow<List<CartItemLocal>>(emptyList())
+//    suspend fun getSavedCartItems(context: Context): MutableStateFlow<List<CartItem>> {
+//        val cartItemLocalFlow = MutableStateFlow<List<CartItem>>(emptyList())
 //
 //        withContext(Dispatchers.IO) {
 //            val userInfo = context.userInfoDataStore.data.firstOrNull()
 //            if (userInfo != null) {
-//                val decodedList = mutableListOf<CartItemLocal>()
+//                val decodedList = mutableListOf<CartItem>()
 //                userInfo.cartProductsList.forEach { cartProduct ->
 //                    try {
 //                        val product = cartProduct.product
@@ -169,7 +169,7 @@ object ProtoDataStoreService {
 //                            image = product.image,
 //                            rating = Rating(rate = rating.rate, count = rating.count)
 //                        )
-//                        val cartItemLocal = CartItemLocal(productModel, cartProduct.quantity)
+//                        val cartItemLocal = CartItem(productModel, cartProduct.quantity)
 //                        decodedList.add(cartItemLocal)
 //                    } catch (e: Exception) {
 //                        // Handle decoding exceptions here
@@ -184,7 +184,7 @@ object ProtoDataStoreService {
 //        return cartItemLocalFlow
 //    }
 
-//    suspend fun saveCartItemLocals(cartItem: CartItemLocal, context: Context) {
+//    suspend fun saveCartItems(cartItem: CartItem, context: Context) {
 //        withContext(Dispatchers.IO) {
 //            val userInfo = context.userInfoDataStore.data.firstOrNull() ?: UserCart.getDefaultInstance()
 //

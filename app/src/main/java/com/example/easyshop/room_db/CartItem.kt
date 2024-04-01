@@ -2,10 +2,8 @@ package com.example.easyshop.room_db
 
 import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.easyshop.model.ProductModel
-import kotlinx.serialization.Serializable
 
 
 @Entity(
@@ -26,7 +24,7 @@ import kotlinx.serialization.Serializable
 //        onDelete = ForeignKey.CASCADE
 //    )]
 )
-data class CartItemLocal(
+data class CartItem(
     @PrimaryKey(autoGenerate = false)
     val productId: Int,
     @Embedded
