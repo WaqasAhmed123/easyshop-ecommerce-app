@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">fakestoreapi.com</domain>
+        <pin-set>
+            <!-- Pin for the SSL/TLS certificate of example.com -->
+<!--            <pin digest="SHA-256">CKr590BCHX3qCLZKJy0djpxySepxSYY4du6K2WxEmrY=</pin>-->
+            <pin digest="SHA-256">CKr590BCHX3qCLZKJy0djpxySepxSYY4du6K2WxEmrZ=</pin>
+            <!-- Backup Pin for the SSL/TLS certificate of example.com -->
+            <pin digest="SHA-256">81Wf12bcLlFHQAfJluxnzZ6Frg+oJ9PWY/Wrwur8viR=</pin>
+<!--            <pin digest="SHA-256">81Wf12bcLlFHQAfJluxnzZ6Frg+oJ9PWY/Wrwur8viQ=</pin>-->
+        </pin-set>
+    </domain-config>
+</network-security-config>

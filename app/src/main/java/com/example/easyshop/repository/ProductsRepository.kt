@@ -2,51 +2,32 @@ package com.example.easyshop.repository
 
 import PreferenceDataStoreService
 import android.content.Context
-import android.content.SharedPreferences
-import android.credentials.CredentialManager
-import android.os.Build
-import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.credentials.CreatePasswordRequest
-import androidx.credentials.exceptions.CreateCredentialCancellationException
-import androidx.credentials.exceptions.CreateCredentialException
 import androidx.navigation.NavController
 import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.model.ProductModel
-import com.example.easyshop.service.ApiService
-import com.example.easyshop.service.CredentialManagerService.credentialManager
-import com.example.easyshop.view.home.HomeViewModel
-import com.example.easyshop.view.login.LoginViewModel
-import com.google.firebase.auth.UserInfo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.easyshop.service.retrofit.ApiService
+import com.example.easyshop.service.retrofit.RetrofitInstance
 import kotlinx.coroutines.coroutineScope
 //import okhttp3.Callback
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ProductsRepository {
 //    val userRepository=UserRepository()
 
-    val BASE_URL = "https://fakestoreapi.com"
     var allProductsList = mutableStateListOf<ProductModel>()
     var selectedCategoryProducts = mutableStateListOf<ProductModel>()
     var allCategories = mutableStateListOf<String>()
-    val retrofitBuilder =
-        Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(BASE_URL)
-            .build().create(ApiService::class.java)
+//    val RetrofitInstance.apiService =
+//        Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(BASE_URL)
+//            .build().create(ApiService::class.java)
 
     suspend fun getAllProductsFromApi(isDesc: Boolean) {
         println("fetching")
         try {
-            val response = retrofitBuilder.getAllProducts(if (isDesc) "desc" else null)
+            val response = RetrofitInstance.apiService.getAllProducts(if (isDesc) "desc" else null)
             if (response.isSuccessful) {
                 if (response.isSuccessful) {
                     println("rep is $response")
@@ -67,9 +48,9 @@ object ProductsRepository {
 
     suspend fun getProductsByCategoryFromApi(categoryName: String) {
         println("fetching")
-//    val retrofitData = retrofitBuilder.getProductsByCategory(categoryName)
+//    val retrofitData = RetrofitInstance.apiService.getProductsByCategory(categoryName)
         try {
-            val response = retrofitBuilder.getProductsByCategory(categoryName)
+            val response = RetrofitInstance.apiService.getProductsByCategory(categoryName)
             if (response.isSuccessful) {
                 val categoriesData = response.body()
                 println("products by category ${categoriesData}")
@@ -91,10 +72,10 @@ object ProductsRepository {
     ): Boolean {
 //        LoginViewModel.isLoggingIn.value = true
         println("loggingin")
-//    val retrofitData = retrofitBuilder.getProductsByCategory(categoryName)
+//    val retrofitData = RetrofitInstance.apiService.getProductsByCategory(categoryName)
         var isLoginSuccessful = false
         try {
-            val response = retrofitBuilder.login(loginCredentials)
+            val response = RetrofitInstance.apiService.login(loginCredentials)
             if (response.isSuccessful) {
                 val token = response.body()?.token
                 println("obtained token ${token}")
@@ -151,7 +132,7 @@ object ProductsRepository {
 //        println("location while calling func $lat, $lon")
         println("fetching")
         try {
-            val response = retrofitBuilder.getAllCategories()
+            val response = RetrofitInstance.apiService.getAllCategories()
             if (response.isSuccessful) {
                 println("rep is $response")
                 val allCategoriesData = response.body()
@@ -171,7 +152,7 @@ object ProductsRepository {
 //    fun getAllCategoriesFromApi() {
 ////        println("location while calling func $lat, $lon")
 //        println("fetching")
-//        val retrofitData = retrofitBuilder.getAllCategories()
+//        val retrofitData = RetrofitInstance.apiService.getAllCategories()
 //        retrofitData.enqueue(object : Callback<List<String>> {
 //            @RequiresApi(Build.VERSION_CODES.O)
 //            override fun onResponse(

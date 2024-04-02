@@ -1,6 +1,7 @@
 package com.example.easyshop.view.cart
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -65,6 +66,7 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
         Column(modifier = Modifier.padding(top = it.calculateTopPadding())) {
             when {
                 localCartProducts == null -> {
+                    Log.d("Loader", "CartView: loader executed")
 //                cartViewModel.isDataLoading.value -> {
                     Box(
                         modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
@@ -76,6 +78,8 @@ fun CartView(navController: NavController, cartViewModel: CartViewModel) {
                 }
 
                 localCartProducts!!.isEmpty() -> {
+                    Log.d("Empty", "CartView: Empyt cart")
+
 //                    LaunchedEffect(key1 = Unit){
 //                        delay(2000)
 //

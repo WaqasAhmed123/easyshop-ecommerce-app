@@ -1,4 +1,4 @@
-package com.example.easyshop.service
+package com.example.easyshop.service.retrofit
 
 import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.model.LoginResponse
