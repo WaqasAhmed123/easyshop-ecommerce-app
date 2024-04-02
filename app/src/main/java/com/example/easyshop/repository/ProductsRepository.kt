@@ -1,5 +1,6 @@
 package com.example.easyshop.repository
 
+//import okhttp3.Callback
 import PreferenceDataStoreService
 import android.content.Context
 import android.widget.Toast
@@ -7,17 +8,22 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.navigation.NavController
 import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.model.ProductModel
-import com.example.easyshop.service.retrofit.ApiService
 import com.example.easyshop.service.retrofit.RetrofitInstance
 import kotlinx.coroutines.coroutineScope
-//import okhttp3.Callback
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 object ProductsRepository {
 //    val userRepository=UserRepository()
 
     var allProductsList = mutableStateListOf<ProductModel>()
+    var allProductsFlow: MutableStateFlow<Result<List<ProductModel>>> =
+        MutableStateFlow(Result.Loading())
+//    val allProductsFlow = _allProductsFlow.asStateFlow()
+
+
+    //    var allProductsList = mutableStateListOf<Result<ProductModel>>()
     var selectedCategoryProducts = mutableStateListOf<ProductModel>()
     var allCategories = mutableStateListOf<String>()
 //    val RetrofitInstance.apiService =
@@ -26,22 +32,42 @@ object ProductsRepository {
 
     suspend fun getAllProductsFromApi(isDesc: Boolean) {
         println("fetching")
+//        allProductsFlow.emit(Result.Loading())
+        allProductsFlow.update { Result.Loading() }
+//        allProductsFlow.value=(Result.Loading())
         try {
             val response = RetrofitInstance.apiService.getAllProducts(if (isDesc) "desc" else null)
             if (response.isSuccessful) {
-                if (response.isSuccessful) {
-                    println("rep is $response")
-                    val productsData = response.body()
-                    println("resp of api boyd ${productsData}")
-                    productsData?.let {
-                        allProductsList.clear() // Clear existing data
-                        allProductsList.addAll(it) // Add new data
-                    }
+                val successResponse = response.body()
+                successResponse?.let {
+                    allProductsList.clear() // Clear existing data
+                    allProductsList.addAll(it) // Add new data
                 }
+
+                println("rep is $response")
+                val productsData = Result.Success(response.body())
+                allProductsFlow.emit(productsData)
+//                allProductsFlow.value = Result.Success(response.body() ?: emptyList())
+                println("resp of api boyd ${productsData}")
+//                productsData?.let {
+//                    allProductsList.clear() // Clear existing data
+//                    allProductsList.addAll(it) // Add new data
+//                }
+//                    val successResponse = response.body()
+//
+//                    println("rep is $response")
+//                    val productsData = Result.Success(response.body())
+//                    println("resp of api boyd ${productsData}")
+//                    productsData?.let {
+//                        allProductsList.clear() // Clear existing data
+//                        allProductsList.addAll(it) // Add new data
+//                    }
             } else {
+                allProductsFlow.emit(Result.Error(errorMessage = "Check Your Internet Connection."))
                 println("Response not successful: ${response.code()}")
             }
         } catch (e: Exception) {
+            allProductsFlow.emit(Result.Error(errorMessage = "Check Your Internet Connection."))
             println("Exception: ${e.message}")
         }
     }

@@ -11,15 +11,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.easyshop.model.BottomNavigationItemsData
+import com.example.easyshop.model.ProductModel
 import com.example.easyshop.repository.ProductsRepository
 import com.example.easyshop.repository.UserRepository
 import com.example.easyshop.repository.UserRepository.userName
+import com.example.easyshop.room_db.CartItem
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
     @SuppressLint("MutableCollectionMutableState")
-    val allProducts = ProductsRepository.allProductsList
+//    val cartProducts: StateFlow<List<ProductModel>>? = cartDao?.getCartProducts()?.conflate()
+//        ?.stateIn(viewModelScope, SharingStarted.Eagerly,emptyList())
+    var allProducts = ProductsRepository.allProductsFlow.asStateFlow()
+
+//    val allProducts = ProductsRepository.allProductsList
     var allCategoriesList = ProductsRepository.allCategories
     val userName: StateFlow<String> = UserRepository.userName
 
@@ -30,9 +40,10 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
 
             ProductsRepository.getAllCategoriesFromApi()
+            isDataLoaded.value=true
             ProductsRepository.getAllProductsFromApi(isDesc = isDescProducts.value)
             println("func executed data is ${allCategoriesList.size}")
-            isDataLoaded.value = true
+//            isDataLoaded.value = true
             println("user name in user repo is ${UserRepository.userName.value}")
             println("user name in viewModel is is ${userName.value}")
 

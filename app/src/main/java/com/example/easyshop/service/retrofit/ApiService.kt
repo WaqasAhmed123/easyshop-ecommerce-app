@@ -3,7 +3,6 @@ package com.example.easyshop.service.retrofit
 import com.example.easyshop.model.LoginRequest
 import com.example.easyshop.model.LoginResponse
 import com.example.easyshop.model.ProductModel
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -18,6 +17,7 @@ interface ApiService {
 //        @Query("sort") preview: Boolean?
 //        @Query("sort") sort: String? = if (isDesc) "desc" else null
         @Query("sort") sort: String? = null
+//    ): Response<FetchResult<List<ProductModel>>>
     ): Response<List<ProductModel>>
 
     @GET("/products/category/{categoryName}")

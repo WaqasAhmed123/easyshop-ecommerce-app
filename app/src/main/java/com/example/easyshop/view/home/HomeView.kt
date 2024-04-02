@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -51,7 +52,9 @@ import com.example.easyshop.R
 import com.example.easyshop.composables.CategoriesBox
 import com.example.easyshop.composables.ItemTitleWithImage
 import com.example.easyshop.repository.ProductsRepository
+import com.example.easyshop.repository.ProductsRepository.allProductsList
 import com.example.easyshop.repository.ProductsRepository.getProductsByCategoryFromApi
+import com.example.easyshop.repository.Result
 import com.example.easyshop.repository.UserRepository
 import com.example.easyshop.service.PermissionsService
 import com.example.easyshop.view.product_description.ProductDescriptionViewModel
@@ -70,6 +73,7 @@ fun HomeView(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val username by homeViewModel.userName.collectAsState()
+    val allProducts by homeViewModel.allProducts.collectAsState(initial = Result.Loading())
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         PermissionsService.RequestNotificationPermissionDialog()
     }
@@ -204,59 +208,111 @@ fun HomeView(
                             )
                         }
                     }
-                    Box() {
-                        if (homeViewModel.isDataLoaded.value) {
-                            Column {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(
-                                        modifier = Modifier.weight(1f),
-                                        text = "All Products",
-                                        style = textStyle()["titleLarge"]!!
-                                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = "All Products",
+                            style = textStyle()["titleLarge"]!!
+                        )
 
-                                    IconButton(
-                                        onClick = {
-                                            homeViewModel.isDescProducts.value =
-                                                !homeViewModel.isDescProducts.value
-                                            scope.launch {
-
-                                                ProductsRepository.getAllProductsFromApi(isDesc = homeViewModel.isDescProducts.value)
-                                            }
+                        IconButton(
+                            onClick = {
+                                homeViewModel.isDescProducts.value =
+                                    !homeViewModel.isDescProducts.value
+                                scope.launch {
+                                    println("state is before${allProducts.data}")
+                                    ProductsRepository.getAllProductsFromApi(isDesc = homeViewModel.isDescProducts.value)
+                                    println("state is after${allProducts.data}")
+                                }
 //                                        LaunchedEffect(key1 = Unit, block = {
 //
 //                                        }
 //
 //                                        )
-                                        }, modifier = Modifier.size(24.dp)
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.AutoMirrored.Rounded.Sort,
-                                            contentDescription = "Sort",
-                                            tint = Color.Black
-                                        )
-                                    }
-                                    Text(
-                                        text = "Sort", style = textStyle()["titleLarge"]!!
+                            }, modifier = Modifier.size(24.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Rounded.Sort,
+                                contentDescription = "Sort",
+                                tint = Color.Black
+                            )
+                        }
+                        Text(
+                            text = "Sort", style = textStyle()["titleLarge"]!!
 //                                    style = MaterialTheme.typography.body1,
 //                                    modifier = Modifier.padding(start = 4.dp)
-                                    )
-                                }
-                                Spacer(modifier = Modifier.height(10.dp))
-                                LazyVerticalGrid(
-                                    columns = GridCells.Fixed(2), // Set the number of columns in the grid
-                                    horizontalArrangement = Arrangement.spacedBy(20.dp),
-                                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Box() {
+                        when (allProducts) {
+                            is Result.Error -> {
+                                val errorMessage = allProducts.errorMessage
+                                Text(text = errorMessage!!)
+                            }
+                            is Result.Loading -> {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
                                 ) {
-                                    items(homeViewModel.allProducts.size) { index ->
-                                        val product = homeViewModel.allProducts[index]
+                                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+
+                                }
+                            }
+
+                            is Result.Success -> {
+                                Column {
+//                                    Row(verticalAlignment = Alignment.CenterVertically) {
+//                                        Text(
+//                                            modifier = Modifier.weight(1f),
+//                                            text = "All Products",
+//                                            style = textStyle()["titleLarge"]!!
+//                                        )
+//
+//                                        IconButton(
+//                                            onClick = {
+//                                                homeViewModel.isDescProducts.value =
+//                                                    !homeViewModel.isDescProducts.value
+//                                                scope.launch {
+//
+//                                                    ProductsRepository.getAllProductsFromApi(isDesc = homeViewModel.isDescProducts.value)
+//                                                }
+////                                        LaunchedEffect(key1 = Unit, block = {
+////
+////                                        }
+////
+////                                        )
+//                                            }, modifier = Modifier.size(24.dp)
+//                                        ) {
+//                                            Icon(
+//                                                imageVector = Icons.AutoMirrored.Rounded.Sort,
+//                                                contentDescription = "Sort",
+//                                                tint = Color.Black
+//                                            )
+//                                        }
+//                                        Text(
+//                                            text = "Sort", style = textStyle()["titleLarge"]!!
+////                                    style = MaterialTheme.typography.body1,
+////                                    modifier = Modifier.padding(start = 4.dp)
+//                                        )
+//                                    }
+//                                    Spacer(modifier = Modifier.height(10.dp))
+                                    LazyVerticalGrid(
+                                        columns = GridCells.Fixed(2), // Set the number of columns in the grid
+                                        horizontalArrangement = Arrangement.spacedBy(20.dp),
+                                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                                    ) {
+                                        items(allProducts.data!!) { product ->
+//                                            val product = allProducts.data!![index]
 //                                        items(ProductsRepository.allProductsList.size) { index ->
 //                                        val product = ProductsRepository.allProductsList[index]
-                                        val price = "$${product.price}" ?: "" // Ensure null safety
-                                        val title = product.title ?: "" // Ensure null safety
-                                        val image = product.image ?: "" // Ensure null safety
-                                        ItemTitleWithImage(
-                                            productId = product.id,
-                                            productDescriptionViewModel = productDescriptionViewModel,
+                                            val price =
+                                                "$${product.price}" ?: "" // Ensure null safety
+                                            val title = product.title ?: "" // Ensure null safety
+                                            val image = product.image ?: "" // Ensure null safety
+                                            ItemTitleWithImage(
+                                                productId = product.id,
+                                                productDescriptionViewModel = productDescriptionViewModel,
 //                                            onItemClick = {
 //                                                println("passed index $index")
 ////                                        navController.navigate("product_description_view?productName=$title&productPrice=$price")
@@ -265,26 +321,30 @@ fun HomeView(
 //                                                    CommonFunctions.findProductById(product.id)
 //                                                navController.navigate("product_description_view")
 //                                            },
-                                            onAddItemClick = { /* Handle add item click */ },
-                                            itemName = title,
-                                            itemPrice = price.toString(),
-                                            image = image,
-                                            navController = navController
-                                        )
+                                                onAddItemClick = { /* Handle add item click */ },
+                                                itemName = title,
+                                                itemPrice = price.toString(),
+                                                image = image,
+                                                navController = navController
+                                            )
+                                        }
                                     }
                                 }
                             }
 
-                        } else {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-
-                            }
-
                         }
+//                        if (homeViewModel.isDataLoaded.value) {
+
+//                        } 
+//                        else {
+//                        Box(
+//                            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+//                        ) {
+//                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+//
+//                        }
+
+//                    }
 
 
                     }
