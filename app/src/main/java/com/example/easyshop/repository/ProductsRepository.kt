@@ -33,20 +33,18 @@ object ProductsRepository {
     suspend fun getAllProductsFromApi(isDesc: Boolean) {
         println("fetching")
 //        allProductsFlow.emit(Result.Loading())
-        allProductsFlow.update { Result.Loading() }
-//        allProductsFlow.value=(Result.Loading())
         try {
             val response = RetrofitInstance.apiService.getAllProducts(if (isDesc) "desc" else null)
             if (response.isSuccessful) {
-                val successResponse = response.body()
-                successResponse?.let {
+                val productsData = response.body()
+                productsData?.let {
                     allProductsList.clear() // Clear existing data
                     allProductsList.addAll(it) // Add new data
                 }
 
                 println("rep is $response")
-                val productsData = Result.Success(response.body())
-                allProductsFlow.emit(productsData)
+//                val productsData = Result.Success(response.body())
+                allProductsFlow.emit(Result.Success(productsData))
 //                allProductsFlow.value = Result.Success(response.body() ?: emptyList())
                 println("resp of api boyd ${productsData}")
 //                productsData?.let {
